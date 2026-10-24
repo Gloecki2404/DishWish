@@ -609,3 +609,11 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 - GitHub-CI: HACS-Validierung schlug fehl wegen fehlender Lizenz, Repo-Beschreibung und Topics. `LICENSE` (MIT, Copyright Gloecki2404 – bei Bedarf ändern) ergänzt; Beschreibung und Topics im Repo gesetzt. Die Warnung zu `categories` im Manifest ist nur ein Hinweis (hassfest kennt das Feld noch nicht).
 - Logo: `brand/icon*.png` und `brand/logo*.png` sind rund mit weich auslaufendem Rand (transparent), Teller größer. Das Original liegt in `docs/logo.png`. HACS zeigt in seiner Liste Bilder des HA-Brands-Dienstes; lokale Bilder erscheinen erst nach der Installation in Home Assistant bzw. wenn die Marke im `home-assistant/brands`-Repo steht.
 - Beispielgerichte: `starter_recipes.json` (20 deutsche/österreichische Klassiker, Deutsch und Englisch, eigene Texte, ohne Fotos). Import über den Button in der leeren Bibliothek, WS `dishwish/recipes/import_starter` und den Service `dishwish.import_starter_recipes`; doppelte Namen werden übersprungen.
+
+**Verbesserungen aus dem Handy-Einsatz (`HA-Dashboard/dishwish-feedback.md`, 2026-10-24):**
+1. Vollbild-Dialoge (< 600 px) lassen oben `--dw-dialog-top-offset` frei (Safe-Area, mindestens 24 px); der Fuß berücksichtigt die untere Safe-Area. Im Browser mit einem 390-px-iframe und simulierter Safe-Area 48 px geprüft: Schließen-X sichtbar und anklickbar. Ein Playwright-Test wurde nicht ergänzt (neue Abhängigkeit, braucht Rückfrage).
+2. Dialoge und Menüs sind immer deckend (Theme-Farbe über fester Grundfläche).
+3. Öffentliche Variablen `--dw-*` und CSS-Parts (`exportparts` bis zur Karte), dokumentiert in der README.
+4. Eingabefelder über `--dw-input-*` mit Rückfall auf `--ha-color-form-background`.
+5. Sensoren haben feste Entity-IDs (`sensor.dishwish_open_wishes`, `sensor.dishwish_recipes`) in jeder Sprache. Bereits registrierte Entitäten behalten ihre IDs.
+6. Leerer Zustand der Rezept-Karte (Modus `top_wish`) mit Hinweis und Button „+ Wunsch“. Nicht umgesetzt: eine Mobil-Vorschau im Karten-Editor (die Vorschaubreite bestimmt Home Assistant).

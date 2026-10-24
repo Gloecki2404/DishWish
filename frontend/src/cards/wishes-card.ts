@@ -197,8 +197,8 @@ export class DishWishWishesCard extends LitElement {
         display: block;
       }
       .card {
-        background: var(--ha-card-background, var(--card-background-color));
-        border-radius: var(--ha-card-border-radius, 12px);
+        background: var(--dw-card-background, var(--ha-card-background, var(--card-background-color)));
+        border-radius: var(--dw-card-radius, var(--ha-card-border-radius, 12px));
         box-shadow: var(--ha-card-box-shadow, none);
         border: var(--ha-card-border-width, 1px) solid var(--ha-card-border-color, var(--divider-color));
         padding: 12px;
@@ -227,7 +227,7 @@ export class DishWishWishesCard extends LitElement {
         flex-direction: column;
         gap: 8px;
         padding: 10px;
-        border-radius: 10px;
+        border-radius: var(--dw-tile-radius, 10px);
         background: var(--secondary-background-color);
       }
       .top {
@@ -273,7 +273,7 @@ export class DishWishWishesCard extends LitElement {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: var(--primary-color);
+        background: var(--dw-accent, var(--primary-color));
         color: var(--text-primary-color, #fff);
         font-size: 0.85em;
       }
@@ -450,7 +450,7 @@ export class DishWishWishesCard extends LitElement {
               <ul class="done">${doneShown.map((n) => html`<li>${n}</li>`)}</ul>`
           : nothing}
       </div>
-      <dw-recipe-dialog
+      <dw-recipe-dialog exportparts="dialog,header,title,close-button,body,footer"
         .hass=${this._hass}
         .categories=${store.categories}
         .shoppingList=${cfg.shopping_list}
@@ -459,7 +459,7 @@ export class DishWishWishesCard extends LitElement {
           void this.editor.open(e.detail);
         }}
       ></dw-recipe-dialog>
-      <dw-recipe-editor
+      <dw-recipe-editor exportparts="dialog,header,title,close-button,body,footer"
         .hass=${this._hass}
         .categories=${store.categories}
         @saved=${(e: CustomEvent<Recipe>) => {
@@ -467,7 +467,7 @@ export class DishWishWishesCard extends LitElement {
           void this.recipeDialog.open(e.detail.id);
         }}
       ></dw-recipe-editor>
-      <dw-recipe-picker
+      <dw-recipe-picker exportparts="dialog,header,title,close-button,body,footer"
         .hass=${this._hass}
         .recipes=${store.recipes}
         .categories=${store.categories}

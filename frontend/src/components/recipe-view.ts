@@ -150,7 +150,7 @@ export class DwRecipeView extends LitElement {
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background: var(--primary-color);
+        background: var(--dw-accent, var(--primary-color));
         color: var(--text-primary-color, #fff);
         text-align: center;
         line-height: 28px;

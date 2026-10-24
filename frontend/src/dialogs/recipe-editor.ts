@@ -508,7 +508,7 @@ export class DwRecipeEditor extends LitElement {
   protected override render() {
     const lang = this.uiLang;
     const d = this.draft;
-    return html`<dw-dialog
+    return html`<dw-dialog exportparts="dialog,header,title,close-button,body,footer"
       .heading=${this.recipeId ? t(lang, "edit_recipe") : t(lang, "new_recipe")}
       .closeLabel=${t(lang, "close")}
       @close-request=${this.onCloseRequest}

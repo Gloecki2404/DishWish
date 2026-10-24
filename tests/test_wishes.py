@@ -307,6 +307,24 @@ async def test_services(hass, shopping_list, setup_integration, make_client):
 # --- sensors ---------------------------------------------------------------------
 
 
+async def test_entity_ids_do_not_depend_on_language(hass: HomeAssistant, tmp_path):
+    hass.config.config_dir = str(tmp_path)
+    hass.config.language = "de"
+    entry = MockConfigEntry(domain=DOMAIN, data={})
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    for entity_id in ("sensor.dishwish_open_wishes", "sensor.dishwish_recipes"):
+        state = hass.states.get(entity_id)
+        assert state is not None, entity_id
+    # the display name is still translated
+    assert (
+        hass.states.get("sensor.dishwish_open_wishes")
+        .attributes["friendly_name"]
+        .endswith("Offene Wünsche")
+    )
+
+
 async def test_sensors_follow_changes(hass, setup_integration, make_client):
     alice, _ = await make_client("alice")
     bob, _ = await make_client("bob")

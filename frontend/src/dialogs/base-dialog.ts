@@ -41,13 +41,26 @@ export class DwDialog extends LitElement {
     sharedStyles,
     css`
       dialog {
+        /* Space kept free above a fullscreen dialog (phone status bar / notch). */
+        --dw-top: var(
+          --dw-dialog-top-offset,
+          max(var(--safe-area-inset-top, 0px), env(safe-area-inset-top, 0px), 24px)
+        );
+        --dw-bottom: max(var(--safe-area-inset-bottom, 0px), env(safe-area-inset-bottom, 0px));
         width: min(760px, 100vw);
         max-width: 100vw;
         max-height: 92dvh;
         padding: 0;
         border: none;
-        border-radius: var(--ha-card-border-radius, 12px);
-        background: var(--card-background-color);
+        border-radius: var(--dw-dialog-radius, var(--ha-card-border-radius, 12px));
+        /* Always opaque: a translucent theme colour is laid over a solid base colour. */
+        --dw-dialog-fill: var(
+          --dw-dialog-background,
+          var(--ha-dialog-surface-background, var(--card-background-color))
+        );
+        background:
+          linear-gradient(var(--dw-dialog-fill), var(--dw-dialog-fill)),
+          var(--primary-background-color, Canvas);
         color: var(--primary-text-color);
         overflow: hidden;
       }
@@ -84,14 +97,15 @@ export class DwDialog extends LitElement {
         gap: 8px;
         justify-content: flex-end;
         flex-wrap: wrap;
-        padding: 12px 20px;
+        padding: 12px 20px calc(12px + var(--dw-bottom));
         border-top: 1px solid var(--divider-color);
       }
       @media (max-width: 600px) {
         dialog {
           width: 100vw;
-          height: 100dvh;
-          max-height: 100dvh;
+          margin: var(--dw-top) 0 0 0;
+          height: calc(100dvh - var(--dw-top));
+          max-height: calc(100dvh - var(--dw-top));
           border-radius: 0;
         }
       }
@@ -153,21 +167,22 @@ export class DwDialog extends LitElement {
   protected override render() {
     return html`
       <dialog
+        part="dialog"
         @cancel=${(e: Event) => {
           e.preventDefault();
           this.requestClose();
         }}
         @close=${() => this.onClosed()}
       >
-        <header>
-          <h2>${this.heading}</h2>
+        <header part="header">
+          <h2 part="title">${this.heading}</h2>
           <slot name="actions"></slot>
-          <button class="icon-btn" aria-label=${this.closeLabel} @click=${() => this.requestClose()}>
+          <button class="icon-btn" part="close-button" aria-label=${this.closeLabel} @click=${() => this.requestClose()}>
             ${icon(paths.close)}
           </button>
         </header>
-        <div class="body"><slot></slot></div>
-        <footer><slot name="footer"></slot></footer>
+        <div class="body" part="body"><slot></slot></div>
+        <footer part="footer"><slot name="footer"></slot></footer>
       </dialog>
     `;
   }

@@ -91,6 +91,23 @@ type: todo-list
 entity: todo.shopping_list
 ```
 
+## Theming
+
+The cards use your theme's CSS variables. These optional variables override single aspects (for example with card-mod or in a theme):
+
+| Variable | Default | Effect |
+|---|---|---|
+| `--dw-accent` | `--primary-color` | accent colour (buttons, chips, progress) |
+| `--dw-card-background` | `--ha-card-background` | card background |
+| `--dw-card-radius` | `--ha-card-border-radius` | card corner radius |
+| `--dw-tile-radius` | `10px` | dish tiles and wish entries |
+| `--dw-dialog-background` | `--ha-dialog-surface-background`, then `--card-background-color` | dialog and menu background. It is always drawn on a solid base, so translucent card colours never make a dialog see-through. |
+| `--dw-dialog-radius` | `--ha-card-border-radius` | dialog corner radius |
+| `--dw-dialog-top-offset` | safe area at the top, at least `24px` | free space above full-screen dialogs on phones |
+| `--dw-input-background`, `--dw-input-text`, `--dw-input-border` | form colours of your theme | input fields |
+
+Full-screen dialogs on phones respect the safe areas (status bar, notch, gesture bar). The dialogs expose the CSS parts `dialog`, `header`, `title`, `close-button`, `body` and `footer` through the card, for example `dishwish-library-card::part(close-button)`.
+
 ## Services
 
 | Service | Effect |
@@ -103,7 +120,7 @@ Without `entity_id` the default shopping list from the options is used.
 
 ## Entities and events
 
-- `sensor.dishwish_open_wishes` (number of open wishes, attribute `wishes` with up to 20 dishes) and `sensor.dishwish_recipes` (number of dishes). Entity IDs follow your Home Assistant language, for example `sensor.dishwish_offene_wunsche` on a German system.
+- `sensor.dishwish_open_wishes` (number of open wishes, attribute `wishes` with up to 20 dishes) and `sensor.dishwish_recipes` (number of dishes). The entity IDs are the same in every language (only the display name is translated). Installations that were set up earlier keep the IDs they already have, for example `sensor.dishwish_offene_wunsche`; you can rename them under the entity settings.
 - Event `dishwish_wish_added`: `recipe_id`, `recipe_name`, `user_id`, `user_name`, `note`
 - Event `dishwish_wishes_completed`: `recipe_id`, `recipe_name`, `count`
 

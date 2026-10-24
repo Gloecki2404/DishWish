@@ -32,8 +32,8 @@ export const sharedStyles = css`
     cursor: pointer;
   }
   .btn.primary {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
+    background: var(--dw-accent, var(--primary-color));
+    border-color: var(--dw-accent, var(--primary-color));
     color: var(--text-primary-color, #fff);
   }
   .btn.danger {
@@ -61,7 +61,7 @@ export const sharedStyles = css`
     background: var(--secondary-background-color);
   }
   .btn.primary:not(:disabled):hover {
-    background: var(--primary-color);
+    background: var(--dw-accent, var(--primary-color));
     filter: brightness(1.1);
   }
   .chip {
@@ -77,21 +77,25 @@ export const sharedStyles = css`
     white-space: nowrap;
   }
   .chip[aria-pressed="true"] {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
+    background: var(--dw-accent, var(--primary-color));
+    border-color: var(--dw-accent, var(--primary-color));
     color: var(--text-primary-color, #fff);
   }
   input,
   textarea,
   select {
     font: inherit;
-    color: var(--primary-text-color);
-    background: var(--secondary-background-color);
-    border: 1px solid var(--divider-color);
+    color: var(--dw-input-text, var(--primary-text-color));
+    background: var(--dw-input-background, var(--ha-color-form-background, var(--secondary-background-color)));
+    border: 1px solid var(--dw-input-border, var(--divider-color));
     border-radius: 8px;
     padding: 0 12px;
     min-height: 44px;
     width: 100%;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--secondary-text-color);
   }
   textarea {
     padding: 10px 12px;
@@ -100,7 +104,7 @@ export const sharedStyles = css`
   input:focus,
   textarea:focus,
   select:focus {
-    outline: 2px solid var(--primary-color);
+    outline: 2px solid var(--dw-accent, var(--primary-color));
     outline-offset: -1px;
   }
   label.field {

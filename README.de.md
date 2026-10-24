@@ -91,6 +91,23 @@ type: todo-list
 entity: todo.einkaufsliste
 ```
 
+## Theming
+
+Die Karten nutzen die CSS-Variablen deines Themes. Diese optionalen Variablen überschreiben einzelne Dinge (z. B. mit card-mod oder in einem Theme):
+
+| Variable | Standard | Wirkung |
+|---|---|---|
+| `--dw-accent` | `--primary-color` | Akzentfarbe (Buttons, Chips, Fortschritt) |
+| `--dw-card-background` | `--ha-card-background` | Kartenhintergrund |
+| `--dw-card-radius` | `--ha-card-border-radius` | Eckenradius der Karte |
+| `--dw-tile-radius` | `10px` | Gericht-Kacheln und Wunsch-Einträge |
+| `--dw-dialog-background` | `--ha-dialog-surface-background`, sonst `--card-background-color` | Hintergrund von Dialogen und Menüs. Er wird immer auf einer deckenden Fläche gezeichnet, halbtransparente Kartenfarben machen Dialoge also nie durchsichtig. |
+| `--dw-dialog-radius` | `--ha-card-border-radius` | Eckenradius der Dialoge |
+| `--dw-dialog-top-offset` | Safe-Area oben, mindestens `24px` | Abstand über Vollbild-Dialogen am Handy |
+| `--dw-input-background`, `--dw-input-text`, `--dw-input-border` | Formularfarben deines Themes | Eingabefelder |
+
+Vollbild-Dialoge am Handy berücksichtigen die Safe-Areas (Statusleiste, Notch, Gestenleiste). Die Dialoge geben die CSS-Parts `dialog`, `header`, `title`, `close-button`, `body` und `footer` über die Karte weiter, z. B. `dishwish-library-card::part(close-button)`.
+
 ## Services
 
 | Service | Wirkung |
@@ -103,7 +120,7 @@ Ohne `entity_id` wird die Standard-Einkaufsliste aus den Optionen verwendet.
 
 ## Entitäten und Ereignisse
 
-- `sensor.dishwish_open_wishes` (Anzahl offener Wünsche, Attribut `wishes` mit bis zu 20 Gerichten) und `sensor.dishwish_recipes` (Anzahl Gerichte). Die Entity-IDs folgen der Sprache von Home Assistant, in einer deutschen Installation z. B. `sensor.dishwish_offene_wunsche`.
+- `sensor.dishwish_open_wishes` (Anzahl offener Wünsche, Attribut `wishes` mit bis zu 20 Gerichten) und `sensor.dishwish_recipes` (Anzahl Gerichte). Die Entity-IDs sind in jeder Sprache gleich (nur der Anzeigename wird übersetzt). Früher eingerichtete Installationen behalten ihre bisherigen IDs, z. B. `sensor.dishwish_offene_wunsche`; du kannst sie in den Entitäts-Einstellungen umbenennen.
 - Ereignis `dishwish_wish_added`: `recipe_id`, `recipe_name`, `user_id`, `user_name`, `note`
 - Ereignis `dishwish_wishes_completed`: `recipe_id`, `recipe_name`, `count`
 

@@ -1,14 +1,17 @@
 import { css, html, LitElement, nothing } from "lit";
-import { errorCode, getRecipe } from "../api";
+import { addWish, errorCode, getRecipe } from "../api";
 import "../components/card-editor";
 import type { DwCardEditor } from "../components/card-editor";
 import "../components/recipe-view";
 import { getStore, type DataStore } from "../data-store";
 import "../dialogs/cook-mode";
+import "../dialogs/recipe-picker";
+import type { DwRecipePicker } from "../dialogs/recipe-picker";
 import type { DwCookMode } from "../dialogs/cook-mode";
 import { t, tError } from "../i18n";
 import { sharedStyles } from "../styles";
 import type { CardConfig, HomeAssistant, Recipe } from "../types";
+import { notify } from "../utils/notify";
 import { inCardPicker } from "../utils/picker";
 
 interface RecipeCardConfig extends CardConfig {
@@ -150,8 +153,8 @@ export class DishWishRecipeCard extends LitElement {
         display: block;
       }
       .card {
-        background: var(--ha-card-background, var(--card-background-color));
-        border-radius: var(--ha-card-border-radius, 12px);
+        background: var(--dw-card-background, var(--ha-card-background, var(--card-background-color)));
+        border-radius: var(--dw-card-radius, var(--ha-card-border-radius, 12px));
         box-shadow: var(--ha-card-box-shadow, none);
         border: var(--ha-card-border-width, 1px) solid var(--ha-card-border-color, var(--divider-color));
         padding: 16px;
@@ -172,6 +175,21 @@ export class DishWishRecipeCard extends LitElement {
     return this._hass?.locale.language ?? "en";
   }
 
+  private get picker(): DwRecipePicker {
+    return this.renderRoot.querySelector("dw-recipe-picker") as DwRecipePicker;
+  }
+
+  private async onPicked(e: CustomEvent<string>): Promise<void> {
+    const lang = this.uiLang;
+    try {
+      await addWish(this._hass!.connection, e.detail);
+      notify(this, t(lang, "wish_added"));
+      await this.store?.refresh();
+    } catch (err) {
+      notify(this, tError(lang, errorCode(err)));
+    }
+  }
+
   private get cook(): DwCookMode {
     return this.renderRoot.querySelector("dw-cook-mode") as DwCookMode;
   }
@@ -185,7 +203,11 @@ export class DishWishRecipeCard extends LitElement {
     else if (!this.store.loaded) body = html`<p class="muted">${t(lang, "loading")}</p>`;
     else if (!this.recipe) {
       const fixed = (cfg.mode ?? "fixed") === "fixed";
-      body = html`<p class="muted">${fixed ? t(lang, "recipe_missing") : t(lang, "wishes_empty")}</p>`;
+      body = fixed
+        ? html`<p class="muted">${t(lang, "recipe_missing")}</p>`
+        : html`<p>${t(lang, "wishes_empty")}</p>
+            <p class="muted">${t(lang, "wishes_hint")}</p>
+            <button class="btn" @click=${() => void this.picker.open()}>${t(lang, "add_wish")}</button>`;
     } else {
       body = html`<h1>${this.recipe.name}</h1>
         <dw-recipe-view
@@ -203,8 +225,15 @@ export class DishWishRecipeCard extends LitElement {
         ></dw-recipe-view>`;
     }
     return html`<div class="card">${body}</div>
+      <dw-recipe-picker
+        exportparts="dialog,header,title,close-button,body,footer"
+        .hass=${this._hass}
+        .recipes=${this.store.recipes}
+        .categories=${this.store.categories}
+        @picked=${this.onPicked}
+      ></dw-recipe-picker>
       ${this.recipe
-        ? html`<dw-cook-mode .hass=${this._hass} .recipe=${this.recipe} .servings=${this.servings}></dw-cook-mode>`
+        ? html`<dw-cook-mode exportparts="dialog,header,title,close-button,body,footer" .hass=${this._hass} .recipe=${this.recipe} .servings=${this.servings}></dw-cook-mode>`
         : nothing}`;
   }
 }

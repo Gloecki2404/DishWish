@@ -44,7 +44,7 @@ export class DwCookMode extends LitElement {
       }
       .progress div {
         height: 100%;
-        background: var(--primary-color);
+        background: var(--dw-accent, var(--primary-color));
         transition: width 0.2s;
       }
       .count {
@@ -53,7 +53,7 @@ export class DwCookMode extends LitElement {
       }
       .section {
         font-weight: 500;
-        color: var(--primary-color);
+        color: var(--dw-accent, var(--primary-color));
         margin-bottom: 8px;
         font-size: 1.1em;
       }
@@ -156,7 +156,7 @@ export class DwCookMode extends LitElement {
     const total = r.steps.length;
     const step = r.steps[Math.min(this.index, total - 1)];
     const last = this.index >= total - 1;
-    return html`<dw-dialog .heading=${r.name} .closeLabel=${t(lang, "close")} @closed=${() => this.onClosed()}>
+    return html`<dw-dialog exportparts="dialog,header,title,close-button,body,footer" .heading=${r.name} .closeLabel=${t(lang, "close")} @closed=${() => this.onClosed()}>
       <div class="progress"><div style=${`width:${((this.index + 1) / total) * 100}%`}></div></div>
       <div class="count">${t(lang, "step_of", { n: this.index + 1, total })}</div>
       ${step.section ? html`<div class="section">${step.section}</div>` : nothing}

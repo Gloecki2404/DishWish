@@ -162,8 +162,8 @@ export class DishWishLibraryCard extends LitElement {
         display: block;
       }
       .card {
-        background: var(--ha-card-background, var(--card-background-color));
-        border-radius: var(--ha-card-border-radius, 12px);
+        background: var(--dw-card-background, var(--ha-card-background, var(--card-background-color)));
+        border-radius: var(--dw-card-radius, var(--ha-card-border-radius, 12px));
         box-shadow: var(--ha-card-box-shadow, none);
         border: var(--ha-card-border-width, 1px) solid var(--ha-card-border-color, var(--divider-color));
         padding: 12px;
@@ -213,7 +213,8 @@ export class DishWishLibraryCard extends LitElement {
         min-width: 200px;
         padding: 4px;
         border-radius: 8px;
-        background: var(--card-background-color);
+        --fill: var(--dw-dialog-background, var(--ha-dialog-surface-background, var(--card-background-color)));
+        background: linear-gradient(var(--fill), var(--fill)), var(--primary-background-color, Canvas);
         border: 1px solid var(--divider-color);
         box-shadow: var(--ha-card-box-shadow, 0 2px 8px rgba(0, 0, 0, 0.3));
       }
@@ -246,7 +247,7 @@ export class DishWishLibraryCard extends LitElement {
       .tile {
         position: relative;
         display: block;
-        border-radius: 10px;
+        border-radius: var(--dw-tile-radius, 10px);
         overflow: hidden;
         background: var(--secondary-background-color);
         content-visibility: auto;
@@ -317,7 +318,7 @@ export class DishWishLibraryCard extends LitElement {
         opacity: 0.92;
       }
       .heart[aria-pressed="true"] .pill {
-        background: var(--primary-color);
+        background: var(--dw-accent, var(--primary-color));
         color: var(--text-primary-color, #fff);
       }
       .empty {
@@ -548,14 +549,14 @@ export class DishWishLibraryCard extends LitElement {
                   ${shown.length < list.length ? html`<div id="more"></div>` : nothing}
                 </div>`}
       </div>
-      <dw-recipe-dialog
+      <dw-recipe-dialog exportparts="dialog,header,title,close-button,body,footer"
         .hass=${this._hass}
         .categories=${store.categories}
         .shoppingList=${cfg.shopping_list}
         @edit=${this.onEdit}
       ></dw-recipe-dialog>
-      <dw-recipe-editor .hass=${this._hass} .categories=${store.categories} @saved=${this.onSaved}></dw-recipe-editor>
-      <dw-import-dialog .hass=${this._hass} @imported=${(e: CustomEvent<RecipeInput>) => void this.editor.open(e.detail)}></dw-import-dialog>
+      <dw-recipe-editor exportparts="dialog,header,title,close-button,body,footer" .hass=${this._hass} .categories=${store.categories} @saved=${this.onSaved}></dw-recipe-editor>
+      <dw-import-dialog exportparts="dialog,header,title,close-button,body,footer" .hass=${this._hass} @imported=${(e: CustomEvent<RecipeInput>) => void this.editor.open(e.detail)}></dw-import-dialog>
     `;
   }
 

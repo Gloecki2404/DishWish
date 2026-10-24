@@ -101,7 +101,7 @@ export class DwRecipePicker extends LitElement {
   protected override render() {
     const lang = this.uiLang;
     const found = this.filtered();
-    return html`<dw-dialog .heading=${t(lang, "picker_title")} .closeLabel=${t(lang, "close")}>
+    return html`<dw-dialog exportparts="dialog,header,title,close-button,body,footer" .heading=${t(lang, "picker_title")} .closeLabel=${t(lang, "close")}>
       <input
         type="search"
         placeholder=${t(lang, "search")}

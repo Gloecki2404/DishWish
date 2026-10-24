@@ -23,6 +23,9 @@ class _DishWishSensor(SensorEntity):
         self._store: DishWishStore = entry.runtime_data
         self._attr_translation_key = key
         self._attr_unique_id = f"{entry.entry_id}_{key}"
+        # Fixed entity IDs (sensor.dishwish_open_wishes, ...) regardless of the HA language, so
+        # dashboards keep working across installations. Only the display name is translated.
+        self.internal_integration_suggested_object_id = f"dishwish_{key}"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name="DishWish",
