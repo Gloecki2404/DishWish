@@ -6,6 +6,19 @@ versions; every database upgrade makes a backup copy first.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-24
+
+### Added
+- Photos for all 20 starter dishes (Wikimedia Commons, CC0/CC BY/CC BY-SA, credits in `starter_images/ATTRIBUTION.md`).
+  Starter dishes that earlier versions created without a photo get theirs once after the update.
+- Optional link button on the meal wishes card, left of "+ Wish": freely configurable label, icon and
+  action (navigate to a page or dashboard, open an entity, URL, ...); hidden unless `show_link_button` is on.
+
+### Changed
+- Starter dishes are added automatically on the first start of an empty library (no button needed).
+- Fullscreen dialogs respect the phone safe areas, dialogs are always opaque, `--dw-*` theming variables
+  and CSS parts, input colours, fixed sensor entity IDs, empty state of the recipe card.
+
 ## [0.1.0] - 2026-10-24
 
 First release.

@@ -317,6 +317,11 @@ class DishWishStore:
             raise
         return db.image_urls(image_id)
 
+    async def async_attach_image(self, recipe_id: str, image_id: str) -> None:
+        """Attach a freshly uploaded image to a recipe (system use)."""
+        if await self._write(db.attach_image, recipe_id, image_id):
+            self._notify("recipes", [recipe_id])
+
     async def async_image_known(self, image_id: str) -> bool:
         """Whether an image row exists."""
         return await self._read(db.image_exists, image_id)

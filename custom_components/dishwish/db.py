@@ -574,6 +574,21 @@ def image_exists(conn: sqlite3.Connection, image_id: str) -> bool:
     )
 
 
+def attach_image(conn: sqlite3.Connection, recipe_id: str, image_id: str) -> bool:
+    """Attach an unassigned image as the last image of a recipe. Returns False if not possible."""
+    get_recipe_meta(conn, recipe_id)
+    with conn:
+        cur = conn.execute(
+            "UPDATE recipe_images SET recipe_id = ?, position = "
+            "(SELECT COALESCE(MAX(position) + 1, 0) FROM recipe_images WHERE recipe_id = ?) "
+            "WHERE id = ? AND recipe_id IS NULL",
+            (recipe_id, recipe_id, image_id),
+        )
+        if cur.rowcount:
+            conn.execute("UPDATE recipes SET updated_at = ? WHERE id = ?", (now_iso(), recipe_id))
+    return bool(cur.rowcount)
+
+
 def all_image_ids(conn: sqlite3.Connection) -> set[str]:
     """Every registered image id."""
     return {r[0] for r in conn.execute("SELECT id FROM recipe_images")}

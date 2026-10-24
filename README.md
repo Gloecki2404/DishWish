@@ -69,6 +69,12 @@ sort: popular          # popular | oldest | newest
 rows: 0                # visible rows, the rest scrolls; 0 = all
 show_done: 3           # number of recently cooked dishes to show (0 = off)
 shopping_list: todo.shopping_list
+show_link_button: true # optional extra button, left of "+ Wish" (off by default)
+link_label: Shopping
+link_icon: mdi:cart
+link_action:           # any Home Assistant action: navigate, url, more-info, perform-action, ...
+  action: navigate
+  navigation_path: /lovelace/shopping
 ```
 
 ### Recipe and cook mode
@@ -140,7 +146,7 @@ automation:
 
 ## Starter dishes
 
-A new, empty library starts with 20 classic German and Austrian dishes (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) with ingredients, steps and categories, in the language of your Home Assistant. They are added once, on the first start. A library that already contains dishes is left alone, and deleting a starter dish keeps it deleted. The recipes are written for this project and come without photos. Everyone in the household may edit or delete them.
+A new, empty library starts with 20 classic German and Austrian dishes (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) with ingredients, steps and categories, in the language of your Home Assistant. They are added once, on the first start. A library that already contains dishes is left alone, and deleting a starter dish keeps it deleted. The recipes are written for this project; every dish comes with a photo from Wikimedia Commons (see [photo credits](custom_components/dishwish/starter_images/ATTRIBUTION.md)). Everyone in the household may edit or delete them.
 
 The service `dishwish.import_starter_recipes` (optional `language`: `de` or `en`) adds missing starter dishes later; dishes that already exist by name are skipped.
 

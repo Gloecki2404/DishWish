@@ -69,6 +69,12 @@ sort: popular          # popular | oldest | newest
 rows: 0                # sichtbare Zeilen, der Rest scrollt; 0 = alle
 show_done: 3           # zuletzt gekochte Gerichte anzeigen (0 = aus)
 shopping_list: todo.einkaufsliste
+show_link_button: true # optionaler Zusatz-Button links von "+ Wunsch" (standardmäßig aus)
+link_label: Einkauf
+link_icon: mdi:cart
+link_action:           # jede Home-Assistant-Aktion: navigate, url, more-info, perform-action, ...
+  action: navigate
+  navigation_path: /lovelace/einkauf
 ```
 
 ### Rezept und Kochmodus
@@ -140,7 +146,7 @@ automation:
 
 ## Beispielgerichte
 
-Eine neue, leere Bibliothek startet mit 20 deutschen und österreichischen Klassikern (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) mit Zutaten, Schritten und Kategorien, in der Sprache deiner Home-Assistant-Installation. Sie werden einmalig beim ersten Start angelegt. Eine Bibliothek, in der schon Gerichte liegen, bleibt unberührt, und ein gelöschtes Beispielgericht bleibt gelöscht. Die Rezepte sind für dieses Projekt geschrieben und haben keine Fotos. Alle im Haushalt dürfen sie bearbeiten oder löschen.
+Eine neue, leere Bibliothek startet mit 20 deutschen und österreichischen Klassikern (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) mit Zutaten, Schritten und Kategorien, in der Sprache deiner Home-Assistant-Installation. Sie werden einmalig beim ersten Start angelegt. Eine Bibliothek, in der schon Gerichte liegen, bleibt unberührt, und ein gelöschtes Beispielgericht bleibt gelöscht. Die Rezepte sind für dieses Projekt geschrieben; zu jedem Gericht gehört ein Foto von Wikimedia Commons (siehe [Bildnachweise](custom_components/dishwish/starter_images/ATTRIBUTION.md)). Alle im Haushalt dürfen sie bearbeiten oder löschen.
 
 Der Service `dishwish.import_starter_recipes` (optional `language`: `de` oder `en`) ergänzt fehlende Beispielgerichte später; Gerichte, die es dem Namen nach schon gibt, werden übersprungen.
 

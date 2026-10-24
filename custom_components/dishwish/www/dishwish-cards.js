@@ -35,7 +35,7 @@ const Ve = (s) => new Me(typeof s == "string" ? s : s + "", void 0, ae), $ = (s,
   for (const i of e.cssRules) t += i.cssText;
   return Ve(t);
 })(s) : s;
-const { is: Ze, defineProperty: Be, getOwnPropertyDescriptor: Ge, getOwnPropertyNames: Fe, getOwnPropertySymbols: Ke, getPrototypeOf: Je } = Object, Y = globalThis, me = Y.trustedTypes, Ye = me ? me.emptyScript : "", Qe = Y.reactiveElementPolyfillSupport, q = (s, e) => s, se = { toAttribute(s, e) {
+const { is: Be, defineProperty: Ze, getOwnPropertyDescriptor: Ge, getOwnPropertyNames: Fe, getOwnPropertySymbols: Ke, getPrototypeOf: Je } = Object, Y = globalThis, me = Y.trustedTypes, Ye = me ? me.emptyScript : "", Qe = Y.reactiveElementPolyfillSupport, q = (s, e) => s, se = { toAttribute(s, e) {
   switch (e) {
     case Boolean:
       s = s ? Ye : null;
@@ -63,7 +63,7 @@ const { is: Ze, defineProperty: Be, getOwnPropertyDescriptor: Ge, getOwnProperty
       }
   }
   return t;
-} }, Re = (s, e) => !Ze(s, e), fe = { attribute: !0, type: String, converter: se, reflect: !1, useDefault: !1, hasChanged: Re };
+} }, Re = (s, e) => !Be(s, e), fe = { attribute: !0, type: String, converter: se, reflect: !1, useDefault: !1, hasChanged: Re };
 Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), Y.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
 let P = class extends HTMLElement {
   static addInitializer(e) {
@@ -75,7 +75,7 @@ let P = class extends HTMLElement {
   static createProperty(e, t = fe) {
     if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
       const i = /* @__PURE__ */ Symbol(), r = this.getPropertyDescriptor(e, i, t);
-      r !== void 0 && Be(this.prototype, e, r);
+      r !== void 0 && Ze(this.prototype, e, r);
     }
   }
   static getPropertyDescriptor(e, t, i) {
@@ -249,7 +249,7 @@ let P = class extends HTMLElement {
 P.elementStyles = [], P.shadowRootOptions = { mode: "open" }, P[q("elementProperties")] = /* @__PURE__ */ new Map(), P[q("finalized")] = /* @__PURE__ */ new Map(), Qe?.({ ReactiveElement: P }), (Y.reactiveElementVersions ??= []).push("2.1.2");
 const ce = globalThis, _e = (s) => s, F = ce.trustedTypes, be = F ? F.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, De = "$lit$", C = `lit$${Math.random().toFixed(9).slice(2)}$`, Pe = "?" + C, Xe = `<${Pe}>`, M = document, I = () => M.createComment(""), W = (s) => s === null || typeof s != "object" && typeof s != "function", le = Array.isArray, et = (s) => le(s) || typeof s?.[Symbol.iterator] == "function", ee = `[ 	
 \f\r]`, O = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, we = /-->/g, ve = />/g, S = RegExp(`>|${ee}(?:([^\\s"'>=/]+)(${ee}*=${ee}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), $e = /'/g, ye = /"/g, Ne = /^(?:script|style|textarea|title)$/i, ze = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), a = ze(1), tt = ze(2), z = /* @__PURE__ */ Symbol.for("lit-noChange"), d = /* @__PURE__ */ Symbol.for("lit-nothing"), xe = /* @__PURE__ */ new WeakMap(), L = M.createTreeWalker(M, 129);
+\f\r"'\`<>=]|("|')|))|$)`, "g"), $e = /'/g, ye = /"/g, ze = /^(?:script|style|textarea|title)$/i, Ne = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), a = Ne(1), tt = Ne(2), N = /* @__PURE__ */ Symbol.for("lit-noChange"), d = /* @__PURE__ */ Symbol.for("lit-nothing"), xe = /* @__PURE__ */ new WeakMap(), E = M.createTreeWalker(M, 129);
 function He(s, e) {
   if (!le(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
   return be !== void 0 ? be.createHTML(e) : e;
@@ -260,7 +260,7 @@ const it = (s, e) => {
   for (let u = 0; u < t; u++) {
     const l = s[u];
     let h, p, f = -1, x = 0;
-    for (; x < l.length && (c.lastIndex = x, p = c.exec(l), p !== null); ) x = c.lastIndex, c === O ? p[1] === "!--" ? c = we : p[1] !== void 0 ? c = ve : p[2] !== void 0 ? (Ne.test(p[2]) && (r = RegExp("</" + p[2], "g")), c = S) : p[3] !== void 0 && (c = S) : c === S ? p[0] === ">" ? (c = r ?? O, f = -1) : p[1] === void 0 ? f = -2 : (f = c.lastIndex - p[2].length, h = p[1], c = p[3] === void 0 ? S : p[3] === '"' ? ye : $e) : c === ye || c === $e ? c = S : c === we || c === ve ? c = O : (c = S, r = void 0);
+    for (; x < l.length && (c.lastIndex = x, p = c.exec(l), p !== null); ) x = c.lastIndex, c === O ? p[1] === "!--" ? c = we : p[1] !== void 0 ? c = ve : p[2] !== void 0 ? (ze.test(p[2]) && (r = RegExp("</" + p[2], "g")), c = S) : p[3] !== void 0 && (c = S) : c === S ? p[0] === ">" ? (c = r ?? O, f = -1) : p[1] === void 0 ? f = -2 : (f = c.lastIndex - p[2].length, h = p[1], c = p[3] === void 0 ? S : p[3] === '"' ? ye : $e) : c === ye || c === $e ? c = S : c === we || c === ve ? c = O : (c = S, r = void 0);
     const A = c === S && s[u + 1].startsWith("/>") ? " " : "";
     n += c === O ? l + Xe : f >= 0 ? (i.push(h), l.slice(0, f) + De + l.slice(f) + C + A) : l + C + (f === -2 ? u : A);
   }
@@ -272,21 +272,21 @@ class T {
     this.parts = [];
     let n = 0, c = 0;
     const u = e.length - 1, l = this.parts, [h, p] = it(e, t);
-    if (this.el = T.createElement(h, i), L.currentNode = this.el.content, t === 2 || t === 3) {
+    if (this.el = T.createElement(h, i), E.currentNode = this.el.content, t === 2 || t === 3) {
       const f = this.el.content.firstChild;
       f.replaceWith(...f.childNodes);
     }
-    for (; (r = L.nextNode()) !== null && l.length < u; ) {
+    for (; (r = E.nextNode()) !== null && l.length < u; ) {
       if (r.nodeType === 1) {
         if (r.hasAttributes()) for (const f of r.getAttributeNames()) if (f.endsWith(De)) {
-          const x = p[c++], A = r.getAttribute(f).split(C), Z = /([.?@])?(.*)/.exec(x);
-          l.push({ type: 1, index: n, name: Z[2], strings: A, ctor: Z[1] === "." ? rt : Z[1] === "?" ? nt : Z[1] === "@" ? ot : Q }), r.removeAttribute(f);
+          const x = p[c++], A = r.getAttribute(f).split(C), B = /([.?@])?(.*)/.exec(x);
+          l.push({ type: 1, index: n, name: B[2], strings: A, ctor: B[1] === "." ? rt : B[1] === "?" ? nt : B[1] === "@" ? ot : Q }), r.removeAttribute(f);
         } else f.startsWith(C) && (l.push({ type: 6, index: n }), r.removeAttribute(f));
-        if (Ne.test(r.tagName)) {
+        if (ze.test(r.tagName)) {
           const f = r.textContent.split(C), x = f.length - 1;
           if (x > 0) {
             r.textContent = F ? F.emptyScript : "";
-            for (let A = 0; A < x; A++) r.append(f[A], I()), L.nextNode(), l.push({ type: 2, index: ++n });
+            for (let A = 0; A < x; A++) r.append(f[A], I()), E.nextNode(), l.push({ type: 2, index: ++n });
             r.append(f[x], I());
           }
         }
@@ -304,7 +304,7 @@ class T {
   }
 }
 function H(s, e, t = s, i) {
-  if (e === z) return e;
+  if (e === N) return e;
   let r = i !== void 0 ? t._$Co?.[i] : t._$Cl;
   const n = W(e) ? void 0 : e._$litDirective$;
   return r?.constructor !== n && (r?._$AO?.(!1), n === void 0 ? r = void 0 : (r = new n(s), r._$AT(s, t, i)), i !== void 0 ? (t._$Co ??= [])[i] = r : t._$Cl = r), r !== void 0 && (e = H(s, r._$AS(s, e.values), r, i)), e;
@@ -321,16 +321,16 @@ class st {
   }
   u(e) {
     const { el: { content: t }, parts: i } = this._$AD, r = (e?.creationScope ?? M).importNode(t, !0);
-    L.currentNode = r;
-    let n = L.nextNode(), c = 0, u = 0, l = i[0];
+    E.currentNode = r;
+    let n = E.nextNode(), c = 0, u = 0, l = i[0];
     for (; l !== void 0; ) {
       if (c === l.index) {
         let h;
         l.type === 2 ? h = new V(n, n.nextSibling, this, e) : l.type === 1 ? h = new l.ctor(n, l.name, l.strings, this, e) : l.type === 6 && (h = new at(n, this, e)), this._$AV.push(h), l = i[++u];
       }
-      c !== l?.index && (n = L.nextNode(), c++);
+      c !== l?.index && (n = E.nextNode(), c++);
     }
-    return L.currentNode = M, r;
+    return E.currentNode = M, r;
   }
   p(e) {
     let t = 0;
@@ -356,7 +356,7 @@ class V {
     return this._$AB;
   }
   _$AI(e, t = this) {
-    e = H(this, e, t), W(e) ? e === d || e == null || e === "" ? (this._$AH !== d && this._$AR(), this._$AH = d) : e !== this._$AH && e !== z && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : et(e) ? this.k(e) : this._(e);
+    e = H(this, e, t), W(e) ? e === d || e == null || e === "" ? (this._$AH !== d && this._$AR(), this._$AH = d) : e !== this._$AH && e !== N && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : et(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -409,11 +409,11 @@ class Q {
   _$AI(e, t = this, i, r) {
     const n = this.strings;
     let c = !1;
-    if (n === void 0) e = H(this, e, t, 0), c = !W(e) || e !== this._$AH && e !== z, c && (this._$AH = e);
+    if (n === void 0) e = H(this, e, t, 0), c = !W(e) || e !== this._$AH && e !== N, c && (this._$AH = e);
     else {
       const u = e;
       let l, h;
-      for (e = n[0], l = 0; l < n.length - 1; l++) h = H(this, u[i + l], t, l), h === z && (h = this._$AH[l]), c ||= !W(h) || h !== this._$AH[l], h === d ? e = d : e !== d && (e += (h ?? "") + n[l + 1]), this._$AH[l] = h;
+      for (e = n[0], l = 0; l < n.length - 1; l++) h = H(this, u[i + l], t, l), h === N && (h = this._$AH[l]), c ||= !W(h) || h !== this._$AH[l], h === d ? e = d : e !== d && (e += (h ?? "") + n[l + 1]), this._$AH[l] = h;
     }
     c && !r && this.j(e);
   }
@@ -442,7 +442,7 @@ class ot extends Q {
     super(e, t, i, r, n), this.type = 5;
   }
   _$AI(e, t = this) {
-    if ((e = H(this, e, t, 0) ?? d) === z) return;
+    if ((e = H(this, e, t, 0) ?? d) === N) return;
     const i = this._$AH, r = e === d && i !== d || e.capture !== i.capture || e.once !== i.once || e.passive !== i.passive, n = e !== d && (i === d || r);
     r && this.element.removeEventListener(this.name, this, i), n && this.element.addEventListener(this.name, this, e), this._$AH = e;
   }
@@ -492,7 +492,7 @@ class _ extends P {
     super.disconnectedCallback(), this._$Do?.setConnected(!1);
   }
   render() {
-    return z;
+    return N;
   }
 }
 _._$litElement$ = !0, _.finalized = !0, de.litElementHydrateSupport?.({ LitElement: _ });
@@ -727,6 +727,11 @@ const qe = {
   cfg_mode_top_wish: "The most wished dish",
   cfg_show_ingredients: "Show ingredients",
   cfg_show_steps: "Show steps",
+  link_default: "Open link",
+  cfg_show_link_button: "Show link button",
+  cfg_link_label: "Link button label",
+  cfg_link_icon: "Link button icon",
+  cfg_link_action: "Link button action (page, dashboard, entity, ...)",
   cfg_rows: "Visible rows (0 = all, the rest scrolls)",
   cfg_layout: "Layout",
   cfg_layout_list: "List",
@@ -864,6 +869,11 @@ const qe = {
   cfg_mode_top_wish: "Das meistgewünschte Gericht",
   cfg_show_ingredients: "Zutaten anzeigen",
   cfg_show_steps: "Zubereitung anzeigen",
+  link_default: "Link öffnen",
+  cfg_show_link_button: "Link-Button anzeigen",
+  cfg_link_label: "Beschriftung des Link-Buttons",
+  cfg_link_icon: "Symbol des Link-Buttons",
+  cfg_link_action: "Aktion des Link-Buttons (Seite, Dashboard, Entität, ...)",
   cfg_rows: "Sichtbare Zeilen (0 = alle, der Rest scrollt)",
   cfg_layout: "Layout",
   cfg_layout_list: "Liste",
@@ -1135,32 +1145,32 @@ const y = $`
     color: var(--error-color);
   }
 `;
-var Ct = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", St = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", Et = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", Lt = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", Mt = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", Rt = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", Dt = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Pt = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", Nt = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", zt = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", Ht = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", Ot = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", qt = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", It = "M19,13H5V11H19V13Z", Wt = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", Tt = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+var Ct = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", St = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", Lt = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", Et = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", Mt = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", Rt = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", Dt = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Pt = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", zt = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", Nt = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", Ht = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", Ot = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", qt = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", It = "M19,13H5V11H19V13Z", Wt = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", Tt = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
 const g = {
   arrowDown: Ct,
   arrowUp: St,
-  camera: Et,
-  left: Lt,
+  camera: Lt,
+  left: Et,
   right: Mt,
   clock: Rt,
   close: Dt,
   delete: Pt,
-  food: Nt,
-  image: zt,
+  food: zt,
+  image: Nt,
   link: Ht,
   lock: Ot,
   search: qt,
   minus: It,
   edit: Wt,
   plus: Tt
-}, m = (s) => a`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${tt`<path d=${s}></path>`}</svg>`, E = [];
+}, m = (s) => a`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${tt`<path d=${s}></path>`}</svg>`, L = [];
 let ne = 0;
 window.addEventListener("popstate", () => {
   if (ne > 0) {
     ne--;
     return;
   }
-  E[E.length - 1]?.onPopState();
+  L[L.length - 1]?.onPopState();
 });
 class Ut extends _ {
   constructor() {
@@ -1252,7 +1262,7 @@ class Ut extends _ {
     return this.renderRoot.querySelector("dialog");
   }
   show() {
-    this.dlg.showModal(), E.push(this), history.pushState({ dishwish: !0 }, ""), this.pushed = !0;
+    this.dlg.showModal(), L.push(this), history.pushState({ dishwish: !0 }, ""), this.pushed = !0;
   }
   /** Ask listeners whether we may close; closes unless one of them prevents it. */
   requestClose() {
@@ -1268,13 +1278,13 @@ class Ut extends _ {
     this.dispatchEvent(e), e.defaultPrevented ? (history.pushState({ dishwish: !0 }, ""), this.pushed = !0) : this.close();
   }
   onClosed() {
-    const e = E.indexOf(this);
-    e >= 0 && E.splice(e, 1), this.pushed && (this.pushed = !1, ne++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
+    const e = L.indexOf(this);
+    e >= 0 && L.splice(e, 1), this.pushed && (this.pushed = !1, ne++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    const e = E.indexOf(this);
-    e >= 0 && E.splice(e, 1);
+    const e = L.indexOf(this);
+    e >= 0 && L.splice(e, 1);
   }
   render() {
     return a`
@@ -1385,15 +1395,15 @@ function jt(s, e) {
   const i = (U(s * 100) / 100).toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
   return e.startsWith("de") ? i.replace(".", ",") : i;
 }
-function Zt(s) {
+function Bt(s) {
   if (s >= 10) return String(Math.max(1, U(s)));
   const e = Math.max(1, U(s * 4)), t = Math.floor(e / 4), i = ["", "¼", "½", "¾"][e % 4];
   return t ? `${t}${i}` : i;
 }
 function Se(s, e, t) {
-  return e === "g" || e === "ml" ? s >= 100 ? String(U(s / 5) * 5) : String(Math.max(1, U(s))) : e === "kg" || e === "l" ? jt(s, t) : Zt(s);
+  return e === "g" || e === "ml" ? s >= 100 ? String(U(s / 5) * 5) : String(Math.max(1, U(s))) : e === "kg" || e === "l" ? jt(s, t) : Bt(s);
 }
-function Bt(s, e, t, i = "de") {
+function Zt(s, e, t, i = "de") {
   if (s === null) return "";
   const r = e ?? s;
   let n = 1, c = t;
@@ -1403,7 +1413,7 @@ function Bt(s, e, t, i = "de") {
 }
 function We(s, e, t, i = "de") {
   const r = s.quantity === null ? null : Ce(s.quantity, e, t), n = s.quantity_max === null ? null : Ce(s.quantity_max, e, t);
-  return Bt(r, n, s.unit, i);
+  return Zt(r, n, s.unit, i);
 }
 class Gt extends _ {
   static {
@@ -1811,8 +1821,8 @@ async function Jt(s) {
     return s;
   }
 }
-const Yt = 10, Qt = (s) => `/api/dishwish/images/${s}/thumb`, Ee = (s) => s === null ? "" : String(s).replace(".", ",");
-function Le(s) {
+const Yt = 10, Qt = (s) => `/api/dishwish/images/${s}/thumb`, Le = (s) => s === null ? "" : String(s).replace(".", ",");
+function Ee(s) {
   const e = s.trim().replace(",", ".");
   if (!e) return null;
   const t = /^(\d+)\/(\d+)$/.exec(e), i = t ? Number(t[1]) / Number(t[2]) : Number(e);
@@ -1821,11 +1831,11 @@ function Le(s) {
 function Xt(s) {
   const e = /^\s*([\d.,/]+)\s*(?:[-–]\s*([\d.,/]+))?\s*$/.exec(s);
   if (!e) return [null, null];
-  const t = Le(e[1]), i = e[2] ? Le(e[2]) : null;
+  const t = Ee(e[1]), i = e[2] ? Ee(e[2]) : null;
   return [t, t !== null && i !== null && i > t ? i : null];
 }
 function Te(s) {
-  return { amount: s.quantity === null ? "" : Ee(s.quantity) + (s.quantity_max !== null ? `-${Ee(s.quantity_max)}` : ""), unit: s.unit, name: s.name, note: s.note, group_name: s.group_name };
+  return { amount: s.quantity === null ? "" : Le(s.quantity) + (s.quantity_max !== null ? `-${Le(s.quantity_max)}` : ""), unit: s.unit, name: s.name, note: s.note, group_name: s.group_name };
 }
 function K() {
   return {
@@ -2301,13 +2311,13 @@ function Ue(s, e) {
   );
   s.style.maxHeight = `${Math.ceil(u) + 2}px`, s.style.overflowY = "auto";
 }
-function N(s) {
+function z(s) {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
-const B = 60, te = "__quick", ie = "__mine";
+const Z = 60, te = "__quick", ie = "__mine";
 class si extends _ {
   constructor() {
-    super(), this.inPicker = !1, this.lastWidth = 0, this.config = { type: "custom:dishwish-library-card" }, this.query = "", this.filter = "", this.limit = B, this.menuOpen = !1, this.tick = 0;
+    super(), this.inPicker = !1, this.lastWidth = 0, this.config = { type: "custom:dishwish-library-card" }, this.query = "", this.filter = "", this.limit = Z, this.menuOpen = !1, this.tick = 0;
   }
   static {
     this.properties = {
@@ -2365,7 +2375,7 @@ class si extends _ {
     }), this.resizer.observe(this));
     const e = this.renderRoot.querySelector("#more");
     this.observer?.disconnect(), e && (this.observer = new IntersectionObserver((t) => {
-      t.some((i) => i.isIntersecting) && (this.limit += B);
+      t.some((i) => i.isIntersecting) && (this.limit += Z);
     }), this.observer.observe(e));
   }
   static {
@@ -2562,7 +2572,7 @@ class si extends _ {
     return t?.length ? e.filter((i) => t.includes(i.id)) : e;
   }
   filtered() {
-    const e = this.store, t = N(this.query.trim()), i = new Map(e.categories.map((l) => [l.id, N(l.name)])), r = this._hass?.user?.id;
+    const e = this.store, t = z(this.query.trim()), i = new Map(e.categories.map((l) => [l.id, z(l.name)])), r = this._hass?.user?.id;
     let n = e.recipes.filter((l) => {
       if (this.filter === te) {
         const p = (l.prep_minutes ?? 0) + (l.cook_minutes ?? 0);
@@ -2571,7 +2581,7 @@ class si extends _ {
         if (l.created_by !== r) return !1;
       } else if (this.filter && !l.category_ids.includes(this.filter)) return !1;
       if (!t) return !0;
-      const h = N(l.name) + " " + l.category_ids.map((p) => i.get(p) ?? "").join(" ");
+      const h = z(l.name) + " " + l.category_ids.map((p) => i.get(p) ?? "").join(" ");
       return t.split(/\s+/).every((p) => h.includes(p));
     });
     const c = this.config.sort ?? "name", u = (l, h) => l.name.localeCompare(h.name, this.uiLang);
@@ -2661,7 +2671,7 @@ class si extends _ {
                   aria-label=${o(e, "search")}
                   .value=${this.query}
                   @input=${(p) => {
-      this.query = p.target.value, this.limit = B;
+      this.query = p.target.value, this.limit = Z;
     }}
                 />
               </div>` : a`<span class="spacer"></span>`}
@@ -2703,7 +2713,7 @@ class si extends _ {
     `;
   }
   setFilter(e) {
-    this.filter = e, this.limit = B;
+    this.filter = e, this.limit = Z;
   }
 }
 customElements.get("dishwish-library-card") || customElements.define("dishwish-library-card", si);
@@ -2905,11 +2915,11 @@ class oi extends _ {
     this.dispatchEvent(new CustomEvent("picked", { detail: e })), this.dlg.close();
   }
   filtered() {
-    const e = N(this.query.trim());
+    const e = z(this.query.trim());
     if (!e) return this.recipes;
-    const t = new Map(this.categories.map((i) => [i.id, N(i.name)]));
+    const t = new Map(this.categories.map((i) => [i.id, z(i.name)]));
     return this.recipes.filter((i) => {
-      const r = `${N(i.name)} ${i.category_ids.map((n) => t.get(n) ?? "").join(" ")}`;
+      const r = `${z(i.name)} ${i.category_ids.map((n) => t.get(n) ?? "").join(" ")}`;
       return e.split(/\s+/).every((n) => r.includes(n));
     });
   }
@@ -3129,8 +3139,16 @@ class ci extends _ {
       },
       { name: "rows", selector: { number: { min: 0, max: 50, mode: "box" } } },
       { name: "show_done", selector: { number: { min: 0, max: 20, mode: "box" } } },
-      { name: "shopping_list", selector: { entity: { domain: "todo" } } }
+      { name: "shopping_list", selector: { entity: { domain: "todo" } } },
+      { name: "show_link_button", selector: { boolean: {} } },
+      { name: "link_label", selector: { text: {} } },
+      { name: "link_icon", selector: { icon: {} } },
+      { name: "link_action", selector: { ui_action: { default_action: "none" } } }
     ], i = {
+      show_link_button: "cfg_show_link_button",
+      link_label: "cfg_link_label",
+      link_icon: "cfg_link_icon",
+      link_action: "cfg_link_action",
       title: "cfg_title",
       layout: "cfg_layout",
       sort: "cfg_sort",
@@ -3325,6 +3343,17 @@ class ci extends _ {
   get uiLang() {
     return this._hass?.locale.language ?? "en";
   }
+  /** Run the configured link action (navigate, url, more-info, ...) through Home Assistant. */
+  runLink() {
+    const e = this.config.link_action;
+    !e || e.action === "none" || this.dispatchEvent(
+      new CustomEvent("hass-action", {
+        detail: { config: { tap_action: e }, action: "tap" },
+        bubbles: !0,
+        composed: !0
+      })
+    );
+  }
   get recipeDialog() {
     return this.renderRoot.querySelector("dw-recipe-dialog");
   }
@@ -3406,6 +3435,13 @@ class ci extends _ {
       <div class="card">
         <header>
           <h1>${i.title ?? o(e, "wishes_title")}</h1>
+          ${i.show_link_button ? a`<button
+                class="btn"
+                aria-label=${i.link_label || o(e, "link_default")}
+                @click=${() => this.runLink()}
+              >
+                ${i.link_icon || !i.link_label ? a`<ha-icon icon=${i.link_icon || "mdi:open-in-new"} style="--mdc-icon-size:20px"></ha-icon>` : d}${i.link_label ?? ""}
+              </button>` : d}
           <button class="btn" @click=${() => {
       this.picker.open();
     }}>${o(e, "add_wish")}</button>

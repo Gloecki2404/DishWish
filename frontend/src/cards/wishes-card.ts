@@ -18,6 +18,10 @@ interface WishesConfig extends CardConfig {
   layout?: "list" | "grid";
   sort?: "popular" | "oldest" | "newest";
   rows?: number;
+  show_link_button?: boolean;
+  link_label?: string;
+  link_icon?: string;
+  link_action?: Record<string, unknown>;
   show_done?: number;
   shopping_list?: string;
 }
@@ -90,8 +94,16 @@ export class DishWishWishesCard extends LitElement {
       { name: "rows", selector: { number: { min: 0, max: 50, mode: "box" } } },
       { name: "show_done", selector: { number: { min: 0, max: 20, mode: "box" } } },
       { name: "shopping_list", selector: { entity: { domain: "todo" } } },
+      { name: "show_link_button", selector: { boolean: {} } },
+      { name: "link_label", selector: { text: {} } },
+      { name: "link_icon", selector: { icon: {} } },
+      { name: "link_action", selector: { ui_action: { default_action: "none" } } },
     ];
     const labels: Record<string, Key> = {
+      show_link_button: "cfg_show_link_button",
+      link_label: "cfg_link_label",
+      link_icon: "cfg_link_icon",
+      link_action: "cfg_link_action",
       title: "cfg_title",
       layout: "cfg_layout",
       sort: "cfg_sort",
@@ -322,6 +334,19 @@ export class DishWishWishesCard extends LitElement {
     return this._hass?.locale.language ?? "en";
   }
 
+  /** Run the configured link action (navigate, url, more-info, ...) through Home Assistant. */
+  private runLink(): void {
+    const action = this.config.link_action;
+    if (!action || action.action === "none") return;
+    this.dispatchEvent(
+      new CustomEvent("hass-action", {
+        detail: { config: { tap_action: action }, action: "tap" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
   private get recipeDialog(): DwRecipeDialog {
     return this.renderRoot.querySelector("dw-recipe-dialog") as DwRecipeDialog;
   }
@@ -438,6 +463,17 @@ export class DishWishWishesCard extends LitElement {
       <div class="card">
         <header>
           <h1>${cfg.title ?? t(lang, "wishes_title")}</h1>
+          ${cfg.show_link_button
+            ? html`<button
+                class="btn"
+                aria-label=${cfg.link_label || t(lang, "link_default")}
+                @click=${() => this.runLink()}
+              >
+                ${cfg.link_icon || !cfg.link_label
+                  ? html`<ha-icon icon=${cfg.link_icon || "mdi:open-in-new"} style="--mdc-icon-size:20px"></ha-icon>`
+                  : nothing}${cfg.link_label ?? ""}
+              </button>`
+            : nothing}
           <button class="btn" @click=${() => void this.picker.open()}>${t(lang, "add_wish")}</button>
         </header>
         ${!store.loaded
