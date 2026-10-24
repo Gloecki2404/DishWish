@@ -96,6 +96,7 @@ entity: todo.shopping_list
 | Service | Effect |
 |---|---|
 | `dishwish.add_to_shopping_list` | `recipe_id`, optional `servings` and `entity_id`: adds the scaled ingredients of one dish to the list. The response contains `added` and `skipped`. |
+| `dishwish.import_starter_recipes` | optional `language` (`de`/`en`): adds the 20 starter dishes. The response contains `created` and `skipped`. |
 | `dishwish.add_open_wishes_to_shopping_list` | optional `entity_id`: merges the ingredients of all dishes with open wishes (equal ingredient and unit are added up). Each dish counts once. |
 
 Without `entity_id` the default shopping list from the options is used.
@@ -119,6 +120,10 @@ automation:
         data:
           message: "{{ trigger.event.data.user_name }} wishes for {{ trigger.event.data.recipe_name }}"
 ```
+
+## Starter dishes
+
+An empty library offers **Add 20 starter dishes**: classic German and Austrian dishes (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) with ingredients, steps and categories, in the language of your Home Assistant. The recipes are written for this project and come without photos. You can also run the service `dishwish.import_starter_recipes` (optional `language`: `de` or `en`); dishes that already exist by name are skipped.
 
 ## Link import
 

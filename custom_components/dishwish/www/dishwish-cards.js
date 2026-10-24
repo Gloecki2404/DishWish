@@ -65,7 +65,7 @@ const { is: Ze, defineProperty: Be, getOwnPropertyDescriptor: Ge, getOwnProperty
   return t;
 } }, Re = (s, e) => !Ze(s, e), fe = { attribute: !0, type: String, converter: ie, reflect: !1, useDefault: !1, hasChanged: Re };
 Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), Y.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-let N = class extends HTMLElement {
+let z = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ??= []).push(e);
   }
@@ -246,10 +246,10 @@ let N = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-N.elementStyles = [], N.shadowRootOptions = { mode: "open" }, N[q("elementProperties")] = /* @__PURE__ */ new Map(), N[q("finalized")] = /* @__PURE__ */ new Map(), Qe?.({ ReactiveElement: N }), (Y.reactiveElementVersions ??= []).push("2.1.2");
-const ae = globalThis, _e = (s) => s, F = ae.trustedTypes, we = F ? F.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, De = "$lit$", A = `lit$${Math.random().toFixed(9).slice(2)}$`, Ne = "?" + A, Xe = `<${Ne}>`, L = document, I = () => L.createComment(""), T = (s) => s === null || typeof s != "object" && typeof s != "function", ce = Array.isArray, et = (s) => ce(s) || typeof s?.[Symbol.iterator] == "function", X = `[ 	
-\f\r]`, O = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, be = /-->/g, $e = />/g, C = RegExp(`>|${X}(?:([^\\s"'>=/]+)(${X}*=${X}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), ve = /'/g, ye = /"/g, Pe = /^(?:script|style|textarea|title)$/i, ze = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), a = ze(1), tt = ze(2), z = /* @__PURE__ */ Symbol.for("lit-noChange"), h = /* @__PURE__ */ Symbol.for("lit-nothing"), xe = /* @__PURE__ */ new WeakMap(), E = L.createTreeWalker(L, 129);
+z.elementStyles = [], z.shadowRootOptions = { mode: "open" }, z[q("elementProperties")] = /* @__PURE__ */ new Map(), z[q("finalized")] = /* @__PURE__ */ new Map(), Qe?.({ ReactiveElement: z }), (Y.reactiveElementVersions ??= []).push("2.1.2");
+const ae = globalThis, _e = (s) => s, F = ae.trustedTypes, we = F ? F.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, De = "$lit$", C = `lit$${Math.random().toFixed(9).slice(2)}$`, ze = "?" + C, Xe = `<${ze}>`, M = document, I = () => M.createComment(""), T = (s) => s === null || typeof s != "object" && typeof s != "function", ce = Array.isArray, et = (s) => ce(s) || typeof s?.[Symbol.iterator] == "function", X = `[ 	
+\f\r]`, O = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, be = /-->/g, $e = />/g, S = RegExp(`>|${X}(?:([^\\s"'>=/]+)(${X}*=${X}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), ve = /'/g, ye = /"/g, Ne = /^(?:script|style|textarea|title)$/i, Pe = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), a = Pe(1), tt = Pe(2), P = /* @__PURE__ */ Symbol.for("lit-noChange"), h = /* @__PURE__ */ Symbol.for("lit-nothing"), xe = /* @__PURE__ */ new WeakMap(), L = M.createTreeWalker(M, 129);
 function He(s, e) {
   if (!ce(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
   return we !== void 0 ? we.createHTML(e) : e;
@@ -260,9 +260,9 @@ const it = (s, e) => {
   for (let u = 0; u < t; u++) {
     const l = s[u];
     let d, p, f = -1, x = 0;
-    for (; x < l.length && (c.lastIndex = x, p = c.exec(l), p !== null); ) x = c.lastIndex, c === O ? p[1] === "!--" ? c = be : p[1] !== void 0 ? c = $e : p[2] !== void 0 ? (Pe.test(p[2]) && (r = RegExp("</" + p[2], "g")), c = C) : p[3] !== void 0 && (c = C) : c === C ? p[0] === ">" ? (c = r ?? O, f = -1) : p[1] === void 0 ? f = -2 : (f = c.lastIndex - p[2].length, d = p[1], c = p[3] === void 0 ? C : p[3] === '"' ? ye : ve) : c === ye || c === ve ? c = C : c === be || c === $e ? c = O : (c = C, r = void 0);
-    const k = c === C && s[u + 1].startsWith("/>") ? " " : "";
-    n += c === O ? l + Xe : f >= 0 ? (i.push(d), l.slice(0, f) + De + l.slice(f) + A + k) : l + A + (f === -2 ? u : k);
+    for (; x < l.length && (c.lastIndex = x, p = c.exec(l), p !== null); ) x = c.lastIndex, c === O ? p[1] === "!--" ? c = be : p[1] !== void 0 ? c = $e : p[2] !== void 0 ? (Ne.test(p[2]) && (r = RegExp("</" + p[2], "g")), c = S) : p[3] !== void 0 && (c = S) : c === S ? p[0] === ">" ? (c = r ?? O, f = -1) : p[1] === void 0 ? f = -2 : (f = c.lastIndex - p[2].length, d = p[1], c = p[3] === void 0 ? S : p[3] === '"' ? ye : ve) : c === ye || c === ve ? c = S : c === be || c === $e ? c = O : (c = S, r = void 0);
+    const A = c === S && s[u + 1].startsWith("/>") ? " " : "";
+    n += c === O ? l + Xe : f >= 0 ? (i.push(d), l.slice(0, f) + De + l.slice(f) + C + A) : l + C + (f === -2 ? u : A);
   }
   return [He(s, n + (s[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
 };
@@ -272,39 +272,39 @@ class U {
     this.parts = [];
     let n = 0, c = 0;
     const u = e.length - 1, l = this.parts, [d, p] = it(e, t);
-    if (this.el = U.createElement(d, i), E.currentNode = this.el.content, t === 2 || t === 3) {
+    if (this.el = U.createElement(d, i), L.currentNode = this.el.content, t === 2 || t === 3) {
       const f = this.el.content.firstChild;
       f.replaceWith(...f.childNodes);
     }
-    for (; (r = E.nextNode()) !== null && l.length < u; ) {
+    for (; (r = L.nextNode()) !== null && l.length < u; ) {
       if (r.nodeType === 1) {
         if (r.hasAttributes()) for (const f of r.getAttributeNames()) if (f.endsWith(De)) {
-          const x = p[c++], k = r.getAttribute(f).split(A), Z = /([.?@])?(.*)/.exec(x);
-          l.push({ type: 1, index: n, name: Z[2], strings: k, ctor: Z[1] === "." ? rt : Z[1] === "?" ? nt : Z[1] === "@" ? ot : Q }), r.removeAttribute(f);
-        } else f.startsWith(A) && (l.push({ type: 6, index: n }), r.removeAttribute(f));
-        if (Pe.test(r.tagName)) {
-          const f = r.textContent.split(A), x = f.length - 1;
+          const x = p[c++], A = r.getAttribute(f).split(C), Z = /([.?@])?(.*)/.exec(x);
+          l.push({ type: 1, index: n, name: Z[2], strings: A, ctor: Z[1] === "." ? rt : Z[1] === "?" ? nt : Z[1] === "@" ? ot : Q }), r.removeAttribute(f);
+        } else f.startsWith(C) && (l.push({ type: 6, index: n }), r.removeAttribute(f));
+        if (Ne.test(r.tagName)) {
+          const f = r.textContent.split(C), x = f.length - 1;
           if (x > 0) {
             r.textContent = F ? F.emptyScript : "";
-            for (let k = 0; k < x; k++) r.append(f[k], I()), E.nextNode(), l.push({ type: 2, index: ++n });
+            for (let A = 0; A < x; A++) r.append(f[A], I()), L.nextNode(), l.push({ type: 2, index: ++n });
             r.append(f[x], I());
           }
         }
-      } else if (r.nodeType === 8) if (r.data === Ne) l.push({ type: 2, index: n });
+      } else if (r.nodeType === 8) if (r.data === ze) l.push({ type: 2, index: n });
       else {
         let f = -1;
-        for (; (f = r.data.indexOf(A, f + 1)) !== -1; ) l.push({ type: 7, index: n }), f += A.length - 1;
+        for (; (f = r.data.indexOf(C, f + 1)) !== -1; ) l.push({ type: 7, index: n }), f += C.length - 1;
       }
       n++;
     }
   }
   static createElement(e, t) {
-    const i = L.createElement("template");
+    const i = M.createElement("template");
     return i.innerHTML = e, i;
   }
 }
 function H(s, e, t = s, i) {
-  if (e === z) return e;
+  if (e === P) return e;
   let r = i !== void 0 ? t._$Co?.[i] : t._$Cl;
   const n = T(e) ? void 0 : e._$litDirective$;
   return r?.constructor !== n && (r?._$AO?.(!1), n === void 0 ? r = void 0 : (r = new n(s), r._$AT(s, t, i)), i !== void 0 ? (t._$Co ??= [])[i] = r : t._$Cl = r), r !== void 0 && (e = H(s, r._$AS(s, e.values), r, i)), e;
@@ -320,17 +320,17 @@ class st {
     return this._$AM._$AU;
   }
   u(e) {
-    const { el: { content: t }, parts: i } = this._$AD, r = (e?.creationScope ?? L).importNode(t, !0);
-    E.currentNode = r;
-    let n = E.nextNode(), c = 0, u = 0, l = i[0];
+    const { el: { content: t }, parts: i } = this._$AD, r = (e?.creationScope ?? M).importNode(t, !0);
+    L.currentNode = r;
+    let n = L.nextNode(), c = 0, u = 0, l = i[0];
     for (; l !== void 0; ) {
       if (c === l.index) {
         let d;
         l.type === 2 ? d = new V(n, n.nextSibling, this, e) : l.type === 1 ? d = new l.ctor(n, l.name, l.strings, this, e) : l.type === 6 && (d = new at(n, this, e)), this._$AV.push(d), l = i[++u];
       }
-      c !== l?.index && (n = E.nextNode(), c++);
+      c !== l?.index && (n = L.nextNode(), c++);
     }
-    return E.currentNode = L, r;
+    return L.currentNode = M, r;
   }
   p(e) {
     let t = 0;
@@ -356,7 +356,7 @@ class V {
     return this._$AB;
   }
   _$AI(e, t = this) {
-    e = H(this, e, t), T(e) ? e === h || e == null || e === "" ? (this._$AH !== h && this._$AR(), this._$AH = h) : e !== this._$AH && e !== z && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : et(e) ? this.k(e) : this._(e);
+    e = H(this, e, t), T(e) ? e === h || e == null || e === "" ? (this._$AH !== h && this._$AR(), this._$AH = h) : e !== this._$AH && e !== P && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : et(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -365,7 +365,7 @@ class V {
     this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
   }
   _(e) {
-    this._$AH !== h && T(this._$AH) ? this._$AA.nextSibling.data = e : this.T(L.createTextNode(e)), this._$AH = e;
+    this._$AH !== h && T(this._$AH) ? this._$AA.nextSibling.data = e : this.T(M.createTextNode(e)), this._$AH = e;
   }
   $(e) {
     const { values: t, _$litType$: i } = e, r = typeof i == "number" ? this._$AC(e) : (i.el === void 0 && (i.el = U.createElement(He(i.h, i.h[0]), this.options)), i);
@@ -409,11 +409,11 @@ class Q {
   _$AI(e, t = this, i, r) {
     const n = this.strings;
     let c = !1;
-    if (n === void 0) e = H(this, e, t, 0), c = !T(e) || e !== this._$AH && e !== z, c && (this._$AH = e);
+    if (n === void 0) e = H(this, e, t, 0), c = !T(e) || e !== this._$AH && e !== P, c && (this._$AH = e);
     else {
       const u = e;
       let l, d;
-      for (e = n[0], l = 0; l < n.length - 1; l++) d = H(this, u[i + l], t, l), d === z && (d = this._$AH[l]), c ||= !T(d) || d !== this._$AH[l], d === h ? e = h : e !== h && (e += (d ?? "") + n[l + 1]), this._$AH[l] = d;
+      for (e = n[0], l = 0; l < n.length - 1; l++) d = H(this, u[i + l], t, l), d === P && (d = this._$AH[l]), c ||= !T(d) || d !== this._$AH[l], d === h ? e = h : e !== h && (e += (d ?? "") + n[l + 1]), this._$AH[l] = d;
     }
     c && !r && this.j(e);
   }
@@ -442,7 +442,7 @@ class ot extends Q {
     super(e, t, i, r, n), this.type = 5;
   }
   _$AI(e, t = this) {
-    if ((e = H(this, e, t, 0) ?? h) === z) return;
+    if ((e = H(this, e, t, 0) ?? h) === P) return;
     const i = this._$AH, r = e === h && i !== h || e.capture !== i.capture || e.once !== i.once || e.passive !== i.passive, n = e !== h && (i === h || r);
     r && this.element.removeEventListener(this.name, this, i), n && this.element.addEventListener(this.name, this, e), this._$AH = e;
   }
@@ -473,7 +473,7 @@ const lt = (s, e, t) => {
   return r._$AI(s), r;
 };
 const le = globalThis;
-class _ extends N {
+class _ extends z {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -492,7 +492,7 @@ class _ extends N {
     super.disconnectedCallback(), this._$Do?.setConnected(!1);
   }
   render() {
-    return z;
+    return P;
   }
 }
 _._$litElement$ = !0, _.finalized = !0, le.litElementHydrateSupport?.({ LitElement: _ });
@@ -517,8 +517,8 @@ async function bt(s, e) {
 function $(s) {
   return s && typeof s == "object" && "code" in s ? String(s.code) : "unknown";
 }
-const Oe = (s, e = "open", t) => w(s, { type: "dishwish/wishes/list", status: e, ...t ? { limit: t } : {} }), he = (s, e, t = "") => w(s, { type: "dishwish/wishes/add", recipe_id: e, note: t }), de = (s, e) => w(s, { type: "dishwish/wishes/remove", wish_id: e }), $t = (s, e) => w(s, { type: "dishwish/wishes/complete", recipe_id: e }), vt = (s, e, t = {}) => w(s, { type: "dishwish/shopping/add", recipe_id: e, ...t });
-class yt {
+const Oe = (s, e = "open", t) => w(s, { type: "dishwish/wishes/list", status: e, ...t ? { limit: t } : {} }), he = (s, e, t = "") => w(s, { type: "dishwish/wishes/add", recipe_id: e, note: t }), de = (s, e) => w(s, { type: "dishwish/wishes/remove", wish_id: e }), $t = (s, e) => w(s, { type: "dishwish/wishes/complete", recipe_id: e }), vt = (s, e, t = {}) => w(s, { type: "dishwish/shopping/add", recipe_id: e, ...t }), yt = (s, e) => w(s, { type: "dishwish/recipes/import_starter", language: e });
+class xt {
   constructor(e) {
     this.conn = e, this.recipes = [], this.categories = [], this.wishes = [], this.loaded = !1, this.error = null, this.listeners = /* @__PURE__ */ new Set(), this.unsub = null, this.timers = {};
   }
@@ -583,7 +583,7 @@ class yt {
 const ke = /* @__PURE__ */ new WeakMap();
 function j(s) {
   let e = ke.get(s.connection);
-  return e || (e = new yt(s.connection), ke.set(s.connection, e)), e;
+  return e || (e = new xt(s.connection), ke.set(s.connection, e)), e;
 }
 const qe = {
   // card picker
@@ -616,6 +616,8 @@ const qe = {
   empty_title: "No dishes yet",
   empty_first: "Create first dish",
   empty_import: "Import from link",
+  starter_import: "Add 20 starter dishes",
+  starter_done: "{n} starter dishes added.",
   no_results: "No dishes found",
   minutes_short: "{n} min",
   wishes_n: "{n} wishes",
@@ -731,7 +733,7 @@ const qe = {
   cfg_layout_list: "List",
   cfg_layout_grid: "Grid",
   cfg_show_done: "Recently cooked to show"
-}, xt = {
+}, kt = {
   card_library_name: "DishWish – Bibliothek",
   card_library_desc: "Gerichte mit Fotos, Suche und Filtern",
   card_wishes_name: "DishWish – Essenswünsche",
@@ -759,6 +761,8 @@ const qe = {
   empty_title: "Noch keine Gerichte",
   empty_first: "Erstes Gericht anlegen",
   empty_import: "Per Link importieren",
+  starter_import: "20 Beispielgerichte hinzufügen",
+  starter_done: "{n} Beispielgerichte hinzugefügt.",
   no_results: "Keine Gerichte gefunden",
   minutes_short: "{n} min",
   wishes_n: "{n} Wünsche",
@@ -869,7 +873,7 @@ const qe = {
   cfg_show_done: "Zuletzt gekocht anzeigen"
 };
 function o(s, e, t) {
-  let i = s.startsWith("de") ? xt[e] : qe[e];
+  let i = s.startsWith("de") ? kt[e] : qe[e];
   if (t) for (const [r, n] of Object.entries(t)) i = i.replace(`{${r}}`, String(n));
   return i;
 }
@@ -885,7 +889,7 @@ function Ie() {
   }
   return document.documentElement.lang || navigator.language || "en";
 }
-async function kt() {
+async function At() {
   if (customElements.get("ha-form")) return;
   const s = window;
   try {
@@ -911,7 +915,7 @@ const Ae = {
   show_ingredients: "cfg_show_ingredients",
   show_steps: "cfg_show_steps"
 };
-class At extends _ {
+class Ct extends _ {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -928,7 +932,7 @@ class At extends _ {
     this.config = e;
   }
   connectedCallback() {
-    super.connectedCallback(), kt().then(() => this.ready = !0);
+    super.connectedCallback(), At().then(() => this.ready = !0);
   }
   disconnectedCallback() {
     super.disconnectedCallback(), this.unsub?.(), this.unsub = void 0;
@@ -1012,7 +1016,7 @@ class At extends _ {
     ></ha-form>`;
   }
 }
-customElements.get("dw-card-editor") || customElements.define("dw-card-editor", At);
+customElements.get("dw-card-editor") || customElements.define("dw-card-editor", Ct);
 const y = v`
   :host {
     color: var(--primary-text-color);
@@ -1129,34 +1133,34 @@ const y = v`
     color: var(--error-color);
   }
 `;
-var Ct = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", St = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", Et = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", Lt = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", Mt = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", Rt = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", Dt = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Nt = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", Pt = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", zt = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", Ht = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", Ot = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", qt = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", It = "M19,13H5V11H19V13Z", Tt = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", Ut = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+var St = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", Et = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", Lt = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", Mt = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", Rt = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", Dt = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", zt = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Nt = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", Pt = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", Ht = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", Ot = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", qt = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", It = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", Tt = "M19,13H5V11H19V13Z", Ut = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", Wt = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
 const g = {
-  arrowDown: Ct,
-  arrowUp: St,
-  camera: Et,
-  left: Lt,
-  right: Mt,
-  clock: Rt,
-  close: Dt,
+  arrowDown: St,
+  arrowUp: Et,
+  camera: Lt,
+  left: Mt,
+  right: Rt,
+  clock: Dt,
+  close: zt,
   delete: Nt,
   food: Pt,
-  image: zt,
-  link: Ht,
-  lock: Ot,
-  search: qt,
-  minus: It,
-  edit: Tt,
-  plus: Ut
-}, m = (s) => a`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${tt`<path d=${s}></path>`}</svg>`, S = [];
+  image: Ht,
+  link: Ot,
+  lock: qt,
+  search: It,
+  minus: Tt,
+  edit: Ut,
+  plus: Wt
+}, m = (s) => a`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${tt`<path d=${s}></path>`}</svg>`, E = [];
 let re = 0;
 window.addEventListener("popstate", () => {
   if (re > 0) {
     re--;
     return;
   }
-  S[S.length - 1]?.onPopState();
+  E[E.length - 1]?.onPopState();
 });
-class Wt extends _ {
+class Vt extends _ {
   constructor() {
     super(), this.pushed = !1, this.heading = "", this.closeLabel = "Close";
   }
@@ -1232,7 +1236,7 @@ class Wt extends _ {
     return this.renderRoot.querySelector("dialog");
   }
   show() {
-    this.dlg.showModal(), S.push(this), history.pushState({ dishwish: !0 }, ""), this.pushed = !0;
+    this.dlg.showModal(), E.push(this), history.pushState({ dishwish: !0 }, ""), this.pushed = !0;
   }
   /** Ask listeners whether we may close; closes unless one of them prevents it. */
   requestClose() {
@@ -1248,13 +1252,13 @@ class Wt extends _ {
     this.dispatchEvent(e), e.defaultPrevented ? (history.pushState({ dishwish: !0 }, ""), this.pushed = !0) : this.close();
   }
   onClosed() {
-    const e = S.indexOf(this);
-    e >= 0 && S.splice(e, 1), this.pushed && (this.pushed = !1, re++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
+    const e = E.indexOf(this);
+    e >= 0 && E.splice(e, 1), this.pushed && (this.pushed = !1, re++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    const e = S.indexOf(this);
-    e >= 0 && S.splice(e, 1);
+    const e = E.indexOf(this);
+    e >= 0 && E.splice(e, 1);
   }
   render() {
     return a`
@@ -1277,8 +1281,8 @@ class Wt extends _ {
     `;
   }
 }
-customElements.get("dw-dialog") || customElements.define("dw-dialog", Wt);
-class Vt extends _ {
+customElements.get("dw-dialog") || customElements.define("dw-dialog", Vt);
+class jt extends _ {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -1352,27 +1356,27 @@ class Vt extends _ {
     </dw-dialog>`;
   }
 }
-customElements.get("dw-import-dialog") || customElements.define("dw-import-dialog", Vt);
-function M(s, e) {
+customElements.get("dw-import-dialog") || customElements.define("dw-import-dialog", jt);
+function k(s, e) {
   s.dispatchEvent(new CustomEvent("hass-notification", { detail: { message: e }, bubbles: !0, composed: !0 }));
 }
 const W = (s) => Math.floor(s + 0.5);
 function Ce(s, e, t) {
   return s * t / e;
 }
-function jt(s, e) {
+function Zt(s, e) {
   const i = (W(s * 100) / 100).toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
   return e.startsWith("de") ? i.replace(".", ",") : i;
 }
-function Zt(s) {
+function Bt(s) {
   if (s >= 10) return String(Math.max(1, W(s)));
   const e = Math.max(1, W(s * 4)), t = Math.floor(e / 4), i = ["", "¼", "½", "¾"][e % 4];
   return t ? `${t}${i}` : i;
 }
 function Se(s, e, t) {
-  return e === "g" || e === "ml" ? s >= 100 ? String(W(s / 5) * 5) : String(Math.max(1, W(s))) : e === "kg" || e === "l" ? jt(s, t) : Zt(s);
+  return e === "g" || e === "ml" ? s >= 100 ? String(W(s / 5) * 5) : String(Math.max(1, W(s))) : e === "kg" || e === "l" ? Zt(s, t) : Bt(s);
 }
-function Bt(s, e, t, i = "de") {
+function Gt(s, e, t, i = "de") {
   if (s === null) return "";
   const r = e ?? s;
   let n = 1, c = t;
@@ -1382,9 +1386,9 @@ function Bt(s, e, t, i = "de") {
 }
 function Te(s, e, t, i = "de") {
   const r = s.quantity === null ? null : Ce(s.quantity, e, t), n = s.quantity_max === null ? null : Ce(s.quantity_max, e, t);
-  return Bt(r, n, s.unit, i);
+  return Gt(r, n, s.unit, i);
 }
-class Gt extends _ {
+class Ft extends _ {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -1548,9 +1552,9 @@ class Gt extends _ {
         ingredient_ids: [...this.selected],
         ...this.shoppingList ? { entity_id: this.shoppingList } : {}
       });
-      M(this, o(t, "shop_result", { added: i.added.length, skipped: i.skipped.length }));
+      k(this, o(t, "shop_result", { added: i.added.length, skipped: i.skipped.length }));
     } catch (i) {
-      M(this, b(t, $(i)));
+      k(this, b(t, $(i)));
     }
   }
   toggleIngredient(e) {
@@ -1642,8 +1646,8 @@ class Gt extends _ {
     `;
   }
 }
-customElements.get("dw-recipe-view") || customElements.define("dw-recipe-view", Gt);
-class Ft extends _ {
+customElements.get("dw-recipe-view") || customElements.define("dw-recipe-view", Ft);
+class Kt extends _ {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -1720,9 +1724,9 @@ class Ft extends _ {
     if (!e) return;
     const t = this.uiLang;
     try {
-      e.my_wish_id ? await de(this.hass.connection, e.my_wish_id) : (await he(this.hass.connection, e.id, this.wishNote.trim()), M(this, o(t, "wish_added"))), this.wishOpen = !1, this.wishNote = "", await this.reload();
+      e.my_wish_id ? await de(this.hass.connection, e.my_wish_id) : (await he(this.hass.connection, e.id, this.wishNote.trim()), k(this, o(t, "wish_added"))), this.wishOpen = !1, this.wishNote = "", await this.reload();
     } catch (i) {
-      M(this, b(t, $(i)));
+      k(this, b(t, $(i)));
     }
   }
   renderWish(e) {
@@ -1780,24 +1784,24 @@ class Ft extends _ {
     </dw-dialog>`;
   }
 }
-customElements.get("dw-recipe-dialog") || customElements.define("dw-recipe-dialog", Ft);
-const Kt = 2048;
-async function Jt(s) {
+customElements.get("dw-recipe-dialog") || customElements.define("dw-recipe-dialog", Kt);
+const Jt = 2048;
+async function Yt(s) {
   try {
-    const e = await createImageBitmap(s, { imageOrientation: "from-image" }), t = Math.min(1, Kt / Math.max(e.width, e.height)), i = document.createElement("canvas");
+    const e = await createImageBitmap(s, { imageOrientation: "from-image" }), t = Math.min(1, Jt / Math.max(e.width, e.height)), i = document.createElement("canvas");
     return i.width = Math.round(e.width * t), i.height = Math.round(e.height * t), i.getContext("2d").drawImage(e, 0, 0, i.width, i.height), e.close(), await new Promise((n) => i.toBlob(n, "image/jpeg", 0.85)) ?? s;
   } catch {
     return s;
   }
 }
-const Yt = 10, Qt = (s) => `/api/dishwish/images/${s}/thumb`, Ee = (s) => s === null ? "" : String(s).replace(".", ",");
+const Qt = 10, Xt = (s) => `/api/dishwish/images/${s}/thumb`, Ee = (s) => s === null ? "" : String(s).replace(".", ",");
 function Le(s) {
   const e = s.trim().replace(",", ".");
   if (!e) return null;
   const t = /^(\d+)\/(\d+)$/.exec(e), i = t ? Number(t[1]) / Number(t[2]) : Number(e);
   return Number.isFinite(i) && i >= 0 ? i : null;
 }
-function Xt(s) {
+function ei(s) {
   const e = /^\s*([\d.,/]+)\s*(?:[-–]\s*([\d.,/]+))?\s*$/.exec(s);
   if (!e) return [null, null];
   const t = Le(e[1]), i = e[2] ? Le(e[2]) : null;
@@ -1823,7 +1827,7 @@ function K() {
     steps: [{ section: null, text: "" }]
   };
 }
-function ei(s) {
+function ti(s) {
   const e = "images" in s ? s.images.map((t) => t.id) : s.image_ids;
   return {
     name: s.name,
@@ -1847,7 +1851,7 @@ function R(s, e, t) {
   const r = [...s];
   return [r[e], r[i]] = [r[i], r[e]], r;
 }
-class ti extends _ {
+class ii extends _ {
   constructor() {
     super(), this.recipeId = null, this.snapshot = "", this.categories = [], this.draft = K(), this.uploading = 0, this.saving = !1, this.error = "", this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", this.confirmDiscard = !1;
   }
@@ -1970,7 +1974,7 @@ class ti extends _ {
   }
   /** New recipe (no argument), edit an existing one (Recipe), or review an import (RecipeInput). */
   async open(e) {
-    this.recipeId = e && "id" in e ? e.id : null, this.draft = e ? ei(e) : K(), this.snapshot = JSON.stringify(this.draft), this.error = "", this.confirmDiscard = !1, this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", await this.updateComplete, this.dlg.show();
+    this.recipeId = e && "id" in e ? e.id : null, this.draft = e ? ti(e) : K(), this.snapshot = JSON.stringify(this.draft), this.error = "", this.confirmDiscard = !1, this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", await this.updateComplete, this.dlg.show();
   }
   get dirty() {
     return JSON.stringify(this.draft) !== this.snapshot;
@@ -1986,13 +1990,13 @@ class ti extends _ {
     const t = e.target, i = Array.from(t.files ?? []);
     t.value = "";
     for (const r of i) {
-      if (this.draft.image_ids.length >= Yt) {
+      if (this.draft.image_ids.length >= Qt) {
         this.error = o(this.uiLang, "max_images");
         break;
       }
       this.uploading++;
       try {
-        const n = await bt(this.hass, await Jt(r));
+        const n = await bt(this.hass, await Yt(r));
         this.patch({ image_ids: [...this.draft.image_ids, n.id] });
       } catch (n) {
         this.error = b(this.uiLang, $(n));
@@ -2053,7 +2057,7 @@ class ti extends _ {
       category_ids: e.category_ids,
       image_ids: e.image_ids,
       ingredients: e.ingredients.filter((i) => i.name.trim()).map((i) => {
-        const [r, n] = Xt(i.amount);
+        const [r, n] = ei(i.amount);
         return {
           group_name: i.group_name,
           quantity: r,
@@ -2088,7 +2092,7 @@ class ti extends _ {
       <div class="photos">
         ${t.map(
       (i, r) => a`<div class="photo">
-            <img src=${Qt(i)} alt="" loading="lazy" />
+            <img src=${Xt(i)} alt="" loading="lazy" />
             <div class="row-actions">
               <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ image_ids: R(t, r, -1) })}>
                 ${m(g.left)}
@@ -2246,7 +2250,7 @@ class ti extends _ {
     </dw-dialog>`;
   }
 }
-customElements.get("dw-recipe-editor") || customElements.define("dw-recipe-editor", ti);
+customElements.get("dw-recipe-editor") || customElements.define("dw-recipe-editor", ii);
 function pe(s) {
   let e = s;
   for (; ; ) {
@@ -2255,7 +2259,7 @@ function pe(s) {
     if (e = t.host, e.nodeName === "HUI-CARD-PICKER") return !0;
   }
 }
-function ii(s, e, t = Date.now()) {
+function si(s, e, t = Date.now()) {
   const i = new Date(s).getTime();
   if (Number.isNaN(i)) return "";
   const r = Math.round((i - t) / 1e3), n = new Intl.RelativeTimeFormat(e, { numeric: "auto" }), c = [
@@ -2280,11 +2284,11 @@ function We(s, e) {
   );
   s.style.maxHeight = `${Math.ceil(u) + 2}px`, s.style.overflowY = "auto";
 }
-function P(s) {
+function N(s) {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
 const B = 60, ee = "__quick", te = "__mine";
-class si extends _ {
+class ri extends _ {
   constructor() {
     super(), this.inPicker = !1, this.lastWidth = 0, this.config = { type: "custom:dishwish-library-card" }, this.query = "", this.filter = "", this.limit = B, this.menuOpen = !1, this.tick = 0;
   }
@@ -2540,7 +2544,7 @@ class si extends _ {
     return t?.length ? e.filter((i) => t.includes(i.id)) : e;
   }
   filtered() {
-    const e = this.store, t = P(this.query.trim()), i = new Map(e.categories.map((l) => [l.id, P(l.name)])), r = this._hass?.user?.id;
+    const e = this.store, t = N(this.query.trim()), i = new Map(e.categories.map((l) => [l.id, N(l.name)])), r = this._hass?.user?.id;
     let n = e.recipes.filter((l) => {
       if (this.filter === ee) {
         const p = (l.prep_minutes ?? 0) + (l.cook_minutes ?? 0);
@@ -2549,7 +2553,7 @@ class si extends _ {
         if (l.created_by !== r) return !1;
       } else if (this.filter && !l.category_ids.includes(this.filter)) return !1;
       if (!t) return !0;
-      const d = P(l.name) + " " + l.category_ids.map((p) => i.get(p) ?? "").join(" ");
+      const d = N(l.name) + " " + l.category_ids.map((p) => i.get(p) ?? "").join(" ");
       return t.split(/\s+/).every((p) => d.includes(p));
     });
     const c = this.config.sort ?? "name", u = (l, d) => l.name.localeCompare(d.name, this.uiLang);
@@ -2579,7 +2583,15 @@ class si extends _ {
     try {
       e.my_wish_id ? await de(t, e.my_wish_id) : await he(t, e.id), await this.store?.refresh();
     } catch (i) {
-      M(this, b(this.lang, $(i)));
+      k(this, b(this.lang, $(i)));
+    }
+  }
+  async addStarter() {
+    try {
+      const e = await yt(this._hass.connection, this.lang);
+      k(this, o(this.lang, "starter_done", { n: e.created })), await this.store?.refresh();
+    } catch (e) {
+      k(this, b(this.lang, $(e)));
     }
   }
   onEdit(e) {
@@ -2621,6 +2633,7 @@ class si extends _ {
       <div class="btns">
         ${this.config.show_add !== !1 ? a`<button class="btn primary" @click=${() => this.newRecipe()}>${m(g.plus)} ${o(e, "empty_first")}</button>` : h}
         ${this.config.show_import !== !1 ? a`<button class="btn" @click=${() => this.importRecipe()}>${m(g.link)} ${o(e, "empty_import")}</button>` : h}
+        ${this.config.show_add !== !1 ? a`<button class="btn" @click=${() => this.addStarter()}>${o(e, "starter_import")}</button>` : h}
       </div>
     </div>`;
   }
@@ -2684,8 +2697,8 @@ class si extends _ {
     this.filter = e, this.limit = B;
   }
 }
-customElements.get("dishwish-library-card") || customElements.define("dishwish-library-card", si);
-class ri extends _ {
+customElements.get("dishwish-library-card") || customElements.define("dishwish-library-card", ri);
+class ni extends _ {
   constructor() {
     super(), this.wakeLock = null, this.opened = !1, this.onVisible = () => {
       this.opened && document.visibilityState === "visible" && this.lock();
@@ -2814,8 +2827,8 @@ class ri extends _ {
     </dw-dialog>`;
   }
 }
-customElements.get("dw-cook-mode") || customElements.define("dw-cook-mode", ri);
-class ni extends _ {
+customElements.get("dw-cook-mode") || customElements.define("dw-cook-mode", ni);
+class oi extends _ {
   constructor() {
     super(), this.requested = "", this.inPicker = !1, this.config = { type: "custom:dishwish-recipe-card" }, this.tick = 0, this.recipe = null, this.error = "", this.servings = 4;
   }
@@ -2949,9 +2962,9 @@ class ni extends _ {
       ${this.recipe ? a`<dw-cook-mode .hass=${this._hass} .recipe=${this.recipe} .servings=${this.servings}></dw-cook-mode>` : h}`;
   }
 }
-customElements.get("dishwish-recipe-card") || customElements.define("dishwish-recipe-card", ni);
-const oi = 80;
-class ai extends _ {
+customElements.get("dishwish-recipe-card") || customElements.define("dishwish-recipe-card", oi);
+const ai = 80;
+class ci extends _ {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -3018,11 +3031,11 @@ class ai extends _ {
     this.dispatchEvent(new CustomEvent("picked", { detail: e })), this.dlg.close();
   }
   filtered() {
-    const e = P(this.query.trim());
+    const e = N(this.query.trim());
     if (!e) return this.recipes;
-    const t = new Map(this.categories.map((i) => [i.id, P(i.name)]));
+    const t = new Map(this.categories.map((i) => [i.id, N(i.name)]));
     return this.recipes.filter((i) => {
-      const r = `${P(i.name)} ${i.category_ids.map((n) => t.get(n) ?? "").join(" ")}`;
+      const r = `${N(i.name)} ${i.category_ids.map((n) => t.get(n) ?? "").join(" ")}`;
       return e.split(/\s+/).every((n) => r.includes(n));
     });
   }
@@ -3038,7 +3051,7 @@ class ai extends _ {
       />
       ${t.length === 0 ? a`<p class="muted">${o(e, "no_results")}</p>` : h}
       <div class="list">
-        ${t.slice(0, oi).map(
+        ${t.slice(0, ai).map(
       (i) => a`<button class="item" @click=${() => this.pick(i.id)}>
             ${i.thumb_url ? a`<img src=${i.thumb_url} alt="" loading="lazy" decoding="async" />` : a`<div class="ph"></div>`}
             <span>${i.name}</span>
@@ -3048,8 +3061,8 @@ class ai extends _ {
     </dw-dialog>`;
   }
 }
-customElements.get("dw-recipe-picker") || customElements.define("dw-recipe-picker", ai);
-class ci extends _ {
+customElements.get("dw-recipe-picker") || customElements.define("dw-recipe-picker", ci);
+class li extends _ {
   constructor() {
     super(), this.inPicker = !1, this.lastWidth = 0, this.config = { type: "custom:dishwish-wishes-card" }, this.tick = 0, this.done = [];
   }
@@ -3322,9 +3335,9 @@ class ci extends _ {
   async run(e) {
     try {
       const t = await e();
-      t && M(this, t), await this.store?.refresh();
+      t && k(this, t), await this.store?.refresh();
     } catch (t) {
-      M(this, b(this.uiLang, $(t)));
+      k(this, b(this.uiLang, $(t)));
     }
   }
   cooked(e) {
@@ -3353,7 +3366,7 @@ class ci extends _ {
       <ul class="notes">
         ${e.wishes.map(
       (n) => a`<li title=${new Date(n.created_at).toLocaleString(t)}>
-            ${o(t, "wished_ago", { name: n.user_name, when: ii(n.created_at, t) })}${n.note ? a`: <span class="note">${n.note}</span>` : h}
+            ${o(t, "wished_ago", { name: n.user_name, when: si(n.created_at, t) })}${n.note ? a`: <span class="note">${n.note}</span>` : h}
           </li>`
     )}
       </ul>
@@ -3407,13 +3420,13 @@ class ci extends _ {
     return e ? [...new Set(this.done.map((t) => t.recipe_name))].slice(0, e) : [];
   }
 }
-customElements.get("dishwish-wishes-card") || customElements.define("dishwish-wishes-card", ci);
+customElements.get("dishwish-wishes-card") || customElements.define("dishwish-wishes-card", li);
 const J = window;
 J.customCards = J.customCards ?? [];
-const D = Ie(), li = [
+const D = Ie(), hi = [
   { type: "dishwish-library-card", name: o(D, "card_library_name"), description: o(D, "card_library_desc") },
   { type: "dishwish-recipe-card", name: o(D, "card_recipe_name"), description: o(D, "card_recipe_desc") },
   { type: "dishwish-wishes-card", name: o(D, "card_wishes_name"), description: o(D, "card_wishes_desc") }
 ];
-for (const s of li)
+for (const s of hi)
   J.customCards.some((e) => e.type === s.type) || J.customCards.push({ ...s, preview: !0, documentationURL: "https://github.com/Gloecki2404/DishWish" });

@@ -25,3 +25,13 @@ add_open_wishes_to_shopping_list:
       selector:
         entity:
           domain: todo
+
+import_starter_recipes:
+  fields:
+    language:
+      required: false
+      selector:
+        select:
+          options:
+            - de
+            - en

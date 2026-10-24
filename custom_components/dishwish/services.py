@@ -12,10 +12,12 @@ from homeassistant.helpers import config_validation as cv
 from .const import DOMAIN, MAX_SERVINGS
 from .db import DbError
 from .shopping import async_add_open_wishes, async_add_recipe
+from .starter import async_import_starter
 from .store import SYSTEM, get_store
 
 SERVICE_ADD_TO_SHOPPING_LIST = "add_to_shopping_list"
 SERVICE_ADD_OPEN_WISHES = "add_open_wishes_to_shopping_list"
+SERVICE_IMPORT_STARTER = "import_starter_recipes"
 
 _ADD_RECIPE_SCHEMA = vol.Schema(
     {
@@ -25,6 +27,7 @@ _ADD_RECIPE_SCHEMA = vol.Schema(
     }
 )
 _ADD_WISHES_SCHEMA = vol.Schema({vol.Optional("entity_id"): cv.entity_id})
+_STARTER_SCHEMA = vol.Schema({vol.Optional("language"): vol.In(["de", "en"])})
 
 
 def _raise(err: DbError) -> ServiceValidationError:
@@ -57,6 +60,11 @@ async def _add_open_wishes(call: ServiceCall) -> dict[str, Any]:
         raise _raise(err) from err
 
 
+async def _import_starter(call: ServiceCall) -> dict[str, Any]:
+    language = call.data.get("language") or call.hass.config.language
+    return await async_import_starter(call.hass, get_store(call.hass), SYSTEM, language)
+
+
 def async_register_services(hass: HomeAssistant) -> None:
     """Register the services once per HA runtime."""
     hass.services.async_register(
@@ -64,6 +72,13 @@ def async_register_services(hass: HomeAssistant) -> None:
         SERVICE_ADD_TO_SHOPPING_LIST,
         _add_to_shopping_list,
         schema=_ADD_RECIPE_SCHEMA,
+        supports_response=SupportsResponse.OPTIONAL,
+    )
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_IMPORT_STARTER,
+        _import_starter,
+        schema=_STARTER_SCHEMA,
         supports_response=SupportsResponse.OPTIONAL,
     )
     hass.services.async_register(

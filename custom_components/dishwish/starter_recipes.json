@@ -1,0 +1,262 @@
+[
+  {
+    "id": "wiener-schnitzel", "categories": ["meat"], "servings": 4, "prep": 20, "cook": 15,
+    "de": {
+      "name": "Wiener Schnitzel", "description": "Der österreichische Klassiker: dünn geklopft, goldgelb in reichlich Fett ausgebacken.",
+      "ingredients": ["4 Kalbsschnitzel (je ca. 150 g)", "100 g Mehl", "2 Eier", "120 g Semmelbrösel", "300 ml Butterschmalz oder Öl zum Ausbacken", "1 Zitrone", "Salz", "Petersilie"],
+      "steps": ["Schnitzel zwischen Frischhaltefolie dünn klopfen (ca. 5 mm) und beidseitig salzen.", "Mehl, verquirlte Eier und Semmelbrösel in drei flache Teller geben. Schnitzel erst in Mehl, dann im Ei und zuletzt in den Bröseln wenden. Die Brösel nicht andrücken.", "Das Fett in einer großen Pfanne auf ca. 170 °C erhitzen. Die Schnitzel schwimmend 2 bis 3 Minuten pro Seite ausbacken und dabei die Pfanne leicht schwenken, damit die Panade aufgeht.", "Auf Küchenpapier abtropfen lassen und mit Zitronenspalten, Petersilie und Erdäpfelsalat servieren."]
+    },
+    "en": {
+      "name": "Wiener Schnitzel", "description": "The Austrian classic: pounded thin and fried golden in plenty of fat.",
+      "ingredients": ["4 veal cutlets (about 150 g each)", "100 g flour", "2 eggs", "120 g breadcrumbs", "300 ml clarified butter or oil for frying", "1 lemon", "Salt", "Parsley"],
+      "steps": ["Pound the cutlets thin (about 5 mm) between sheets of cling film and salt both sides.", "Put flour, beaten eggs and breadcrumbs on three flat plates. Coat the cutlets in flour, then egg, then crumbs. Do not press the crumbs on.", "Heat the fat to about 170 °C in a large pan. Fry the cutlets 2 to 3 minutes per side, swirling the pan gently so the coating puffs up.", "Drain on paper towels and serve with lemon wedges, parsley and potato salad."]
+    }
+  },
+  {
+    "id": "tafelspitz", "categories": ["meat"], "servings": 4, "prep": 20, "cook": 150,
+    "de": {
+      "name": "Tafelspitz", "description": "Zart gekochtes Rindfleisch in kräftiger Brühe, mit Wurzelgemüse, Apfelkren und Schnittlauchsauce.",
+      "ingredients": ["1 kg Tafelspitz", "2 Karotten", "1 Stange Lauch", "200 g Sellerie", "1 Zwiebel", "1 Lorbeerblatt", "6 Pfefferkörner", "2 TL Salz", "50 g frischer Kren (Meerrettich)", "1 Apfel", "1 Bund Schnittlauch", "600 g Kartoffeln"],
+      "steps": ["Die Zwiebel halbieren und mit der Schnittfläche in einer trockenen Pfanne dunkel anrösten.", "Drei Liter Wasser mit Salz, Pfefferkörnern, Lorbeer und der gerösteten Zwiebel aufkochen. Das Fleisch einlegen und 2 bis 2,5 Stunden knapp unter dem Siedepunkt ziehen lassen.", "Karotten, Lauch und Sellerie in Stücke schneiden und die letzten 40 Minuten mitgaren. Die Kartoffeln separat in Salzwasser kochen.", "Kren und Apfel fein reiben und mischen. Den Schnittlauch in Röllchen schneiden.", "Das Fleisch quer zur Faser aufschneiden, mit etwas Brühe übergießen und mit Gemüse, Kartoffeln, Apfelkren und Schnittlauch servieren."]
+    },
+    "en": {
+      "name": "Tafelspitz", "description": "Tender boiled beef in a rich broth, served with root vegetables, apple-horseradish and chive sauce.",
+      "ingredients": ["1 kg beef top rump (Tafelspitz)", "2 carrots", "1 leek", "200 g celeriac", "1 onion", "1 bay leaf", "6 peppercorns", "2 tsp salt", "50 g fresh horseradish", "1 apple", "1 bunch chives", "600 g potatoes"],
+      "steps": ["Halve the onion and char the cut side in a dry pan until dark.", "Bring three litres of water with salt, peppercorns, bay leaf and the charred onion to the boil. Add the beef and let it simmer just below boiling for 2 to 2.5 hours.", "Cut carrots, leek and celeriac into pieces and cook them in the broth for the last 40 minutes. Boil the potatoes separately in salted water.", "Finely grate horseradish and apple and mix them. Cut the chives into rings.", "Slice the beef against the grain, moisten with some broth and serve with vegetables, potatoes, apple-horseradish and chives."]
+    }
+  },
+  {
+    "id": "kaiserschmarrn", "categories": ["dessert", "breakfast"], "servings": 4, "prep": 15, "cook": 15,
+    "de": {
+      "name": "Kaiserschmarrn", "description": "Fluffiger, zerrissener Pfannkuchen mit Rosinen und Staubzucker.",
+      "ingredients": ["250 g Mehl", "4 Eier", "400 ml Milch", "50 g Zucker", "1 Prise Salz", "1 Pck. Vanillezucker", "50 g Rosinen", "40 g Butter", "Staubzucker zum Bestreuen"],
+      "steps": ["Eier trennen. Eigelb, Milch, Mehl und Vanillezucker zu einem glatten Teig verrühren.", "Eiklar mit Salz und Zucker steif schlagen und vorsichtig unter den Teig heben.", "Butter in einer großen Pfanne schmelzen, den Teig eingießen und die Rosinen darüberstreuen. Bei mittlerer Hitze 3 bis 4 Minuten goldgelb stocken lassen.", "Den Teig vierteln, wenden und fertig backen. Mit zwei Gabeln in Stücke reißen und kurz in der Butter karamellisieren.", "Mit Staubzucker bestreuen und mit Apfelmus oder Zwetschgenröster servieren."]
+    },
+    "en": {
+      "name": "Kaiserschmarrn", "description": "Fluffy shredded pancake with raisins and powdered sugar.",
+      "ingredients": ["250 g flour", "4 eggs", "400 ml milk", "50 g sugar", "1 pinch of salt", "1 packet vanilla sugar", "50 g raisins", "40 g butter", "Powdered sugar for dusting"],
+      "steps": ["Separate the eggs. Whisk egg yolks, milk, flour and vanilla sugar into a smooth batter.", "Beat the egg whites with salt and sugar until stiff and fold them gently into the batter.", "Melt the butter in a large pan, pour in the batter and scatter the raisins on top. Cook over medium heat for 3 to 4 minutes until golden underneath.", "Cut the pancake into quarters, flip and finish cooking. Tear it into pieces with two forks and caramelise briefly in the butter.", "Dust with powdered sugar and serve with apple sauce or plum compote."]
+    }
+  },
+  {
+    "id": "apfelstrudel", "categories": ["dessert", "baking"], "servings": 6, "prep": 40, "cook": 40,
+    "de": {
+      "name": "Apfelstrudel", "description": "Hauchdünn ausgezogener Strudelteig mit Äpfeln, Zimt und Rosinen.",
+      "ingredients": ["250 g Mehl", "1 Ei", "125 ml lauwarmes Wasser", "2 EL Öl", "1 Prise Salz", "1 kg säuerliche Äpfel", "80 g Zucker", "1 TL Zimt", "60 g Rosinen", "1 Zitrone (Saft)", "60 g Semmelbrösel", "90 g Butter", "Staubzucker"],
+      "steps": ["Mehl, Ei, Wasser, Öl und Salz zu einem glatten, geschmeidigen Teig kneten und zugedeckt 30 Minuten rasten lassen.", "Äpfel schälen und in dünne Scheiben schneiden. Mit Zitronensaft, Zucker, Zimt und Rosinen mischen. Die Semmelbrösel in 30 g Butter goldbraun rösten.", "Den Teig auf einem bemehlten Tuch ausrollen und mit den Händen hauchdünn ausziehen. Mit etwas zerlassener Butter bestreichen.", "Brösel auf einem Drittel des Teigs verteilen, die Äpfel darauflegen und den Strudel mithilfe des Tuchs einrollen. Die Enden einschlagen.", "Auf ein Backblech mit Backpapier legen, mit Butter bestreichen und bei 190 °C etwa 40 Minuten backen. Lauwarm mit Staubzucker servieren."]
+    },
+    "en": {
+      "name": "Apfelstrudel", "description": "Paper-thin stretched strudel dough filled with apples, cinnamon and raisins.",
+      "ingredients": ["250 g flour", "1 egg", "125 ml lukewarm water", "2 tbsp oil", "1 pinch of salt", "1 kg tart apples", "80 g sugar", "1 tsp cinnamon", "60 g raisins", "1 lemon (juice)", "60 g breadcrumbs", "90 g butter", "Powdered sugar"],
+      "steps": ["Knead flour, egg, water, oil and salt into a smooth, supple dough and let it rest covered for 30 minutes.", "Peel the apples and slice them thin. Mix with lemon juice, sugar, cinnamon and raisins. Toast the breadcrumbs golden in 30 g of the butter.", "Roll the dough out on a floured cloth and stretch it paper-thin with your hands. Brush with a little melted butter.", "Spread the crumbs over one third of the dough, put the apples on top and roll up the strudel with the help of the cloth. Tuck in the ends.", "Place on a lined baking sheet, brush with butter and bake at 190 °C for about 40 minutes. Serve lukewarm dusted with powdered sugar."]
+    }
+  },
+  {
+    "id": "rindsgulasch", "categories": ["meat"], "servings": 4, "prep": 30, "cook": 120,
+    "de": {
+      "name": "Rindsgulasch", "description": "Wiener Gulasch: viel Zwiebel, edelsüßes Paprikapulver und langes, sanftes Schmoren.",
+      "ingredients": ["800 g Rindfleisch (Wadschinken oder Schulter)", "800 g Zwiebeln", "2 EL Schmalz oder Öl", "2 EL edelsüßes Paprikapulver", "1 EL Tomatenmark", "1 Knoblauchzehe", "1 TL Kümmel", "1 TL Majoran", "1 EL Essig", "750 ml Rinderbrühe", "Salz", "Pfeffer"],
+      "steps": ["Zwiebeln fein schneiden und im Fett bei mittlerer Hitze etwa 15 Minuten goldbraun rösten.", "Tomatenmark kurz mitrösten, die Pfanne vom Herd ziehen, das Paprikapulver einrühren und sofort mit Essig und etwas Brühe ablöschen.", "Das Fleisch in 3 cm große Würfel schneiden, mit Knoblauch, Kümmel, Majoran, Salz und Pfeffer zugeben und mit der restlichen Brühe auffüllen.", "Zugedeckt bei kleiner Hitze etwa 2 Stunden schmoren, bis das Fleisch weich ist. Bei Bedarf Wasser nachgießen.", "Abschmecken und mit Semmeln, Nudeln oder Kartoffeln servieren."]
+    },
+    "en": {
+      "name": "Beef goulash (Rindsgulasch)", "description": "Viennese goulash: lots of onion, sweet paprika and long, gentle braising.",
+      "ingredients": ["800 g beef (shin or shoulder)", "800 g onions", "2 tbsp lard or oil", "2 tbsp sweet paprika", "1 tbsp tomato paste", "1 clove garlic", "1 tsp caraway", "1 tsp marjoram", "1 tbsp vinegar", "750 ml beef broth", "Salt", "Pepper"],
+      "steps": ["Chop the onions fine and fry them in the fat over medium heat for about 15 minutes until golden brown.", "Fry the tomato paste briefly, take the pan off the heat, stir in the paprika and immediately deglaze with the vinegar and a little broth.", "Cut the beef into 3 cm cubes, add it with garlic, caraway, marjoram, salt and pepper and top up with the remaining broth.", "Braise covered over low heat for about 2 hours until the meat is tender. Add water if needed.", "Season and serve with bread rolls, noodles or potatoes."]
+    }
+  },
+  {
+    "id": "frittatensuppe", "categories": ["soup"], "servings": 4, "prep": 20, "cook": 10,
+    "de": {
+      "name": "Frittatensuppe", "description": "Klare Rindssuppe mit feinen Pfannkuchenstreifen und Schnittlauch.",
+      "ingredients": ["100 g Mehl", "200 ml Milch", "2 Eier", "1 Prise Salz", "Butter oder Öl für die Pfanne", "1 l Rindssuppe", "1 Bund Schnittlauch"],
+      "steps": ["Mehl, Milch, Eier und Salz glatt verrühren und 15 Minuten rasten lassen.", "In einer beschichteten Pfanne mit wenig Fett dünne Palatschinken backen und auskühlen lassen.", "Die Palatschinken einrollen und in feine Streifen schneiden.", "Die Rindssuppe erhitzen. Die Frittaten in Teller geben, mit der heißen Suppe aufgießen und mit Schnittlauch bestreuen."]
+    },
+    "en": {
+      "name": "Frittatensuppe", "description": "Clear beef broth with fine pancake strips and chives.",
+      "ingredients": ["100 g flour", "200 ml milk", "2 eggs", "1 pinch of salt", "Butter or oil for the pan", "1 l beef broth", "1 bunch chives"],
+      "steps": ["Whisk flour, milk, eggs and salt smooth and let the batter rest for 15 minutes.", "Fry thin pancakes in a non-stick pan with a little fat and let them cool.", "Roll up the pancakes and cut them into fine strips.", "Heat the broth. Put the pancake strips into bowls, pour the hot broth over them and sprinkle with chives."]
+    }
+  },
+  {
+    "id": "palatschinken", "categories": ["dessert", "breakfast"], "servings": 4, "prep": 10, "cook": 15,
+    "de": {
+      "name": "Palatschinken", "description": "Dünne Pfannkuchen, gefüllt mit Marillenmarmelade.",
+      "ingredients": ["250 g Mehl", "500 ml Milch", "3 Eier", "1 Prise Salz", "1 EL Zucker", "Butter oder Öl für die Pfanne", "200 g Marillenmarmelade", "Staubzucker"],
+      "steps": ["Mehl, Milch, Eier, Salz und Zucker zu einem glatten, dünnflüssigen Teig verrühren und 15 Minuten rasten lassen.", "Eine Pfanne mit wenig Fett erhitzen, eine kleine Kelle Teig einfüllen und schwenken, bis der Boden bedeckt ist. Von beiden Seiten goldgelb backen.", "Die Palatschinken mit Marmelade bestreichen, einrollen oder zusammenklappen und mit Staubzucker bestreuen."]
+    },
+    "en": {
+      "name": "Palatschinken", "description": "Thin pancakes filled with apricot jam.",
+      "ingredients": ["250 g flour", "500 ml milk", "3 eggs", "1 pinch of salt", "1 tbsp sugar", "Butter or oil for the pan", "200 g apricot jam", "Powdered sugar"],
+      "steps": ["Whisk flour, milk, eggs, salt and sugar into a smooth, thin batter and let it rest for 15 minutes.", "Heat a pan with a little fat, pour in a small ladle of batter and tilt the pan until the base is covered. Cook golden on both sides.", "Spread the pancakes with jam, roll or fold them and dust with powdered sugar."]
+    }
+  },
+  {
+    "id": "erdaepfelsalat", "categories": ["salad", "side"], "servings": 4, "prep": 15, "cook": 25,
+    "de": {
+      "name": "Erdäpfelsalat", "description": "Lauwarmer Kartoffelsalat mit Rindssuppe, Essig und Schnittlauch.",
+      "ingredients": ["800 g festkochende Kartoffeln", "1 kleine Zwiebel", "250 ml warme Rindssuppe", "3 EL Essig", "1 TL Senf", "3 EL Öl", "Salz", "Pfeffer", "1 Bund Schnittlauch"],
+      "steps": ["Die Kartoffeln in der Schale weich kochen, noch warm schälen und in Scheiben schneiden.", "Die Zwiebel fein würfeln. Warme Suppe, Essig, Senf, Salz und Pfeffer verrühren.", "Die Marinade über die warmen Kartoffeln gießen, vorsichtig mischen und 15 Minuten ziehen lassen.", "Das Öl und die Zwiebel unterheben, abschmecken und mit Schnittlauch bestreut servieren."]
+    },
+    "en": {
+      "name": "Erdäpfelsalat (Austrian potato salad)", "description": "Lukewarm potato salad with broth, vinegar and chives.",
+      "ingredients": ["800 g waxy potatoes", "1 small onion", "250 ml warm beef broth", "3 tbsp vinegar", "1 tsp mustard", "3 tbsp oil", "Salt", "Pepper", "1 bunch chives"],
+      "steps": ["Boil the potatoes in their skins until tender, peel them while still warm and slice them.", "Finely dice the onion. Stir together warm broth, vinegar, mustard, salt and pepper.", "Pour the dressing over the warm potatoes, mix gently and let them soak for 15 minutes.", "Fold in the oil and onion, season and serve sprinkled with chives."]
+    }
+  },
+  {
+    "id": "kaesespaetzle", "categories": ["pasta", "vegetarian"], "servings": 4, "prep": 20, "cook": 25,
+    "de": {
+      "name": "Käsespätzle (Kasnocken)", "description": "Hausgemachte Spätzle, lagenweise mit Bergkäse überbacken und mit Röstzwiebeln gekrönt.",
+      "ingredients": ["400 g Mehl", "4 Eier", "200 ml Wasser", "1 TL Salz", "250 g Bergkäse (gerieben)", "3 Zwiebeln", "2 EL Butter", "1 Prise Muskat", "1 Bund Schnittlauch"],
+      "steps": ["Mehl, Eier, Wasser, Salz und Muskat kräftig schlagen, bis der Teig Blasen wirft. 15 Minuten ruhen lassen.", "Den Teig portionsweise durch eine Spätzlepresse oder von einem Brett in kochendes Salzwasser geben. Sobald die Spätzle oben schwimmen, abschöpfen.", "Die Zwiebeln in Ringe schneiden und in Butter dunkelbraun braten.", "Spätzle und Käse abwechselnd in eine warme Pfanne oder Form schichten und bei geringer Hitze schmelzen lassen.", "Mit Röstzwiebeln und Schnittlauch bestreuen. Grünen Salat dazu servieren."]
+    },
+    "en": {
+      "name": "Käsespätzle (cheese noodles)", "description": "Homemade spaetzle layered with mountain cheese and topped with fried onions.",
+      "ingredients": ["400 g flour", "4 eggs", "200 ml water", "1 tsp salt", "250 g mountain cheese (grated)", "3 onions", "2 tbsp butter", "1 pinch of nutmeg", "1 bunch chives"],
+      "steps": ["Beat flour, eggs, water, salt and nutmeg vigorously until the batter forms bubbles. Let it rest for 15 minutes.", "Press the batter in portions through a spaetzle press, or scrape it from a board, into boiling salted water. Lift the spaetzle out once they float.", "Slice the onions into rings and fry them in butter until dark brown.", "Layer spaetzle and cheese alternately in a warm pan or dish and let the cheese melt over low heat.", "Top with fried onions and chives. Serve with a green salad."]
+    }
+  },
+  {
+    "id": "semmelknoedel", "categories": ["side", "vegetarian"], "servings": 4, "prep": 25, "cook": 20,
+    "de": {
+      "name": "Semmelknödel", "description": "Klassische Beilage aus altbackenen Semmeln, Milch und Petersilie.",
+      "ingredients": ["300 g Knödelbrot (altbackene Semmeln)", "250 ml warme Milch", "3 Eier", "1 Zwiebel", "2 EL Butter", "1 Bund Petersilie", "1 TL Salz", "1 Prise Muskat"],
+      "steps": ["Die Zwiebel fein würfeln und in Butter glasig dünsten. Die Petersilie hacken.", "Knödelbrot, Zwiebel, Petersilie, Salz und Muskat mischen. Milch und Eier verquirlen, darübergießen und alles 15 Minuten durchziehen lassen.", "Mit nassen Händen acht Knödel formen. Zur Probe zuerst einen Knödel garen und bei Bedarf etwas Brösel oder Milch ergänzen.", "Die Knödel in siedendes Salzwasser legen und 15 bis 20 Minuten ziehen lassen, ohne dass das Wasser sprudelt."]
+    },
+    "en": {
+      "name": "Semmelknödel (bread dumplings)", "description": "Classic side dish made from stale bread rolls, milk and parsley.",
+      "ingredients": ["300 g diced stale bread rolls", "250 ml warm milk", "3 eggs", "1 onion", "2 tbsp butter", "1 bunch parsley", "1 tsp salt", "1 pinch of nutmeg"],
+      "steps": ["Finely dice the onion and sweat it in butter until translucent. Chop the parsley.", "Mix bread, onion, parsley, salt and nutmeg. Whisk milk and eggs, pour them over and let everything soak for 15 minutes.", "With wet hands form eight dumplings. Cook one as a test first and add a few crumbs or a little milk if needed.", "Put the dumplings into simmering salted water and let them steep for 15 to 20 minutes without letting the water boil hard."]
+    }
+  },
+  {
+    "id": "griessnockerlsuppe", "categories": ["soup"], "servings": 4, "prep": 15, "cook": 20,
+    "de": {
+      "name": "Grießnockerlsuppe", "description": "Klare Rindssuppe mit zarten Grießnockerln.",
+      "ingredients": ["50 g weiche Butter", "1 Ei", "100 g Grieß", "1 Prise Salz", "1 Prise Muskat", "1 l Rindssuppe", "1 Bund Schnittlauch"],
+      "steps": ["Butter schaumig rühren, das Ei einrühren. Grieß, Salz und Muskat untermischen und den Teig 30 Minuten quellen lassen.", "Mit zwei nassen Löffeln Nockerl abstechen und in siedendes Salzwasser legen. Zugedeckt 10 bis 15 Minuten ziehen lassen.", "Die Rindssuppe erhitzen, die Nockerl hineingeben und mit Schnittlauch bestreut servieren."]
+    },
+    "en": {
+      "name": "Grießnockerlsuppe", "description": "Clear beef broth with tender semolina dumplings.",
+      "ingredients": ["50 g soft butter", "1 egg", "100 g semolina", "1 pinch of salt", "1 pinch of nutmeg", "1 l beef broth", "1 bunch chives"],
+      "steps": ["Cream the butter until fluffy and stir in the egg. Mix in semolina, salt and nutmeg and let the dough swell for 30 minutes.", "Shape dumplings with two wet spoons and put them into simmering salted water. Cover and let them steep for 10 to 15 minutes.", "Heat the broth, add the dumplings and serve sprinkled with chives."]
+    }
+  },
+  {
+    "id": "rinderrouladen", "categories": ["meat"], "servings": 4, "prep": 30, "cook": 120,
+    "de": {
+      "name": "Rinderrouladen", "description": "Mit Senf, Speck, Zwiebel und Gurke gefüllt und in Rotweinsauce geschmort.",
+      "ingredients": ["4 Rinderrouladen (je ca. 180 g)", "4 EL Senf", "8 Scheiben Speck", "2 Zwiebeln", "2 Gewürzgurken", "2 EL Butterschmalz", "1 Karotte", "2 EL Tomatenmark", "250 ml Rotwein", "500 ml Rinderbrühe", "Salz", "Pfeffer"],
+      "steps": ["Die Rouladen flach legen, salzen, pfeffern und mit Senf bestreichen. Mit Speck, Zwiebelstreifen und Gurkenstreifen belegen, aufrollen und mit Küchengarn oder Rouladennadeln fixieren.", "Das Butterschmalz erhitzen und die Rouladen rundum kräftig anbraten. Herausnehmen.", "Die Karotte würfeln, im Bratfett anrösten und das Tomatenmark kurz mitrösten. Mit Rotwein ablöschen und etwas einkochen, dann die Brühe zugießen.", "Die Rouladen einlegen und zugedeckt bei kleiner Hitze 90 bis 120 Minuten schmoren, bis sie zart sind.", "Die Sauce nach Wunsch pürieren und abschmecken. Mit Kartoffeln oder Knödeln und Rotkohl servieren."]
+    },
+    "en": {
+      "name": "Rinderrouladen (beef rolls)", "description": "Beef rolls filled with mustard, bacon, onion and gherkin, braised in red wine gravy.",
+      "ingredients": ["4 thin beef slices for rolls (about 180 g each)", "4 tbsp mustard", "8 slices bacon", "2 onions", "2 pickled gherkins", "2 tbsp clarified butter", "1 carrot", "2 tbsp tomato paste", "250 ml red wine", "500 ml beef broth", "Salt", "Pepper"],
+      "steps": ["Lay the slices flat, season with salt and pepper and spread with mustard. Top with bacon, onion strips and gherkin strips, roll up and secure with kitchen string or skewers.", "Heat the clarified butter and brown the rolls well on all sides. Remove them.", "Dice the carrot, fry it in the pan drippings and briefly fry the tomato paste. Deglaze with the red wine and reduce a little, then add the broth.", "Return the rolls to the pan and braise covered over low heat for 90 to 120 minutes until tender.", "Purée the gravy if you like and season. Serve with potatoes or dumplings and red cabbage."]
+    }
+  },
+  {
+    "id": "currywurst", "categories": ["meat"], "servings": 4, "prep": 10, "cook": 20,
+    "de": {
+      "name": "Currywurst", "description": "Gebratene Bratwurst mit würziger Currysauce, am besten mit Pommes.",
+      "ingredients": ["4 Bratwürste", "2 EL Öl", "1 Zwiebel", "3 EL Tomatenmark", "200 ml Ketchup", "100 ml Wasser", "2 EL Currypulver", "1 EL Zucker", "1 EL Essig", "1 TL Paprikapulver", "Pommes frites"],
+      "steps": ["Die Zwiebel fein würfeln und in 1 EL Öl glasig dünsten. Tomatenmark und 1 EL Currypulver kurz mitrösten.", "Ketchup, Wasser, Zucker, Essig und Paprikapulver zugeben und 10 bis 15 Minuten köcheln lassen. Die Sauce fein pürieren und abschmecken.", "Die Bratwürste im restlichen Öl rundum braun braten.", "Die Würste in Scheiben schneiden, mit der Sauce übergießen, mit Currypulver bestäuben und mit Pommes servieren."]
+    },
+    "en": {
+      "name": "Currywurst", "description": "Fried pork sausage with a spicy curry ketchup sauce, best served with fries.",
+      "ingredients": ["4 bratwursts", "2 tbsp oil", "1 onion", "3 tbsp tomato paste", "200 ml ketchup", "100 ml water", "2 tbsp curry powder", "1 tbsp sugar", "1 tbsp vinegar", "1 tsp paprika", "French fries"],
+      "steps": ["Finely dice the onion and sweat it in 1 tbsp of the oil. Briefly fry the tomato paste and 1 tbsp curry powder with it.", "Add ketchup, water, sugar, vinegar and paprika and simmer for 10 to 15 minutes. Blend the sauce smooth and season.", "Fry the sausages in the remaining oil until brown all over.", "Slice the sausages, pour the sauce over them, dust with curry powder and serve with fries."]
+    }
+  },
+  {
+    "id": "koenigsberger-klopse", "categories": ["meat"], "servings": 4, "prep": 30, "cook": 25,
+    "de": {
+      "name": "Königsberger Klopse", "description": "Hackfleischklopse in heller Kapernsauce.",
+      "ingredients": ["500 g gemischtes Hackfleisch", "1 Brötchen (eingeweicht)", "1 Zwiebel", "1 Ei", "Salz", "Pfeffer", "1,2 l Fleischbrühe", "2 EL Butter", "2 EL Mehl", "2 EL Kapern", "1 Zitrone (Saft)", "100 ml Sahne"],
+      "steps": ["Das Brötchen ausdrücken. Hackfleisch, Brötchen, fein gewürfelte Zwiebel, Ei, Salz und Pfeffer gut verkneten und zu acht Klopsen formen.", "Die Brühe aufkochen, die Klopse einlegen und 15 bis 20 Minuten gar ziehen lassen. Herausnehmen und warm halten. Die Brühe aufbewahren.", "Butter schmelzen, das Mehl einrühren und mit etwa 500 ml der heißen Brühe aufgießen. Unter Rühren 5 Minuten köcheln lassen.", "Kapern, Sahne und Zitronensaft einrühren und abschmecken. Die Klopse in der Sauce erwärmen und mit Salzkartoffeln oder Reis servieren."]
+    },
+    "en": {
+      "name": "Königsberger Klopse", "description": "Meatballs in a pale caper sauce.",
+      "ingredients": ["500 g mixed minced meat", "1 bread roll (soaked)", "1 onion", "1 egg", "Salt", "Pepper", "1.2 l meat broth", "2 tbsp butter", "2 tbsp flour", "2 tbsp capers", "1 lemon (juice)", "100 ml cream"],
+      "steps": ["Squeeze out the roll. Knead minced meat, roll, finely diced onion, egg, salt and pepper well and shape eight meatballs.", "Bring the broth to a boil, add the meatballs and let them cook through for 15 to 20 minutes. Remove and keep warm. Reserve the broth.", "Melt the butter, stir in the flour and pour in about 500 ml of the hot broth. Simmer for 5 minutes, stirring.", "Stir in capers, cream and lemon juice and season. Warm the meatballs in the sauce and serve with boiled potatoes or rice."]
+    }
+  },
+  {
+    "id": "schweinebraten", "categories": ["meat"], "servings": 4, "prep": 20, "cook": 120,
+    "de": {
+      "name": "Schweinebraten", "description": "Bayerischer Krustenbraten mit Kümmel und dunkler Bratensauce.",
+      "ingredients": ["1 kg Schweinenacken mit Schwarte", "2 Zwiebeln", "2 Karotten", "3 Knoblauchzehen", "1 EL Kümmel", "1 TL Majoran", "2 TL Salz", "1 TL Pfeffer", "1 Lorbeerblatt", "500 ml dunkles Bier oder Wasser"],
+      "steps": ["Die Schwarte rautenförmig einschneiden, ohne das Fleisch zu verletzen. Mit Salz, Pfeffer, Kümmel, Majoran und zerdrücktem Knoblauch einreiben.", "Zwiebeln und Karotten grob schneiden und mit dem Lorbeerblatt in den Bräter geben. Den Braten mit der Schwarte nach oben daraufsetzen und 150 ml Flüssigkeit angießen.", "Bei 180 °C etwa 2 Stunden braten und nach und nach das restliche Bier zugießen. Zum Schluss 10 bis 15 Minuten bei 250 °C oder unter dem Grill knusprig bräunen.", "Den Braten 10 Minuten ruhen lassen. Die Sauce durch ein Sieb streichen und abschmecken. Mit Knödeln und Krautsalat servieren."]
+    },
+    "en": {
+      "name": "Schweinebraten (Bavarian roast pork)", "description": "Bavarian crackling roast with caraway and dark gravy.",
+      "ingredients": ["1 kg pork neck with rind", "2 onions", "2 carrots", "3 cloves garlic", "1 tbsp caraway seeds", "1 tsp marjoram", "2 tsp salt", "1 tsp pepper", "1 bay leaf", "500 ml dark beer or water"],
+      "steps": ["Score the rind in a diamond pattern without cutting into the meat. Rub with salt, pepper, caraway, marjoram and crushed garlic.", "Roughly chop onions and carrots and put them in the roasting pan with the bay leaf. Set the roast on top, rind side up, and pour in 150 ml of the liquid.", "Roast at 180 °C for about 2 hours, gradually adding the rest of the beer. Finish for 10 to 15 minutes at 250 °C or under the grill until crisp.", "Let the roast rest for 10 minutes. Strain the gravy and season. Serve with dumplings and cabbage salad."]
+    }
+  },
+  {
+    "id": "linseneintopf", "categories": ["soup"], "servings": 4, "prep": 15, "cook": 45,
+    "de": {
+      "name": "Linseneintopf", "description": "Herzhafter Eintopf mit Tellerlinsen, Gemüse und einem Schuss Essig.",
+      "ingredients": ["300 g Tellerlinsen", "2 Karotten", "1 Stange Lauch", "2 Kartoffeln", "1 Zwiebel", "100 g Speckwürfel", "1,2 l Brühe", "2 EL Essig", "1 Lorbeerblatt", "Salz", "Pfeffer", "4 Wiener Würstchen"],
+      "steps": ["Zwiebel und Speck in einem Topf anbraten. Karotten, Lauch und Kartoffeln würfeln und kurz mitdünsten.", "Die Linsen, die Brühe und das Lorbeerblatt zugeben und etwa 40 Minuten sanft köcheln lassen, bis die Linsen weich sind.", "Die Würstchen in Scheiben schneiden und die letzten 5 Minuten miterwärmen.", "Mit Essig, Salz und Pfeffer abschmecken."]
+    },
+    "en": {
+      "name": "Linseneintopf (lentil stew)", "description": "Hearty stew with brown lentils, vegetables and a splash of vinegar.",
+      "ingredients": ["300 g brown lentils", "2 carrots", "1 leek", "2 potatoes", "1 onion", "100 g diced bacon", "1.2 l broth", "2 tbsp vinegar", "1 bay leaf", "Salt", "Pepper", "4 frankfurter sausages"],
+      "steps": ["Fry onion and bacon in a pot. Dice carrots, leek and potatoes and sweat them briefly.", "Add the lentils, broth and bay leaf and simmer gently for about 40 minutes until the lentils are soft.", "Slice the sausages and warm them through for the last 5 minutes.", "Season with vinegar, salt and pepper."]
+    }
+  },
+  {
+    "id": "kartoffelpuffer", "categories": ["side", "vegetarian"], "servings": 4, "prep": 20, "cook": 20,
+    "de": {
+      "name": "Kartoffelpuffer (Reibekuchen)", "description": "Knusprige Kartoffelpfannkuchen, klassisch mit Apfelmus.",
+      "ingredients": ["1 kg mehligkochende Kartoffeln", "1 Zwiebel", "2 Eier", "3 EL Mehl", "1 TL Salz", "1 Prise Pfeffer", "Öl zum Braten", "Apfelmus"],
+      "steps": ["Kartoffeln und Zwiebel schälen und fein reiben. Die Masse in einem Tuch gut ausdrücken, die Flüssigkeit kurz stehen lassen und die abgesetzte Stärke zur Masse geben.", "Eier, Mehl, Salz und Pfeffer unterrühren.", "Reichlich Öl in einer Pfanne erhitzen. Je einen Esslöffel Teig flach drücken und von beiden Seiten 3 bis 4 Minuten knusprig braten.", "Auf Küchenpapier abtropfen lassen und heiß mit Apfelmus servieren."]
+    },
+    "en": {
+      "name": "Kartoffelpuffer (potato pancakes)", "description": "Crispy potato pancakes, served the classic way with apple sauce.",
+      "ingredients": ["1 kg floury potatoes", "1 onion", "2 eggs", "3 tbsp flour", "1 tsp salt", "1 pinch of pepper", "Oil for frying", "Apple sauce"],
+      "steps": ["Peel potatoes and onion and grate them finely. Squeeze the mixture out well in a cloth, let the liquid settle briefly and add the starch at the bottom back to the mixture.", "Stir in eggs, flour, salt and pepper.", "Heat plenty of oil in a pan. Flatten a tablespoon of batter per pancake and fry for 3 to 4 minutes per side until crisp.", "Drain on paper towels and serve hot with apple sauce."]
+    }
+  },
+  {
+    "id": "huehnerfrikassee", "categories": ["poultry"], "servings": 4, "prep": 20, "cook": 40,
+    "de": {
+      "name": "Hühnerfrikassee", "description": "Zartes Hähnchen mit Champignons und Erbsen in heller Sahnesauce.",
+      "ingredients": ["600 g Hähnchenbrust", "1 l Hühnerbrühe", "200 g Champignons", "200 g Erbsen (TK)", "40 g Butter", "40 g Mehl", "100 ml Sahne", "1 Zitrone (Saft)", "Salz", "Pfeffer", "300 g Reis"],
+      "steps": ["Die Hähnchenbrust in der Brühe 15 bis 20 Minuten gar ziehen lassen, herausnehmen und in Stücke schneiden. Die Brühe aufbewahren.", "Die Champignons in Scheiben schneiden und in etwas Butter anbraten.", "Die restliche Butter schmelzen, das Mehl einrühren und mit 500 ml Brühe aufgießen. Unter Rühren 5 Minuten köcheln lassen.", "Fleisch, Champignons, Erbsen und Sahne zugeben und kurz erwärmen. Mit Zitronensaft, Salz und Pfeffer abschmecken.", "Den Reis nach Packungsanweisung kochen und dazu servieren."]
+    },
+    "en": {
+      "name": "Hühnerfrikassee (chicken fricassee)", "description": "Tender chicken with mushrooms and peas in a pale cream sauce.",
+      "ingredients": ["600 g chicken breast", "1 l chicken broth", "200 g mushrooms", "200 g peas (frozen)", "40 g butter", "40 g flour", "100 ml cream", "1 lemon (juice)", "Salt", "Pepper", "300 g rice"],
+      "steps": ["Poach the chicken breast in the broth for 15 to 20 minutes, remove it and cut it into pieces. Reserve the broth.", "Slice the mushrooms and fry them in a little of the butter.", "Melt the remaining butter, stir in the flour and pour in 500 ml of the broth. Simmer for 5 minutes, stirring.", "Add chicken, mushrooms, peas and cream and heat through briefly. Season with lemon juice, salt and pepper.", "Cook the rice according to the packet instructions and serve alongside."]
+    }
+  },
+  {
+    "id": "bratwurst-sauerkraut", "categories": ["meat"], "servings": 4, "prep": 10, "cook": 30,
+    "de": {
+      "name": "Bratwurst mit Sauerkraut", "description": "Deftig: Bratwurst auf mildem Weißweinkraut mit Kartoffelpüree.",
+      "ingredients": ["4 Bratwürste", "500 g Sauerkraut", "1 Zwiebel", "1 Apfel", "1 EL Schmalz", "150 ml Weißwein oder Brühe", "1 Lorbeerblatt", "4 Wacholderbeeren", "1 TL Kümmel", "800 g Kartoffeln", "100 ml Milch", "30 g Butter"],
+      "steps": ["Zwiebel und Apfel würfeln und im Schmalz glasig dünsten. Das Sauerkraut, Wein, Lorbeer, Wacholder und Kümmel zugeben und zugedeckt 25 Minuten schmoren.", "Die Kartoffeln schälen und in Salzwasser weich kochen. Abgießen, mit Milch und Butter zu Püree stampfen und salzen.", "Die Bratwürste in einer Pfanne rundum goldbraun braten.", "Sauerkraut, Würste und Püree zusammen anrichten."]
+    },
+    "en": {
+      "name": "Bratwurst with sauerkraut", "description": "Hearty: bratwurst on mild white-wine sauerkraut with mashed potatoes.",
+      "ingredients": ["4 bratwursts", "500 g sauerkraut", "1 onion", "1 apple", "1 tbsp lard", "150 ml white wine or broth", "1 bay leaf", "4 juniper berries", "1 tsp caraway seeds", "800 g potatoes", "100 ml milk", "30 g butter"],
+      "steps": ["Dice onion and apple and sweat them in the lard. Add sauerkraut, wine, bay leaf, juniper and caraway and braise covered for 25 minutes.", "Peel the potatoes and boil them in salted water until soft. Drain, mash with milk and butter and season with salt.", "Fry the bratwursts in a pan until golden brown all over.", "Serve the sauerkraut, sausages and mash together."]
+    }
+  },
+  {
+    "id": "flammkuchen", "categories": ["baking"], "servings": 4, "prep": 20, "cook": 12,
+    "de": {
+      "name": "Flammkuchen", "description": "Hauchdünner Teig mit Schmand, Speck und Zwiebeln, aus dem Ofen.",
+      "ingredients": ["250 g Mehl", "125 ml Wasser", "2 EL Öl", "1 Prise Salz", "200 g Schmand", "150 g Speckwürfel", "2 Zwiebeln", "Pfeffer", "1 Prise Muskat"],
+      "steps": ["Mehl, Wasser, Öl und Salz zu einem glatten Teig kneten und 15 Minuten ruhen lassen. Den Ofen mit einem Blech auf 250 °C vorheizen.", "Schmand mit Salz, Pfeffer und Muskat verrühren. Die Zwiebeln in feine Ringe schneiden.", "Den Teig in vier Portionen teilen und sehr dünn ausrollen. Mit Schmand bestreichen und mit Zwiebeln und Speck belegen.", "Auf dem heißen Blech oder auf Backpapier 8 bis 12 Minuten backen, bis die Ränder knusprig sind."]
+    },
+    "en": {
+      "name": "Flammkuchen (tarte flambée)", "description": "Paper-thin dough with sour cream, bacon and onions, baked in a hot oven.",
+      "ingredients": ["250 g flour", "125 ml water", "2 tbsp oil", "1 pinch of salt", "200 g sour cream (Schmand)", "150 g diced bacon", "2 onions", "Pepper", "1 pinch of nutmeg"],
+      "steps": ["Knead flour, water, oil and salt into a smooth dough and let it rest for 15 minutes. Preheat the oven with a baking sheet inside to 250 °C.", "Stir the sour cream with salt, pepper and nutmeg. Slice the onions into fine rings.", "Divide the dough into four portions and roll out very thin. Spread with the sour cream and top with onions and bacon.", "Bake on the hot sheet or on baking paper for 8 to 12 minutes until the edges are crisp."]
+    }
+  }
+]

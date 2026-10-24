@@ -604,3 +604,8 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 - Assist-Intents („Was wünscht sich die Familie?“)
 - Zufallsvorschlag, Bewertungen, Kochhistorie („zuletzt gekocht“)
 - Einkaufsliste nach Supermarkt-Kategorien sortieren
+
+**Nachträge nach dem ersten Push (2026-10-24):**
+- GitHub-CI: HACS-Validierung schlug fehl wegen fehlender Lizenz, Repo-Beschreibung und Topics. `LICENSE` (MIT, Copyright Gloecki2404 – bei Bedarf ändern) ergänzt; Beschreibung und Topics im Repo gesetzt. Die Warnung zu `categories` im Manifest ist nur ein Hinweis (hassfest kennt das Feld noch nicht).
+- Logo: `brand/icon*.png` und `brand/logo*.png` sind rund mit weich auslaufendem Rand (transparent), Teller größer. Das Original liegt in `docs/logo.png`. HACS zeigt in seiner Liste Bilder des HA-Brands-Dienstes; lokale Bilder erscheinen erst nach der Installation in Home Assistant bzw. wenn die Marke im `home-assistant/brands`-Repo steht.
+- Beispielgerichte: `starter_recipes.json` (20 deutsche/österreichische Klassiker, Deutsch und Englisch, eigene Texte, ohne Fotos). Import über den Button in der leeren Bibliothek, WS `dishwish/recipes/import_starter` und den Service `dishwish.import_starter_recipes`; doppelte Namen werden übersprungen.

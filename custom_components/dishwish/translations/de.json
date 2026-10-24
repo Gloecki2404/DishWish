@@ -45,6 +45,13 @@
         "entity_id": {"name": "To-do-Liste", "description": "Zielliste. Standard: die Liste aus den Integrations-Optionen."}
       }
     },
+    "import_starter_recipes": {
+      "name": "Beispielgerichte importieren",
+      "description": "Fügt 20 deutsche und österreichische Klassiker hinzu (vorhandene Gerichte mit gleichem Namen werden übersprungen).",
+      "fields": {
+        "language": {"name": "Sprache", "description": "Sprache der Gerichte. Standard: die Sprache von Home Assistant."}
+      }
+    },
     "add_open_wishes_to_shopping_list": {
       "name": "Offene Wünsche auf Einkaufsliste setzen",
       "description": "Fasst die Zutaten aller Gerichte mit offenen Wünschen zusammen und schreibt sie in eine To-do-Liste.",

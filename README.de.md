@@ -96,6 +96,7 @@ entity: todo.einkaufsliste
 | Service | Wirkung |
 |---|---|
 | `dishwish.add_to_shopping_list` | `recipe_id`, optional `servings` und `entity_id`: schreibt die umgerechneten Zutaten eines Gerichts in die Liste. Antwort: `added` und `skipped`. |
+| `dishwish.import_starter_recipes` | optional `language` (`de`/`en`): fügt die 20 Beispielgerichte hinzu. Antwort: `created` und `skipped`. |
 | `dishwish.add_open_wishes_to_shopping_list` | optional `entity_id`: fasst die Zutaten aller Gerichte mit offenen Wünschen zusammen (gleiche Zutat und Einheit werden addiert). Jedes Gericht zählt einmal. |
 
 Ohne `entity_id` wird die Standard-Einkaufsliste aus den Optionen verwendet.
@@ -119,6 +120,10 @@ automation:
         data:
           message: "{{ trigger.event.data.user_name }} wünscht sich {{ trigger.event.data.recipe_name }}"
 ```
+
+## Beispielgerichte
+
+Eine leere Bibliothek bietet **20 Beispielgerichte hinzufügen** an: deutsche und österreichische Klassiker (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) mit Zutaten, Schritten und Kategorien, in der Sprache deiner Home-Assistant-Installation. Die Rezepte sind für dieses Projekt geschrieben und haben keine Fotos. Alternativ kannst du den Service `dishwish.import_starter_recipes` aufrufen (optional `language`: `de` oder `en`). Gerichte, die es dem Namen nach schon gibt, werden übersprungen.
 
 ## Link-Import
 
