@@ -4,10 +4,10 @@ import { t, tError } from "../i18n";
 import { sharedStyles } from "../styles";
 import type { HomeAssistant } from "../types";
 import "./base-dialog";
-import type { EsDialog } from "./base-dialog";
+import type { DwDialog } from "./base-dialog";
 
 /** Ask for a recipe link; fires `imported` with the draft (RecipeInput). Nothing is saved here. */
-export class EsImportDialog extends LitElement {
+export class DwImportDialog extends LitElement {
   static override properties = {
     hass: { attribute: false },
     url: { state: true },
@@ -37,8 +37,8 @@ export class EsImportDialog extends LitElement {
     `,
   ];
 
-  private get dlg(): EsDialog {
-    return this.renderRoot.querySelector("es-dialog") as EsDialog;
+  private get dlg(): DwDialog {
+    return this.renderRoot.querySelector("dw-dialog") as DwDialog;
   }
 
   private get uiLang(): string {
@@ -70,7 +70,7 @@ export class EsImportDialog extends LitElement {
 
   protected override render() {
     const lang = this.uiLang;
-    return html`<es-dialog
+    return html`<dw-dialog
       .heading=${t(lang, "import_title")}
       .closeLabel=${t(lang, "close")}
       @closed=${() => this.dispatchEvent(new CustomEvent("closed"))}
@@ -93,8 +93,8 @@ export class EsImportDialog extends LitElement {
       </div>
       ${this.loading ? html`<p class="muted">${t(lang, "import_loading")}</p>` : nothing}
       ${this.error ? html`<p class="error">${this.error}</p>` : nothing}
-    </es-dialog>`;
+    </dw-dialog>`;
   }
 }
 
-if (!customElements.get("es-import-dialog")) customElements.define("es-import-dialog", EsImportDialog);
+if (!customElements.get("dw-import-dialog")) customElements.define("dw-import-dialog", DwImportDialog);

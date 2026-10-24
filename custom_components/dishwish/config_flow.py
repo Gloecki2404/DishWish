@@ -1,4 +1,4 @@
-"""Config flow for Essensplan."""
+"""Config flow for DishWish."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ from .const import (
 )
 
 
-class EssensplanConfigFlow(ConfigFlow, domain=DOMAIN):
+class DishWishConfigFlow(ConfigFlow, domain=DOMAIN):
     """Single-step setup without inputs."""
 
     VERSION = 1
@@ -30,17 +30,17 @@ class EssensplanConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Create the (single) entry."""
         if user_input is not None:
-            return self.async_create_entry(title="Essensplan", data={})
+            return self.async_create_entry(title="DishWish", data={})
         return self.async_show_form(step_id="user")
 
     @staticmethod
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
         """Return the options flow."""
-        return EssensplanOptionsFlow()
+        return DishWishOptionsFlow()
 
 
-class EssensplanOptionsFlow(OptionsFlow):
+class DishWishOptionsFlow(OptionsFlow):
     """Default shopping list and servings."""
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:

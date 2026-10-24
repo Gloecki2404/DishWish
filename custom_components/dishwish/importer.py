@@ -32,7 +32,7 @@ from .const import (
 from .db import DbError
 from .images import ImageError
 from .ingredients import parse_line
-from .store import Actor, EssensplanStore
+from .store import Actor, DishWishStore
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -340,7 +340,7 @@ async def _fetch(
 
 
 async def async_import_recipe(
-    hass: HomeAssistant, store: EssensplanStore, actor: Actor, url: str
+    hass: HomeAssistant, store: DishWishStore, actor: Actor, url: str
 ) -> dict[str, Any]:
     """Load a recipe page and return an unsaved RecipeInput draft (incl. processed image)."""
     session = async_get_clientsession(hass)

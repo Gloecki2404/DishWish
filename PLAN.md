@@ -1,4 +1,4 @@
-# Essensplan – Umsetzungsplan
+# DishWish – Umsetzungsplan
 
 > Status: freigegeben am 2026-10-24. Umsetzung phasenweise (eine Phase pro Session):
 > „Setze Phase N aus PLAN.md um.“ Erledigte Aufgaben hier abhaken (`- [x]`).
@@ -25,12 +25,12 @@ Home-Assistant-native Rezept- und Essenswunsch-Verwaltung:
 | Thema | Entscheidung | Begründung |
 |---|---|---|
 | Form | Custom Integration, Installation über HACS. Kein Add-on. | Läuft auf jeder HA-Installation, nutzt HA-User, Backup, `todo`. |
-| Daten | Eigene SQLite-Datei `/config/essensplan/essensplan.db` (stdlib `sqlite3`) | Transaktionen, Indizes, absturzsicher (WAL), keine Abhängigkeit. Nicht Recorder-DB, nicht `.storage`-JSON. |
+| Daten | Eigene SQLite-Datei `/config/dishwish/dishwish.db` (stdlib `sqlite3`) | Transaktionen, Indizes, absturzsicher (WAL), keine Abhängigkeit. Nicht Recorder-DB, nicht `.storage`-JSON. |
 | DB-Zugriff | Ein eigener Single-Thread-Executor, eine Verbindung | Kein Blockieren des Event-Loops, keine SQLite-Thread-Probleme, Schreibzugriffe serialisiert. |
-| Bilder | Dateien `/config/essensplan/images/{id}_full.jpg` (≤ 1600 px) + `{id}_thumb.jpg` (480×360, 4:3) | Bibliothek lädt nur Vorschaubilder → schnell auch mobil. |
+| Bilder | Dateien `/config/dishwish/images/{id}_full.jpg` (≤ 1600 px) + `{id}_thumb.jpg` (480×360, 4:3) | Bibliothek lädt nur Vorschaubilder → schnell auch mobil. |
 | Bildverarbeitung | Browser verkleinert vor Upload; Server (Pillow) prüft, dreht nach EXIF, entfernt EXIF/GPS, erzeugt beide Größen | Schneller Upload, saubere einheitliche Dateien, Privatsphäre. |
 | Bildauslieferung | HTTP-View **ohne Auth**, Zugriff nur über zufällige 32-stellige ID, `Cache-Control: immutable` | Wie HA-Core `image_upload`; `<img>` kann keinen Token senden; IDs gibt nur die authentifizierte API heraus. |
-| API | WebSocket-Befehle `essensplan/*` + HTTP nur für Bilder | HA-Standard, Auth & User-Kontext inklusive, Live-Updates per Subscription. |
+| API | WebSocket-Befehle `dishwish/*` + HTTP nur für Bilder | HA-Standard, Auth & User-Kontext inklusive, Live-Updates per Subscription. |
 | Einkaufsliste | Bestehende `todo`-Entität über `todo.add_item`; Anzeige mit Standard-Karte `todo-list` | Funktioniert mit HA-Einkaufsliste, Local To-do, Bring!, Todoist …; keine eigene Liste nötig. |
 | Link-Import | Eigener schema.org-JSON-LD-Parser (stdlib `html.parser` + `json`) | Keine schwere Fremdbibliothek (Abhängigkeitskonflikte mit HA vermeiden). |
 | Frontend | TypeScript + Lit 3, Vite, **ein** gebündeltes JS in der Integration, automatisch geladen | Eine Installation, keine manuelle Lovelace-Ressource. |
@@ -43,11 +43,11 @@ Home-Assistant-native Rezept- und Essenswunsch-Verwaltung:
 ## 3. Projektstruktur
 
 ```
-essensplan/
+dishwish/
 ├── CLAUDE.md, PLAN.md, README.md, hacs.json, .gitignore
 ├── pyproject.toml                 # ruff + pytest-Konfiguration
 ├── requirements_test.txt          # pytest-homeassistant-custom-component (passend zur Ziel-HA)
-├── custom_components/essensplan/
+├── custom_components/dishwish/
 │   ├── __init__.py                # async_setup (einmalig: WS, Views, Static, Frontend) + async_setup_entry
 │   ├── manifest.json
 │   ├── const.py                   # DOMAIN, Pfade, Limits, Einheiten-Tabelle, Seed-Kategorien
@@ -64,7 +64,7 @@ essensplan/
 │   ├── sensor.py
 │   ├── backup.py
 │   ├── strings.json, translations/de.json, translations/en.json
-│   └── www/essensplan-cards.js    # Build-Ergebnis, wird committed (HACS)
+│   └── www/dishwish-cards.js    # Build-Ergebnis, wird committed (HACS)
 ├── frontend/
 │   ├── package.json, tsconfig.json, vite.config.ts, eslint.config.js
 │   └── src/
@@ -91,8 +91,8 @@ essensplan/
 
 ```json
 {
-  "domain": "essensplan",
-  "name": "Essensplan",
+  "domain": "dishwish",
+  "name": "DishWish",
   "codeowners": ["@Gloecki2404"],
   "config_flow": true,
   "dependencies": ["http", "frontend", "websocket_api"],
@@ -106,7 +106,7 @@ essensplan/
 }
 ```
 
-`hacs.json`: `{"name": "Essensplan", "homeassistant": "2026.3.0", "render_readme": true}`
+`hacs.json`: `{"name": "DishWish", "homeassistant": "2026.3.0", "render_readme": true}`
 
 ## 4. Datenmodell (SQLite, Schema v1)
 
@@ -198,7 +198,7 @@ CREATE UNIQUE INDEX idx_wishes_open_unique ON wishes (recipe_id, user_id) WHERE 
 ```
 
 **Regeln:**
-- Versionierung über `PRAGMA user_version`. Migrationen als geordnete Liste in `db.py`, jede in einer Transaktion. **Vor jeder Migration** Kopie `essensplan.db.bak-v{alt}` anlegen.
+- Versionierung über `PRAGMA user_version`. Migrationen als geordnete Liste in `db.py`, jede in einer Transaktion. **Vor jeder Migration** Kopie `dishwish.db.bak-v{alt}` anlegen.
 - Beim Start `PRAGMA quick_check`. Schlägt er fehl: Fehler loggen, HA-Repair-Issue anlegen, Setup mit `ConfigEntryError` abbrechen. **Nie** eine neue DB über eine defekte legen.
 - Alle Schreibvorgänge in `with conn:` (Transaktion). Update eines Rezepts ersetzt Zutaten- und Schrittliste komplett (kein Diff).
 - Seed-Kategorien beim ersten Anlegen, Namen nach `hass.config.language` (de/en): Fleisch, Geflügel, Fisch, Vegetarisch, Vegan, Pasta, Suppe & Eintopf, Salat, Auflauf, Beilage, Frühstück, Dessert, Backen, jeweils mit passendem `mdi:`-Icon.
@@ -208,14 +208,14 @@ CREATE UNIQUE INDEX idx_wishes_open_unique ON wishes (recipe_id, user_id) WHERE 
 
 **`__init__.py`**
 - `CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)`.
-- `async_setup` (einmal pro HA-Laufzeit): WS-Befehle, HTTP-Views, Static-Path für `www/` und `frontend.add_extra_js_url(hass, f"/essensplan_static/essensplan-cards.js?v={VERSION}")`. Dadurch kein Doppel-Registrieren bei Entry-Reload.
+- `async_setup` (einmal pro HA-Laufzeit): WS-Befehle, HTTP-Views, Static-Path für `www/` und `frontend.add_extra_js_url(hass, f"/dishwish_static/dishwish-cards.js?v={VERSION}")`. Dadurch kein Doppel-Registrieren bei Entry-Reload.
 - `async_setup_entry`: Ordner anlegen, Store öffnen (`entry.runtime_data`), Plattform `sensor`, Aufräum-Job (beim Start + alle 24 h).
 - `async_unload_entry`: Jobs stoppen, Store schließen (Verbindung im DB-Thread schließen, Executor beenden).
 - Helfer `get_store(hass)` holt den geladenen Entry oder wirft einen klaren Fehler (für WS/Services/Backup).
 
-**`store.py`** – `EssensplanStore`
-- Besitzt `ThreadPoolExecutor(max_workers=1, thread_name_prefix="essensplan_db")`. Die Verbindung wird **im** Thread geöffnet, alle `db.py`-Aufrufe über `loop.run_in_executor`.
-- Rechteprüfung (Abschnitt 11), danach Dispatcher-Signal `essensplan_changed` mit `{"kind": "recipes" | "categories" | "wishes", "ids": [...]}`.
+**`store.py`** – `DishWishStore`
+- Besitzt `ThreadPoolExecutor(max_workers=1, thread_name_prefix="dishwish_db")`. Die Verbindung wird **im** Thread geöffnet, alle `db.py`-Aufrufe über `loop.run_in_executor`.
+- Rechteprüfung (Abschnitt 11), danach Dispatcher-Signal `dishwish_changed` mit `{"kind": "recipes" | "categories" | "wishes", "ids": [...]}`.
 - Schreibsperre für Backups: `asyncio.Event` `_writes_allowed`. Jede Schreibmethode wartet darauf, Lesezugriffe nicht.
 - User-Namen über `hass.auth.async_get_user` auflösen und cachen.
 
@@ -231,8 +231,8 @@ CREATE UNIQUE INDEX idx_wishes_open_unique ON wishes (recipe_id, user_id) WHERE 
 - Aufräumen: Zeilen mit `recipe_id IS NULL`, die älter als 24 h sind, samt Dateien löschen. Dateien ohne DB-Zeile, die älter als 1 h sind, löschen. Nach `recipes/delete` und beim Entfernen einzelner Bilder: Dateien sofort nach dem Commit löschen.
 
 **`http.py`**
-- `POST /api/essensplan/images` (`requires_auth = True`): Multipart-Feld `file`. Legt eine `recipe_images`-Zeile ohne `recipe_id` an. Antwort `201 {"id", "thumb_url", "full_url"}`.
-- `GET /api/essensplan/images/{image_id}/{size}` (`requires_auth = False`): `image_id` muss `^[0-9a-f]{32}$` entsprechen, `size` ∈ {`thumb`, `full`}. `FileResponse` mit `Cache-Control: public, max-age=31536000, immutable`, sonst 404.
+- `POST /api/dishwish/images` (`requires_auth = True`): Multipart-Feld `file`. Legt eine `recipe_images`-Zeile ohne `recipe_id` an. Antwort `201 {"id", "thumb_url", "full_url"}`.
+- `GET /api/dishwish/images/{image_id}/{size}` (`requires_auth = False`): `image_id` muss `^[0-9a-f]{32}$` entsprechen, `size` ∈ {`thumb`, `full`}. `FileResponse` mit `Cache-Control: public, max-age=31536000, immutable`, sonst 404.
 
 **`config_flow.py`**
 - Einrichtung ohne Eingaben (einmalig).
@@ -244,23 +244,23 @@ CREATE UNIQUE INDEX idx_wishes_open_unique ON wishes (recipe_id, user_id) WHERE 
 
 | `type` | Parameter | Antwort | Rechte |
 |---|---|---|---|
-| `essensplan/recipes/list` | – | `RecipeSummary[]` | sichtbare Gerichte |
-| `essensplan/recipes/get` | `recipe_id` | `Recipe` | sichtbar |
-| `essensplan/recipes/create` | `RecipeInput` | `Recipe` | alle |
-| `essensplan/recipes/update` | `recipe_id`, `RecipeInput` | `Recipe` | Ersteller oder Admin |
-| `essensplan/recipes/delete` | `recipe_id` | `{}` | Ersteller oder Admin |
-| `essensplan/recipes/import_url` | `url` | `RecipeInput` (Entwurf, **nicht** gespeichert; `image_ids` enthält das importierte Bild; `source_url`/`source_name` gesetzt) | alle |
-| `essensplan/ingredients/parse` | `lines: string[]` (≤ 100) | `IngredientInput[]` | alle |
-| `essensplan/categories/list` | – | `Category[]` | alle |
-| `essensplan/categories/create` | `name`, `icon?` | `Category` | alle |
-| `essensplan/categories/update` | `category_id`, `name?`, `icon?`, `position?` | `Category` | Admin |
-| `essensplan/categories/delete` | `category_id` | `{}` | Admin |
-| `essensplan/wishes/list` | `status?` (`open` Standard, `done`), `limit?` | `Wish[]` | Wünsche zu sichtbaren Gerichten |
-| `essensplan/wishes/add` | `recipe_id`, `note?` | `Wish` | für sich selbst; doppelt offen → Fehler `already_wished` |
-| `essensplan/wishes/remove` | `wish_id` | `{}` | eigener Wunsch oder Admin |
-| `essensplan/wishes/complete` | `recipe_id` | `{"count"}` | alle („Gekocht“: alle offenen Wünsche dieses Gerichts) |
-| `essensplan/shopping/add` | `recipe_id`, `servings?`, `ingredient_ids?`, `entity_id?` | `{"added": [...], "skipped": [...]}` | alle |
-| `essensplan/subscribe` | – | Events `{"kind", "ids"}` | alle |
+| `dishwish/recipes/list` | – | `RecipeSummary[]` | sichtbare Gerichte |
+| `dishwish/recipes/get` | `recipe_id` | `Recipe` | sichtbar |
+| `dishwish/recipes/create` | `RecipeInput` | `Recipe` | alle |
+| `dishwish/recipes/update` | `recipe_id`, `RecipeInput` | `Recipe` | Ersteller oder Admin |
+| `dishwish/recipes/delete` | `recipe_id` | `{}` | Ersteller oder Admin |
+| `dishwish/recipes/import_url` | `url` | `RecipeInput` (Entwurf, **nicht** gespeichert; `image_ids` enthält das importierte Bild; `source_url`/`source_name` gesetzt) | alle |
+| `dishwish/ingredients/parse` | `lines: string[]` (≤ 100) | `IngredientInput[]` | alle |
+| `dishwish/categories/list` | – | `Category[]` | alle |
+| `dishwish/categories/create` | `name`, `icon?` | `Category` | alle |
+| `dishwish/categories/update` | `category_id`, `name?`, `icon?`, `position?` | `Category` | Admin |
+| `dishwish/categories/delete` | `category_id` | `{}` | Admin |
+| `dishwish/wishes/list` | `status?` (`open` Standard, `done`), `limit?` | `Wish[]` | Wünsche zu sichtbaren Gerichten |
+| `dishwish/wishes/add` | `recipe_id`, `note?` | `Wish` | für sich selbst; doppelt offen → Fehler `already_wished` |
+| `dishwish/wishes/remove` | `wish_id` | `{}` | eigener Wunsch oder Admin |
+| `dishwish/wishes/complete` | `recipe_id` | `{"count"}` | alle („Gekocht“: alle offenen Wünsche dieses Gerichts) |
+| `dishwish/shopping/add` | `recipe_id`, `servings?`, `ingredient_ids?`, `entity_id?` | `{"added": [...], "skipped": [...]}` | alle |
+| `dishwish/subscribe` | – | Events `{"kind", "ids"}` | alle |
 
 **Typen (JSON):**
 - `RecipeSummary`: `id, name, thumb_url|null, category_ids, servings, prep_minutes, cook_minutes, visibility, created_by, updated_at, open_wish_count, my_wish_id|null, source_name|null`.
@@ -273,20 +273,20 @@ CREATE UNIQUE INDEX idx_wishes_open_unique ON wishes (recipe_id, user_id) WHERE 
 
 ### Services (`services.yaml` + Übersetzungen)
 
-- `essensplan.add_to_shopping_list`: `recipe_id` (Pflicht), `servings`, `entity_id` (`todo`; Standard aus den Optionen).
-- `essensplan.add_open_wishes_to_shopping_list`: `entity_id`. Nimmt die Zutaten aller offenen Wünsche, fasst gleiche Zutat + Einheit zusammen und schreibt sie in die Liste.
+- `dishwish.add_to_shopping_list`: `recipe_id` (Pflicht), `servings`, `entity_id` (`todo`; Standard aus den Optionen).
+- `dishwish.add_open_wishes_to_shopping_list`: `entity_id`. Nimmt die Zutaten aller offenen Wünsche, fasst gleiche Zutat + Einheit zusammen und schreibt sie in die Liste.
 
 Beide sind ohne User-Kontext (Automationen) erlaubt.
 
 ### Events (für Automationen)
 
-- `essensplan_wish_added`: `recipe_id, recipe_name, user_id, user_name, note`
-- `essensplan_wishes_completed`: `recipe_id, recipe_name, count`
+- `dishwish_wish_added`: `recipe_id, recipe_name, user_id, user_name, note`
+- `dishwish_wishes_completed`: `recipe_id, recipe_name, count`
 
-### Entitäten (ein Service-Gerät „Essensplan“, `has_entity_name`, `translation_key`)
+### Entitäten (ein Service-Gerät „DishWish“, `has_entity_name`, `translation_key`)
 
-- `sensor.essensplan_open_wishes`: Anzahl offener Wünsche. Attribut `wishes` (max. 20 Einträge `{recipe, users, notes}`) über `_unrecorded_attributes` vom Recorder ausgeschlossen.
-- `sensor.essensplan_recipes`: Anzahl Gerichte.
+- `sensor.dishwish_open_wishes`: Anzahl offener Wünsche. Attribut `wishes` (max. 20 Einträge `{recipe, users, notes}`) über `_unrecorded_attributes` vom Recorder ausgeschlossen.
+- `sensor.dishwish_recipes`: Anzahl Gerichte.
 - Aktualisierung über das Change-Signal, kein Polling.
 
 ## 7. Einkaufsliste (`shopping.py`)
@@ -346,7 +346,7 @@ Beide sind ohne User-Kontext (Automationen) erlaubt.
 ## 10. Frontend
 
 ### Allgemein
-- Lit 3, TypeScript `strict`, Vite-Library-Build → ein ES-Modul `custom_components/essensplan/www/essensplan-cards.js`. Keine CDN-Abhängigkeiten.
+- Lit 3, TypeScript `strict`, Vite-Library-Build → ein ES-Modul `custom_components/dishwish/www/dishwish-cards.js`. Keine CDN-Abhängigkeiten.
 - Registrierung: `customElements.define` nur wenn noch nicht definiert. `window.customCards.push({type, name, description, preview: true, documentationURL})`.
 - `data-store.ts`: ein Singleton pro `hass.connection`.
   - Startet beim ersten Zugriff parallel `recipes/list`, `categories/list` und `wishes/list`.
@@ -383,11 +383,11 @@ Beide sind ohne User-Kontext (Automationen) erlaubt.
 ### Bild-Upload (`utils/image.ts`)
 - `createImageBitmap(file, {imageOrientation: "from-image"})` → Canvas, lange Kante max. 2.048 px → `toBlob("image/jpeg", 0.85)`.
 - Schlägt das fehl, Original hochladen (Server-Limit 15 MB).
-- Upload per `hass.fetchWithAuth("/api/essensplan/images", {method: "POST", body: FormData})`.
+- Upload per `hass.fetchWithAuth("/api/dishwish/images", {method: "POST", body: FormData})`.
 
 ### Karten
 
-**`essensplan-library-card`** – Bibliothek
+**`dishwish-library-card`** – Bibliothek
 - Konfiguration:
 
   | Option | Werte | Standard |
@@ -408,7 +408,7 @@ Beide sind ohne User-Kontext (Automationen) erlaubt.
   - Kachel-Raster: Bild, Name, Zeit-Badge, Herz (eigener Wunsch an/aus) + Anzahl Wünsche. Kachel antippen → recipe-dialog.
   - Leerer Zustand mit Buttons „Erstes Gericht anlegen“ / „Per Link importieren“
 
-**`essensplan-wishes-card`** – Essenswünsche
+**`dishwish-wishes-card`** – Essenswünsche
 - Konfiguration:
 
   | Option | Werte | Standard |
@@ -424,7 +424,7 @@ Beide sind ohne User-Kontext (Automationen) erlaubt.
   - Aktionen: „Gekocht ✓“, „Zutaten auf Einkaufsliste“, eigenen Wunsch entfernen, Rezept öffnen
   - Button „+ Wunsch“ → recipe-picker
 
-**`essensplan-recipe-card`** – Einzelrezept / Kochmodus (Phase 4)
+**`dishwish-recipe-card`** – Einzelrezept / Kochmodus (Phase 4)
 - Konfiguration:
 
   | Option | Werte | Standard |
@@ -479,7 +479,7 @@ services:
     environment: ["TZ=Europe/Berlin"]   # anpassen
     volumes:
       - ./config:/config
-      - ../custom_components/essensplan:/config/custom_components/essensplan
+      - ../custom_components/dishwish:/config/custom_components/dishwish
   test:
     build: { context: .., dockerfile: dev/Dockerfile.test }   # python:3.14-slim + requirements_test.txt
     working_dir: /repo
@@ -522,10 +522,10 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 - `get_store(hass)` liegt in `store.py` statt `__init__.py` (vermeidet zirkuläre Imports mit `http.py`/`backup.py`).
 - Statische Auslieferung von `www/` und `add_extra_js_url` bewusst erst in Phase 2 (2.1), da es noch kein JS gibt. Plattform `sensor` + Aufräum-Job: Job ist da, Sensoren folgen in Phase 3.
 - Antwortgröße `recipes/list` (1.000 Gerichte): ~430 KB roh, < 250 KB komprimiert (HA nutzt WebSocket-Kompression). Test prüft die komprimierte Größe.
-- Dev-HA startet und erkennt die Integration; 50 Seed-Gerichte liegen in `dev/config/essensplan`. Manuell in der Dev-HA geprüft (über WS im Browser): Integration eingerichtet, Gericht anlegen/lesen/ändern/löschen, Bild-Upload per `fetchWithAuth` (201), Bilddateien verschwinden mit dem Gericht.
+- Dev-HA startet und erkennt die Integration; 50 Seed-Gerichte liegen in `dev/config/dishwish`. Manuell in der Dev-HA geprüft (über WS im Browser): Integration eingerichtet, Gericht anlegen/lesen/ändern/löschen, Bild-Upload per `fetchWithAuth` (201), Bilddateien verschwinden mit dem Gericht.
 
 ### Phase 2 – Bibliothek, Rezepte, Link-Import
-- [x] 2.1 Frontend-Projekt: Vite, TS strict, Lit, ESLint, vitest. Build nach `custom_components/essensplan/www/`. Auslieferung + `add_extra_js_url` in `__init__.py`.
+- [x] 2.1 Frontend-Projekt: Vite, TS strict, Lit, ESLint, vitest. Build nach `custom_components/dishwish/www/`. Auslieferung + `add_extra_js_url` in `__init__.py`.
 - [x] 2.2 `api.ts`, `types.ts`, `data-store.ts`, `i18n.ts`, `styles.ts`, `base-dialog.ts`
 - [x] 2.3 `library-card` inkl. Filter, Suche, Sortierung, Editor
 - [x] 2.4 `recipe-dialog` inkl. Portionen-Umrechnung (`utils/scale.ts`, gleiche Fixture wie Backend)
@@ -559,8 +559,8 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 **Abweichungen/Notizen Phase 3 (2026-10-24):**
 - Prüfpunkt 7 geklärt: `todo.get_items` (mit `status: needs_action`, `return_response`) liefert `{entity_id: {"items": [{summary, uid, status, ...}]}}`; `todo.add_item` nimmt `item` und `description`, aber nur wenn die Entität `SET_DESCRIPTION_ON_ITEM` (64) unterstützt. Die HA-Einkaufsliste (`shopping_list`) unterstützt keine Beschreibung → dort wird sie weggelassen; mit Local To-do o. Ä. wird „für: Rezeptname“ gesetzt.
 - `manifest.json`: `todo` zu `dependencies` ergänzt (Services und Import von `homeassistant.components.todo`).
-- `essensplan.add_open_wishes_to_shopping_list`: Jedes Gericht mit offenen Wünschen zählt einmal (mit seinen eigenen Portionen), auch wenn mehrere Personen es sich wünschen; gleiche Zutat + Einheit wird addiert.
-- Entity-IDs der Sensoren richten sich nach der HA-Sprache (z. B. `sensor.essensplan_offene_wunsche`, `sensor.essensplan_gerichte` bei Deutsch).
+- `dishwish.add_open_wishes_to_shopping_list`: Jedes Gericht mit offenen Wünschen zählt einmal (mit seinen eigenen Portionen), auch wenn mehrere Personen es sich wünschen; gleiche Zutat + Einheit wird addiert.
+- Entity-IDs der Sensoren richten sich nach der HA-Sprache (z. B. `sensor.dishwish_offene_wunsche`, `sensor.dishwish_gerichte` bei Deutsch).
 - Wünsche werden nach `created_at` und Einfüge-Reihenfolge sortiert (Sekundenauflösung, `rowid` als Tiebreaker).
 - Im `recipe-dialog`: Zutaten-Checkboxen, Einkaufslisten-Button (nutzt `shopping_list` der Karte, sonst Integrations-Option), Wunsch mit Notiz. Herz in der `library-card`, `wishes-card` und `recipe-picker` sind da. „Zuletzt gekocht“ (`show_done`) lädt `wishes/list?status=done` nach.
 - Nachträglich (Feedback): In der Kartenauswahl von HA (`hui-card-picker`) rendern beide Karten verkürzt (Bibliothek 4 Kacheln, Wünsche 1 Gericht, begrenzte Höhe). Die Wünsche-Karte zeigt je Wunsch "Name · vor 3 Tagen" (+ Notiz) und hat die Option `sort` (`popular` | `oldest` | `newest`). Der Button "Auf Einkaufsliste" ist aus der Wünsche-Karte entfernt, die Einkaufsliste steckt weiterhin im Rezept-Dialog.

@@ -3,7 +3,7 @@ import { icon, paths } from "../icons";
 import { sharedStyles } from "../styles";
 
 /** Open dialogs, topmost last. Only the topmost one reacts to the browser back button. */
-const stack: EsDialog[] = [];
+const stack: DwDialog[] = [];
 
 /** Number of history.back() calls we issued ourselves; their popstate events are not user navigation. */
 let pendingBacks = 0;
@@ -21,7 +21,7 @@ window.addEventListener("popstate", () => {
  * Modal dialog on top of the native <dialog>. Fullscreen below 600 px.
  * Fires a cancelable `close-request` (Esc, X, back button) before closing and `closed` afterwards.
  */
-export class EsDialog extends LitElement {
+export class DwDialog extends LitElement {
   static override properties = {
     heading: { type: String },
     closeLabel: { type: String },
@@ -105,7 +105,7 @@ export class EsDialog extends LitElement {
   show(): void {
     this.dlg.showModal();
     stack.push(this);
-    history.pushState({ essensplan: true }, "");
+    history.pushState({ dishwish: true }, "");
     this.pushed = true;
   }
 
@@ -126,7 +126,7 @@ export class EsDialog extends LitElement {
     this.dispatchEvent(ev);
     if (ev.defaultPrevented) {
       // Stay open: restore the history entry the back button consumed.
-      history.pushState({ essensplan: true }, "");
+      history.pushState({ dishwish: true }, "");
       this.pushed = true;
     } else {
       this.close();
@@ -173,4 +173,4 @@ export class EsDialog extends LitElement {
   }
 }
 
-if (!customElements.get("es-dialog")) customElements.define("es-dialog", EsDialog);
+if (!customElements.get("dw-dialog")) customElements.define("dw-dialog", DwDialog);

@@ -132,7 +132,7 @@ def new_id() -> str:
 
 def image_urls(image_id: str) -> dict[str, str]:
     """Return thumb and full URL for an image id."""
-    base = f"/api/essensplan/images/{image_id}"
+    base = f"/api/dishwish/images/{image_id}"
     return {"id": image_id, "thumb_url": f"{base}/thumb", "full_url": f"{base}/full"}
 
 

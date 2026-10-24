@@ -5,10 +5,10 @@ from __future__ import annotations
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
-from .store import EssensplanStore
+from .store import DishWishStore
 
 
-def _loaded_store(hass: HomeAssistant) -> EssensplanStore | None:
+def _loaded_store(hass: HomeAssistant) -> DishWishStore | None:
     entries = hass.config_entries.async_loaded_entries(DOMAIN)
     return entries[0].runtime_data if entries else None
 

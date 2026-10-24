@@ -9,7 +9,7 @@ from io import BytesIO
 import pytest
 from PIL import Image
 
-from custom_components.essensplan import images
+from custom_components.dishwish import images
 
 from .conftest import jpeg_bytes
 

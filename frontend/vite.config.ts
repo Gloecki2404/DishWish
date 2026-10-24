@@ -1,13 +1,13 @@
-﻿import { defineConfig } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
       formats: ["es"],
-      fileName: () => "essensplan-cards.js",
+      fileName: () => "dishwish-cards.js",
     },
-    outDir: "../custom_components/essensplan/www",
+    outDir: "../custom_components/dishwish/www",
     emptyOutDir: true,
     sourcemap: false,
     target: "es2022",

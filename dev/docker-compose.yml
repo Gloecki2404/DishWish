@@ -5,7 +5,7 @@ services:
     environment: ["TZ=Europe/Berlin"]
     volumes:
       - ./config:/config
-      - ../custom_components/essensplan:/config/custom_components/essensplan
+      - ../custom_components/dishwish:/config/custom_components/dishwish
   test:
     build: { context: .., dockerfile: dev/Dockerfile.test }
     working_dir: /repo

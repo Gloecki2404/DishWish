@@ -28,11 +28,11 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
-def get_store(hass: HomeAssistant) -> EssensplanStore:
+def get_store(hass: HomeAssistant) -> DishWishStore:
     """Return the store of the loaded config entry or raise a clear error."""
     entries = hass.config_entries.async_loaded_entries(DOMAIN)
     if not entries:
-        raise HomeAssistantError("Essensplan is not loaded")
+        raise HomeAssistantError("DishWish is not loaded")
     return entries[0].runtime_data
 
 
@@ -53,16 +53,16 @@ class Actor:
 SYSTEM = Actor(None, True)
 
 
-class EssensplanStore:
+class DishWishStore:
     """Owns the DB thread and connection; all access goes through here."""
 
     def __init__(self, hass: HomeAssistant, data_dir: Path, language: str) -> None:
         self.hass = hass
         self.data_dir = data_dir
-        self.db_path = data_dir / "essensplan.db"
+        self.db_path = data_dir / "dishwish.db"
         self.images_dir = data_dir / "images"
         self._language = language
-        self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="essensplan_db")
+        self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="dishwish_db")
         self._conn: sqlite3.Connection | None = None
         self._writes_allowed = asyncio.Event()
         self._writes_allowed.set()

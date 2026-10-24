@@ -1,4 +1,4 @@
-// Must match custom_components/essensplan/ingredients.py (shared fixture: tests/fixtures/ingredient_cases.json).
+// Must match custom_components/dishwish/ingredients.py (shared fixture: tests/fixtures/ingredient_cases.json).
 import type { Ingredient } from "../types";
 
 const roundHalfUp = (v: number): number => Math.floor(v + 0.5);

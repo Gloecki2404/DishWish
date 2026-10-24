@@ -4,12 +4,12 @@ import { sharedStyles } from "../styles";
 import type { Category, HomeAssistant, RecipeSummary } from "../types";
 import { normalize } from "../utils/search";
 import "./base-dialog";
-import type { EsDialog } from "./base-dialog";
+import type { DwDialog } from "./base-dialog";
 
 const MAX_SHOWN = 80;
 
 /** Compact searchable list to pick one dish. Fires `picked` with the recipe id. */
-export class EsRecipePicker extends LitElement {
+export class DwRecipePicker extends LitElement {
   static override properties = {
     hass: { attribute: false },
     recipes: { attribute: false },
@@ -69,8 +69,8 @@ export class EsRecipePicker extends LitElement {
     `,
   ];
 
-  private get dlg(): EsDialog {
-    return this.renderRoot.querySelector("es-dialog") as EsDialog;
+  private get dlg(): DwDialog {
+    return this.renderRoot.querySelector("dw-dialog") as DwDialog;
   }
 
   private get uiLang(): string {
@@ -101,7 +101,7 @@ export class EsRecipePicker extends LitElement {
   protected override render() {
     const lang = this.uiLang;
     const found = this.filtered();
-    return html`<es-dialog .heading=${t(lang, "picker_title")} .closeLabel=${t(lang, "close")}>
+    return html`<dw-dialog .heading=${t(lang, "picker_title")} .closeLabel=${t(lang, "close")}>
       <input
         type="search"
         placeholder=${t(lang, "search")}
@@ -120,8 +120,8 @@ export class EsRecipePicker extends LitElement {
           </button>`,
         )}
       </div>
-    </es-dialog>`;
+    </dw-dialog>`;
   }
 }
 
-if (!customElements.get("es-recipe-picker")) customElements.define("es-recipe-picker", EsRecipePicker);
+if (!customElements.get("dw-recipe-picker")) customElements.define("dw-recipe-picker", DwRecipePicker);

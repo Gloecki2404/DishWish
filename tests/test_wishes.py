@@ -11,8 +11,8 @@ from pytest_homeassistant_custom_component.common import (
     async_mock_service,
 )
 
-from custom_components.essensplan import shopping
-from custom_components.essensplan.const import (
+from custom_components.dishwish import shopping
+from custom_components.dishwish.const import (
     CONF_DEFAULT_SHOPPING_LIST,
     DOMAIN,
     EVENT_WISH_ADDED,
@@ -47,7 +47,7 @@ async def _items(hass: HomeAssistant) -> list[dict]:
 
 
 async def _create(client, **overrides) -> dict:
-    resp = await call(client, "essensplan/recipes/create", **recipe_input(**overrides))
+    resp = await call(client, "dishwish/recipes/create", **recipe_input(**overrides))
     assert resp["success"], resp
     return resp["result"]
 
@@ -62,7 +62,7 @@ async def test_wish_lifecycle(hass, setup_integration, make_client):
     done_events = async_capture_events(hass, EVENT_WISHES_COMPLETED)
     recipe = await _create(alice, name="Pizza")
 
-    first = await call(alice, "essensplan/wishes/add", recipe_id=recipe["id"], note="mit Salami")
+    first = await call(alice, "dishwish/wishes/add", recipe_id=recipe["id"], note="mit Salami")
     assert first["success"], first
     wish = first["result"]
     assert wish["recipe_name"] == "Pizza" and wish["user_id"] == alice_user.id
@@ -70,36 +70,36 @@ async def test_wish_lifecycle(hass, setup_integration, make_client):
         wish["user_name"] == "alice" and wish["note"] == "mit Salami" and wish["status"] == "open"
     )
 
-    dup = await call(alice, "essensplan/wishes/add", recipe_id=recipe["id"])
+    dup = await call(alice, "dishwish/wishes/add", recipe_id=recipe["id"])
     assert dup["error"]["code"] == "already_wished"
-    assert (await call(bob, "essensplan/wishes/add", recipe_id=recipe["id"]))["success"]
+    assert (await call(bob, "dishwish/wishes/add", recipe_id=recipe["id"]))["success"]
     await hass.async_block_till_done()
 
     assert [e.data["user_name"] for e in added_events] == ["alice", "bob"]
     assert added_events[0].data["note"] == "mit Salami"
 
-    wishes = (await call(bob, "essensplan/wishes/list"))["result"]
+    wishes = (await call(bob, "dishwish/wishes/list"))["result"]
     assert [w["user_name"] for w in wishes] == ["alice", "bob"]  # oldest first
-    summary = (await call(bob, "essensplan/recipes/list"))["result"][0]
+    summary = (await call(bob, "dishwish/recipes/list"))["result"][0]
     assert summary["open_wish_count"] == 2
     assert summary["my_wish_id"] == wishes[1]["id"]
 
-    done = await call(bob, "essensplan/wishes/complete", recipe_id=recipe["id"])
+    done = await call(bob, "dishwish/wishes/complete", recipe_id=recipe["id"])
     assert done["result"] == {"count": 2}
     await hass.async_block_till_done()
     assert done_events[0].data == {"recipe_id": recipe["id"], "recipe_name": "Pizza", "count": 2}
-    assert (await call(bob, "essensplan/wishes/list"))["result"] == []
-    finished = (await call(bob, "essensplan/wishes/list", status="done", limit=1))["result"]
+    assert (await call(bob, "dishwish/wishes/list"))["result"] == []
+    finished = (await call(bob, "dishwish/wishes/list", status="done", limit=1))["result"]
     assert len(finished) == 1 and finished[0]["status"] == "done" and finished[0]["done_at"]
-    assert (await call(bob, "essensplan/recipes/list"))["result"][0]["open_wish_count"] == 0
+    assert (await call(bob, "dishwish/recipes/list"))["result"][0]["open_wish_count"] == 0
 
     # completing again changes nothing and fires no event; a new wish is allowed again
-    assert (await call(bob, "essensplan/wishes/complete", recipe_id=recipe["id"]))["result"] == {
+    assert (await call(bob, "dishwish/wishes/complete", recipe_id=recipe["id"]))["result"] == {
         "count": 0
     }
     await hass.async_block_till_done()
     assert len(done_events) == 1
-    assert (await call(alice, "essensplan/wishes/add", recipe_id=recipe["id"]))["success"]
+    assert (await call(alice, "dishwish/wishes/add", recipe_id=recipe["id"]))["success"]
 
 
 async def test_wish_visibility_and_permissions(hass, setup_integration, make_client):
@@ -110,25 +110,25 @@ async def test_wish_visibility_and_permissions(hass, setup_integration, make_cli
     shared = await _create(alice, name="Shared")
 
     # nobody else can wish for, see or complete a private recipe
-    assert (await call(bob, "essensplan/wishes/add", recipe_id=secret["id"]))["error"][
+    assert (await call(bob, "dishwish/wishes/add", recipe_id=secret["id"]))["error"][
         "code"
     ] == "not_found"
-    assert (await call(bob, "essensplan/wishes/complete", recipe_id=secret["id"]))["error"][
+    assert (await call(bob, "dishwish/wishes/complete", recipe_id=secret["id"]))["error"][
         "code"
     ] == "not_found"
-    own = (await call(alice, "essensplan/wishes/add", recipe_id=secret["id"]))["result"]
-    assert [w["id"] for w in (await call(alice, "essensplan/wishes/list"))["result"]] == [own["id"]]
-    assert (await call(bob, "essensplan/wishes/list"))["result"] == []
+    own = (await call(alice, "dishwish/wishes/add", recipe_id=secret["id"]))["result"]
+    assert [w["id"] for w in (await call(alice, "dishwish/wishes/list"))["result"]] == [own["id"]]
+    assert (await call(bob, "dishwish/wishes/list"))["result"] == []
 
     # remove: own wish, someone else's wish, admin, unknown
-    alice_wish = (await call(alice, "essensplan/wishes/add", recipe_id=shared["id"]))["result"]
-    bob_wish = (await call(bob, "essensplan/wishes/add", recipe_id=shared["id"]))["result"]
-    assert (await call(bob, "essensplan/wishes/remove", wish_id=alice_wish["id"]))["error"][
+    alice_wish = (await call(alice, "dishwish/wishes/add", recipe_id=shared["id"]))["result"]
+    bob_wish = (await call(bob, "dishwish/wishes/add", recipe_id=shared["id"]))["result"]
+    assert (await call(bob, "dishwish/wishes/remove", wish_id=alice_wish["id"]))["error"][
         "code"
     ] == "unauthorized"
-    assert (await call(bob, "essensplan/wishes/remove", wish_id=bob_wish["id"]))["success"]
-    assert (await call(admin, "essensplan/wishes/remove", wish_id=alice_wish["id"]))["success"]
-    assert (await call(admin, "essensplan/wishes/remove", wish_id="nope"))["error"][
+    assert (await call(bob, "dishwish/wishes/remove", wish_id=bob_wish["id"]))["success"]
+    assert (await call(admin, "dishwish/wishes/remove", wish_id=alice_wish["id"]))["success"]
+    assert (await call(admin, "dishwish/wishes/remove", wish_id="nope"))["error"][
         "code"
     ] == "not_found"
 
@@ -136,18 +136,18 @@ async def test_wish_visibility_and_permissions(hass, setup_integration, make_cli
 async def test_deleting_recipe_removes_wishes(hass, setup_integration, make_client):
     alice, _ = await make_client("alice")
     recipe = await _create(alice)
-    await call(alice, "essensplan/wishes/add", recipe_id=recipe["id"])
-    await call(alice, "essensplan/recipes/delete", recipe_id=recipe["id"])
-    assert (await call(alice, "essensplan/wishes/list"))["result"] == []
+    await call(alice, "dishwish/wishes/add", recipe_id=recipe["id"])
+    await call(alice, "dishwish/recipes/delete", recipe_id=recipe["id"])
+    assert (await call(alice, "dishwish/wishes/list"))["result"] == []
 
 
 async def test_wish_change_event_reaches_subscribers(hass, setup_integration, make_client):
     alice, _ = await make_client("alice")
     bob, _ = await make_client("bob")
     recipe = await _create(alice)
-    await bob.send_json_auto_id({"type": "essensplan/subscribe"})
+    await bob.send_json_auto_id({"type": "dishwish/subscribe"})
     await bob.receive_json()
-    await call(alice, "essensplan/wishes/add", recipe_id=recipe["id"])
+    await call(alice, "dishwish/wishes/add", recipe_id=recipe["id"])
     event = await bob.receive_json()
     assert event["event"] == {"kind": "wishes", "ids": [recipe["id"]]}
 
@@ -168,7 +168,7 @@ async def test_shopping_add_scales_and_skips_duplicates(hass, shopping_list, mak
     )
     resp = await call(
         alice,
-        "essensplan/shopping/add",
+        "dishwish/shopping/add",
         recipe_id=recipe["id"],
         servings=2,
         entity_id=shopping_list,
@@ -180,7 +180,7 @@ async def test_shopping_add_scales_and_skips_duplicates(hass, shopping_list, mak
 
     again = await call(
         alice,
-        "essensplan/shopping/add",
+        "dishwish/shopping/add",
         recipe_id=recipe["id"],
         servings=2,
         entity_id=shopping_list,
@@ -191,7 +191,7 @@ async def test_shopping_add_scales_and_skips_duplicates(hass, shopping_list, mak
     # different servings -> different line, case-insensitive duplicate for the unscaled one
     more = await call(
         alice,
-        "essensplan/shopping/add",
+        "dishwish/shopping/add",
         recipe_id=recipe["id"],
         servings=4,
         entity_id=shopping_list,
@@ -213,7 +213,7 @@ async def test_shopping_add_selection_and_errors(hass, shopping_list, make_clien
     ids = [i["id"] for i in recipe["ingredients"]]
     resp = await call(
         alice,
-        "essensplan/shopping/add",
+        "dishwish/shopping/add",
         recipe_id=recipe["id"],
         ingredient_ids=[ids[1]],
         entity_id=shopping_list,
@@ -222,21 +222,21 @@ async def test_shopping_add_selection_and_errors(hass, shopping_list, make_clien
 
     bad_ids = await call(
         alice,
-        "essensplan/shopping/add",
+        "dishwish/shopping/add",
         recipe_id=recipe["id"],
         ingredient_ids=[999999],
         entity_id=shopping_list,
     )
     assert bad_ids["error"]["code"] == "not_found"
-    no_entity = await call(alice, "essensplan/shopping/add", recipe_id=recipe["id"])
+    no_entity = await call(alice, "dishwish/shopping/add", recipe_id=recipe["id"])
     assert no_entity["error"]["code"] == "entity_not_found"
     wrong = await call(
-        alice, "essensplan/shopping/add", recipe_id=recipe["id"], entity_id="todo.does_not_exist"
+        alice, "dishwish/shopping/add", recipe_id=recipe["id"], entity_id="todo.does_not_exist"
     )
     assert wrong["error"]["code"] == "entity_not_found"
     secret = await _create(alice, visibility="private")
     hidden = await call(
-        bob, "essensplan/shopping/add", recipe_id=secret["id"], entity_id=shopping_list
+        bob, "dishwish/shopping/add", recipe_id=secret["id"], entity_id=shopping_list
     )
     assert hidden["error"]["code"] == "not_found"
 
@@ -249,7 +249,7 @@ async def test_shopping_uses_default_list_from_options(
     )
     alice, _ = await make_client("alice")
     recipe = await _create(alice, ingredients=[{"name": "Reis", "quantity": 1, "unit": "Tasse"}])
-    resp = await call(alice, "essensplan/shopping/add", recipe_id=recipe["id"])
+    resp = await call(alice, "dishwish/shopping/add", recipe_id=recipe["id"])
     assert resp["result"]["added"] == ["1 Tasse Reis"]
 
 
@@ -285,8 +285,8 @@ async def test_services(hass, shopping_list, setup_integration, make_client):
 
     # two users wish for the same recipe: its ingredients count once
     for client in (alice, bob):
-        await call(client, "essensplan/wishes/add", recipe_id=cake["id"])
-    await call(bob, "essensplan/wishes/add", recipe_id=bread["id"])
+        await call(client, "dishwish/wishes/add", recipe_id=cake["id"])
+    await call(bob, "dishwish/wishes/add", recipe_id=bread["id"])
 
     resp = await hass.services.async_call(
         DOMAIN,
@@ -310,25 +310,25 @@ async def test_services(hass, shopping_list, setup_integration, make_client):
 async def test_sensors_follow_changes(hass, setup_integration, make_client):
     alice, _ = await make_client("alice")
     bob, _ = await make_client("bob")
-    assert hass.states.get("sensor.essensplan_open_wishes").state == "0"
-    assert hass.states.get("sensor.essensplan_recipes").state == "0"
+    assert hass.states.get("sensor.dishwish_open_wishes").state == "0"
+    assert hass.states.get("sensor.dishwish_recipes").state == "0"
 
     recipe = await _create(alice, name="Soup")
-    await call(alice, "essensplan/wishes/add", recipe_id=recipe["id"], note="heiß")
-    await call(bob, "essensplan/wishes/add", recipe_id=recipe["id"])
+    await call(alice, "dishwish/wishes/add", recipe_id=recipe["id"], note="heiß")
+    await call(bob, "dishwish/wishes/add", recipe_id=recipe["id"])
     await hass.async_block_till_done()
 
-    wishes = hass.states.get("sensor.essensplan_open_wishes")
+    wishes = hass.states.get("sensor.dishwish_open_wishes")
     assert wishes.state == "2"
     assert wishes.attributes["wishes"] == [
         {"recipe": "Soup", "users": ["alice", "bob"], "notes": ["heiß"]}
     ]
-    assert hass.states.get("sensor.essensplan_recipes").state == "1"
+    assert hass.states.get("sensor.dishwish_recipes").state == "1"
 
-    await call(alice, "essensplan/wishes/complete", recipe_id=recipe["id"])
+    await call(alice, "dishwish/wishes/complete", recipe_id=recipe["id"])
     await hass.async_block_till_done()
-    assert hass.states.get("sensor.essensplan_open_wishes").state == "0"
-    assert hass.states.get("sensor.essensplan_open_wishes").attributes["wishes"] == []
+    assert hass.states.get("sensor.dishwish_open_wishes").state == "0"
+    assert hass.states.get("sensor.dishwish_open_wishes").attributes["wishes"] == []
 
 
 async def test_description_only_when_supported(hass, setup_integration):

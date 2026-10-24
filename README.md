@@ -1,4 +1,4 @@
-# Essensplan
+# DishWish
 
 Home-Assistant-Integration für Rezepte, Essenswünsche und Einkaufsliste.
 Spezifikation und Status: [PLAN.md](PLAN.md).

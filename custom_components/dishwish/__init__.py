@@ -1,4 +1,4 @@
-"""Essensplan: recipes, meal wishes and shopping list."""
+"""DishWish: recipes, meal wishes and shopping list."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from .const import BUNDLE_NAME, CLEANUP_INTERVAL_H, DATA_DIR_NAME, DOMAIN, STATI
 from .db import DatabaseCorrupt
 from .http import BundleView, ImageUploadView, ImageView
 from .services import async_register_services
-from .store import EssensplanStore
+from .store import DishWishStore
 from .websocket_api import async_register_websocket
 
 _LOGGER = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ PLATFORMS = [Platform.SENSOR]
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
-type EssensplanConfigEntry = ConfigEntry[EssensplanStore]
+type DishWishConfigEntry = ConfigEntry[DishWishStore]
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -50,9 +50,9 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: EssensplanConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: DishWishConfigEntry) -> bool:
     """Open the database and start the cleanup job."""
-    store = EssensplanStore(hass, Path(hass.config.path(DATA_DIR_NAME)), hass.config.language)
+    store = DishWishStore(hass, Path(hass.config.path(DATA_DIR_NAME)), hass.config.language)
     try:
         await store.async_open()
     except DatabaseCorrupt as err:
@@ -66,7 +66,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: EssensplanConfigEntry) -
             translation_key="database_corrupt",
             translation_placeholders={"path": str(store.db_path)},
         )
-        raise ConfigEntryError("Essensplan database is damaged") from err
+        raise ConfigEntryError("DishWish database is damaged") from err
     ir.async_delete_issue(hass, DOMAIN, "database_corrupt")
     entry.runtime_data = store
 
@@ -74,7 +74,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: EssensplanConfigEntry) -
         try:
             await store.async_cleanup()
         except Exception:
-            _LOGGER.exception("Essensplan cleanup failed")
+            _LOGGER.exception("DishWish cleanup failed")
 
     await _cleanup()
     entry.async_on_unload(
@@ -84,7 +84,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: EssensplanConfigEntry) -
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: EssensplanConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: DishWishConfigEntry) -> bool:
     """Unload sensors, then close the store (interval job is removed by async_on_unload)."""
     if not await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
         return False

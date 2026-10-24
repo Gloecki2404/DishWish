@@ -4,9 +4,9 @@ import { getStore, type DataStore } from "../data-store";
 import "../dialogs/recipe-dialog";
 import "../dialogs/recipe-editor";
 import "../dialogs/recipe-picker";
-import type { EsRecipeDialog } from "../dialogs/recipe-dialog";
-import type { EsRecipeEditor } from "../dialogs/recipe-editor";
-import type { EsRecipePicker } from "../dialogs/recipe-picker";
+import type { DwRecipeDialog } from "../dialogs/recipe-dialog";
+import type { DwRecipeEditor } from "../dialogs/recipe-editor";
+import type { DwRecipePicker } from "../dialogs/recipe-picker";
 import { t, tError, type Key } from "../i18n";
 import { sharedStyles } from "../styles";
 import type { CardConfig, HomeAssistant, Recipe, Wish } from "../types";
@@ -29,7 +29,7 @@ interface Group {
   wishes: Wish[];
 }
 
-export class EssensplanWishesCard extends LitElement {
+export class DishWishWishesCard extends LitElement {
   static override properties = {
     config: { state: true },
     tick: { state: true },
@@ -49,13 +49,13 @@ export class EssensplanWishesCard extends LitElement {
 
   constructor() {
     super();
-    this.config = { type: "custom:essensplan-wishes-card" };
+    this.config = { type: "custom:dishwish-wishes-card" };
     this.tick = 0;
     this.done = [];
   }
 
   static getStubConfig(): WishesConfig {
-    return { type: "custom:essensplan-wishes-card" };
+    return { type: "custom:dishwish-wishes-card" };
   }
 
   static getConfigForm() {
@@ -322,14 +322,14 @@ export class EssensplanWishesCard extends LitElement {
     return this._hass?.locale.language ?? "en";
   }
 
-  private get recipeDialog(): EsRecipeDialog {
-    return this.renderRoot.querySelector("es-recipe-dialog") as EsRecipeDialog;
+  private get recipeDialog(): DwRecipeDialog {
+    return this.renderRoot.querySelector("dw-recipe-dialog") as DwRecipeDialog;
   }
-  private get editor(): EsRecipeEditor {
-    return this.renderRoot.querySelector("es-recipe-editor") as EsRecipeEditor;
+  private get editor(): DwRecipeEditor {
+    return this.renderRoot.querySelector("dw-recipe-editor") as DwRecipeEditor;
   }
-  private get picker(): EsRecipePicker {
-    return this.renderRoot.querySelector("es-recipe-picker") as EsRecipePicker;
+  private get picker(): DwRecipePicker {
+    return this.renderRoot.querySelector("dw-recipe-picker") as DwRecipePicker;
   }
 
   private groups(): Group[] {
@@ -450,7 +450,7 @@ export class EssensplanWishesCard extends LitElement {
               <ul class="done">${doneShown.map((n) => html`<li>${n}</li>`)}</ul>`
           : nothing}
       </div>
-      <es-recipe-dialog
+      <dw-recipe-dialog
         .hass=${this._hass}
         .categories=${store.categories}
         .shoppingList=${cfg.shopping_list}
@@ -458,21 +458,21 @@ export class EssensplanWishesCard extends LitElement {
           this.recipeDialog.close();
           void this.editor.open(e.detail);
         }}
-      ></es-recipe-dialog>
-      <es-recipe-editor
+      ></dw-recipe-dialog>
+      <dw-recipe-editor
         .hass=${this._hass}
         .categories=${store.categories}
         @saved=${(e: CustomEvent<Recipe>) => {
           void store.refresh();
           void this.recipeDialog.open(e.detail.id);
         }}
-      ></es-recipe-editor>
-      <es-recipe-picker
+      ></dw-recipe-editor>
+      <dw-recipe-picker
         .hass=${this._hass}
         .recipes=${store.recipes}
         .categories=${store.categories}
         @picked=${this.onPicked}
-      ></es-recipe-picker>
+      ></dw-recipe-picker>
     `;
   }
 
@@ -484,6 +484,6 @@ export class EssensplanWishesCard extends LitElement {
   }
 }
 
-if (!customElements.get("essensplan-wishes-card")) {
-  customElements.define("essensplan-wishes-card", EssensplanWishesCard);
+if (!customElements.get("dishwish-wishes-card")) {
+  customElements.define("dishwish-wishes-card", DishWishWishesCard);
 }

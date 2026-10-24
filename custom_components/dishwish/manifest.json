@@ -1,6 +1,6 @@
 {
-  "domain": "essensplan",
-  "name": "Essensplan",
+  "domain": "dishwish",
+  "name": "DishWish",
   "codeowners": ["@Gloecki2404"],
   "config_flow": true,
   "dependencies": ["http", "frontend", "websocket_api", "todo"],

@@ -19,10 +19,10 @@ _CACHE = "public, max-age=31536000, immutable"
 
 
 class ImageUploadView(HomeAssistantView):
-    """POST /api/essensplan/images - multipart field `file`."""
+    """POST /api/dishwish/images - multipart field `file`."""
 
-    url = "/api/essensplan/images"
-    name = "api:essensplan:images:upload"
+    url = "/api/dishwish/images"
+    name = "api:dishwish:images:upload"
     requires_auth = True
 
     async def post(self, request: web.Request) -> web.Response:
@@ -50,10 +50,10 @@ class ImageUploadView(HomeAssistantView):
 
 
 class ImageView(HomeAssistantView):
-    """GET /api/essensplan/images/{image_id}/{size} - unauthenticated, unguessable id."""
+    """GET /api/dishwish/images/{image_id}/{size} - unauthenticated, unguessable id."""
 
-    url = "/api/essensplan/images/{image_id}/{size}"
-    name = "api:essensplan:images:get"
+    url = "/api/dishwish/images/{image_id}/{size}"
+    name = "api:dishwish:images:get"
     requires_auth = False
 
     async def get(self, request: web.Request, image_id: str, size: str) -> web.StreamResponse:
@@ -72,7 +72,7 @@ class BundleView(HomeAssistantView):
     by a cached copy (or by a cached page that still points at an older `?v=` URL)."""
 
     url = f"{STATIC_URL}/{BUNDLE_NAME}"
-    name = "essensplan:bundle"
+    name = "dishwish:bundle"
     requires_auth = False
 
     def __init__(self, path: Path) -> None:

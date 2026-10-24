@@ -1,6 +1,6 @@
-# Essensplan – Home-Assistant-Integration
+# DishWish – Home-Assistant-Integration
 
-Custom Integration `custom_components/essensplan` (Python) + Lovelace-Karten `frontend/` (TypeScript/Lit).
+Custom Integration `custom_components/dishwish` (Python) + Lovelace-Karten `frontend/` (TypeScript/Lit).
 **Spezifikation, Entscheidungen, Phasen: [PLAN.md](PLAN.md).** Vor jeder Aufgabe den relevanten Abschnitt lesen. Entscheidungen aus PLAN.md Abschnitt 2 nicht ohne Rückfrage ändern.
 
 ## Arbeitsweise

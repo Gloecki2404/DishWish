@@ -1,22 +1,22 @@
-"""Constants for Essensplan."""
+"""Constants for DishWish."""
 
 from __future__ import annotations
 
-DOMAIN = "essensplan"
+DOMAIN = "dishwish"
 VERSION = "0.1.0"
 
-DATA_DIR_NAME = "essensplan"
-DB_FILE_NAME = "essensplan.db"
+DATA_DIR_NAME = "dishwish"
+DB_FILE_NAME = "dishwish.db"
 IMAGES_DIR_NAME = "images"
 SCHEMA_VERSION = 1
 
-SIGNAL_CHANGED = "essensplan_changed"
+SIGNAL_CHANGED = "dishwish_changed"
 
-EVENT_WISH_ADDED = "essensplan_wish_added"
-EVENT_WISHES_COMPLETED = "essensplan_wishes_completed"
+EVENT_WISH_ADDED = "dishwish_wish_added"
+EVENT_WISHES_COMPLETED = "dishwish_wishes_completed"
 
-STATIC_URL = "/essensplan_static"
-BUNDLE_NAME = "essensplan-cards.js"
+STATIC_URL = "/dishwish_static"
+BUNDLE_NAME = "dishwish-cards.js"
 
 CONF_DEFAULT_SHOPPING_LIST = "default_shopping_list"
 CONF_DEFAULT_SERVINGS = "default_servings"

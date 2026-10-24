@@ -3,4 +3,4 @@ default_config:
 logger:
   default: info
   logs:
-    custom_components.essensplan: debug
+    custom_components.dishwish: debug

@@ -7,10 +7,10 @@ import type { Category, HomeAssistant, Recipe } from "../types";
 import { notify } from "../utils/notify";
 import { formatIngredientAmount } from "../utils/scale";
 import "./base-dialog";
-import type { EsDialog } from "./base-dialog";
+import type { DwDialog } from "./base-dialog";
 
 /** Read-only recipe view with servings scaling. Open with `open(recipeId)`. */
-export class EsRecipeDialog extends LitElement {
+export class DwRecipeDialog extends LitElement {
   static override properties = {
     hass: { attribute: false },
     categories: { attribute: false },
@@ -194,8 +194,8 @@ export class EsRecipeDialog extends LitElement {
     `,
   ];
 
-  private get dlg(): EsDialog {
-    return this.renderRoot.querySelector("es-dialog") as EsDialog;
+  private get dlg(): DwDialog {
+    return this.renderRoot.querySelector("dw-dialog") as DwDialog;
   }
 
   private get uiLang(): string {
@@ -432,7 +432,7 @@ export class EsRecipeDialog extends LitElement {
   }
   protected override render() {
     const lang = this.uiLang;
-    return html`<es-dialog
+    return html`<dw-dialog
       .heading=${this.recipe?.name ?? ""}
       .closeLabel=${t(lang, "close")}
       @closed=${() => this.dispatchEvent(new CustomEvent("closed"))}
@@ -441,8 +441,8 @@ export class EsRecipeDialog extends LitElement {
       ${this.error ? html`<p class="error">${this.error}</p>` : nothing}
       ${this.recipe ? this.renderBody(this.recipe) : nothing}
       ${this.recipe ? this.renderFooter(this.recipe) : nothing}
-    </es-dialog>`;
+    </dw-dialog>`;
   }
 }
 
-if (!customElements.get("es-recipe-dialog")) customElements.define("es-recipe-dialog", EsRecipeDialog);
+if (!customElements.get("dw-recipe-dialog")) customElements.define("dw-recipe-dialog", DwRecipeDialog);

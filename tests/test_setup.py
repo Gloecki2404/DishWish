@@ -13,13 +13,13 @@ from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers import issue_registry as ir
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.essensplan import backup
-from custom_components.essensplan.const import (
+from custom_components.dishwish import backup
+from custom_components.dishwish.const import (
     CONF_DEFAULT_SERVINGS,
     CONF_DEFAULT_SHOPPING_LIST,
     DOMAIN,
 )
-from custom_components.essensplan.store import SYSTEM, Actor, get_store
+from custom_components.dishwish.store import SYSTEM, Actor, get_store
 
 from .conftest import call, jpeg_bytes, recipe_input
 
@@ -59,16 +59,16 @@ async def test_unload_and_reload(hass: HomeAssistant, setup_integration):
 
 async def test_corrupt_db_blocks_setup_and_is_kept(hass: HomeAssistant, tmp_path):
     hass.config.config_dir = str(tmp_path)
-    data_dir = tmp_path / "essensplan"
+    data_dir = tmp_path / "dishwish"
     data_dir.mkdir()
     garbage = b"garbage" * 1000
-    (data_dir / "essensplan.db").write_bytes(garbage)
+    (data_dir / "dishwish.db").write_bytes(garbage)
 
     entry = MockConfigEntry(domain=DOMAIN, data={})
     entry.add_to_hass(hass)
     assert not await hass.config_entries.async_setup(entry.entry_id)
     assert entry.state is config_entries.ConfigEntryState.SETUP_ERROR
-    assert (data_dir / "essensplan.db").read_bytes() == garbage
+    assert (data_dir / "dishwish.db").read_bytes() == garbage
     assert ir.async_get(hass).async_get_issue(DOMAIN, "database_corrupt") is not None
 
 
@@ -117,7 +117,7 @@ async def test_list_performance_with_1000_recipes(hass: HomeAssistant, setup_int
     conn = store._conn  # noqa: SLF001
 
     def seed(connection) -> None:
-        from custom_components.essensplan import db
+        from custom_components.dishwish import db
 
         cats = [c["id"] for c in db.list_categories(connection)]
         for i in range(1000):
@@ -146,7 +146,7 @@ async def test_list_performance_with_1000_recipes(hass: HomeAssistant, setup_int
 async def test_list_via_websocket_with_many_recipes(hass, setup_integration, make_client):
     client, _ = await make_client("alice")
     for i in range(3):
-        assert (await call(client, "essensplan/recipes/create", **recipe_input(name=f"R{i}")))[
+        assert (await call(client, "dishwish/recipes/create", **recipe_input(name=f"R{i}")))[
             "success"
         ]
-    assert len((await call(client, "essensplan/recipes/list"))["result"]) == 3
+    assert len((await call(client, "dishwish/recipes/list"))["result"]) == 3

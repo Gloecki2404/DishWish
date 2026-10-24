@@ -11,7 +11,7 @@ from homeassistant.core import HomeAssistant
 from .const import CONF_DEFAULT_SHOPPING_LIST, DOMAIN
 from .db import DbError, NotFound
 from .ingredients import format_amount, format_line, merge_ingredients
-from .store import Actor, EssensplanStore
+from .store import Actor, DishWishStore
 
 
 class EntityNotFound(DbError):
@@ -75,7 +75,7 @@ def _description(lang: str, recipe_names: list[str]) -> str:
 
 async def async_add_recipe(
     hass: HomeAssistant,
-    store: EssensplanStore,
+    store: DishWishStore,
     actor: Actor,
     recipe_id: str,
     servings: int | None = None,
@@ -99,7 +99,7 @@ async def async_add_recipe(
 
 
 async def async_add_open_wishes(
-    hass: HomeAssistant, store: EssensplanStore, entity_id: str | None = None
+    hass: HomeAssistant, store: DishWishStore, entity_id: str | None = None
 ) -> dict[str, list[str]]:
     """Merge the ingredients of all recipes with open wishes and add them to the list."""
     entity_id = resolve_entity(hass, entity_id)

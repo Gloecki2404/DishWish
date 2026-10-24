@@ -14,13 +14,13 @@ w.customCards = w.customCards ?? [];
 
 const cards: Omit<CustomCardEntry, "preview" | "documentationURL">[] = [
   {
-    type: "essensplan-library-card",
-    name: "Essensplan – Bibliothek",
+    type: "dishwish-library-card",
+    name: "DishWish – Bibliothek",
     description: "Gerichte mit Fotos, Suche und Filtern / Dish library with photos, search and filters",
   },
   {
-    type: "essensplan-wishes-card",
-    name: "Essensplan – Essenswünsche",
+    type: "dishwish-wishes-card",
+    name: "DishWish – Essenswünsche",
     description: "Offene Essenswünsche der Familie / Open meal wishes of the household",
   },
 ];

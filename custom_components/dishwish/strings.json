@@ -2,18 +2,18 @@
   "config": {
     "step": {
       "user": {
-        "title": "Essensplan",
-        "description": "Set up Essensplan (recipes, meal wishes and shopping list)."
+        "title": "DishWish",
+        "description": "Set up DishWish (recipes, meal wishes and shopping list)."
       }
     },
     "abort": {
-      "single_instance_allowed": "Essensplan is already set up."
+      "single_instance_allowed": "DishWish is already set up."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Essensplan options",
+        "title": "DishWish options",
         "data": {
           "default_shopping_list": "Default shopping list",
           "default_servings": "Default servings"
@@ -61,8 +61,8 @@
   },
   "issues": {
     "database_corrupt": {
-      "title": "Essensplan database is damaged",
-      "description": "The integrity check of the Essensplan database failed. The integration was not started to protect your data. Restore a backup of `{path}`."
+      "title": "DishWish database is damaged",
+      "description": "The integrity check of the DishWish database failed. The integration was not started to protect your data. Restore a backup of `{path}`."
     }
   }
 }

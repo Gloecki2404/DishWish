@@ -4,9 +4,9 @@ import { getStore, type DataStore } from "../data-store";
 import "../dialogs/import-dialog";
 import "../dialogs/recipe-dialog";
 import "../dialogs/recipe-editor";
-import type { EsImportDialog } from "../dialogs/import-dialog";
-import type { EsRecipeDialog } from "../dialogs/recipe-dialog";
-import type { EsRecipeEditor } from "../dialogs/recipe-editor";
+import type { DwImportDialog } from "../dialogs/import-dialog";
+import type { DwRecipeDialog } from "../dialogs/recipe-dialog";
+import type { DwRecipeEditor } from "../dialogs/recipe-editor";
 import { t, tError } from "../i18n";
 import { icon, paths } from "../icons";
 import { sharedStyles } from "../styles";
@@ -33,7 +33,7 @@ interface LibraryConfig extends CardConfig {
 const QUICK = "__quick";
 const MINE = "__mine";
 
-export class EssensplanLibraryCard extends LitElement {
+export class DishWishLibraryCard extends LitElement {
   static override properties = {
     config: { state: true },
     query: { state: true },
@@ -59,7 +59,7 @@ export class EssensplanLibraryCard extends LitElement {
 
   constructor() {
     super();
-    this.config = { type: "custom:essensplan-library-card" };
+    this.config = { type: "custom:dishwish-library-card" };
     this.query = "";
     this.filter = "";
     this.limit = PAGE;
@@ -68,7 +68,7 @@ export class EssensplanLibraryCard extends LitElement {
   }
 
   static getStubConfig(): LibraryConfig {
-    return { type: "custom:essensplan-library-card" };
+    return { type: "custom:dishwish-library-card" };
   }
 
   /** Visual editor (static schema; category pickers follow in phase 4). */
@@ -414,14 +414,14 @@ export class EssensplanLibraryCard extends LitElement {
 
   // --- actions ------------------------------------------------------------------
 
-  private get recipeDialog(): EsRecipeDialog {
-    return this.renderRoot.querySelector("es-recipe-dialog") as EsRecipeDialog;
+  private get recipeDialog(): DwRecipeDialog {
+    return this.renderRoot.querySelector("dw-recipe-dialog") as DwRecipeDialog;
   }
-  private get editor(): EsRecipeEditor {
-    return this.renderRoot.querySelector("es-recipe-editor") as EsRecipeEditor;
+  private get editor(): DwRecipeEditor {
+    return this.renderRoot.querySelector("dw-recipe-editor") as DwRecipeEditor;
   }
-  private get importer(): EsImportDialog {
-    return this.renderRoot.querySelector("es-import-dialog") as EsImportDialog;
+  private get importer(): DwImportDialog {
+    return this.renderRoot.querySelector("dw-import-dialog") as DwImportDialog;
   }
 
   private newRecipe(): void {
@@ -571,14 +571,14 @@ export class EssensplanLibraryCard extends LitElement {
                   ${shown.length < list.length ? html`<div id="more"></div>` : nothing}
                 </div>`}
       </div>
-      <es-recipe-dialog
+      <dw-recipe-dialog
         .hass=${this._hass}
         .categories=${store.categories}
         .shoppingList=${cfg.shopping_list}
         @edit=${this.onEdit}
-      ></es-recipe-dialog>
-      <es-recipe-editor .hass=${this._hass} .categories=${store.categories} @saved=${this.onSaved}></es-recipe-editor>
-      <es-import-dialog .hass=${this._hass} @imported=${(e: CustomEvent<RecipeInput>) => void this.editor.open(e.detail)}></es-import-dialog>
+      ></dw-recipe-dialog>
+      <dw-recipe-editor .hass=${this._hass} .categories=${store.categories} @saved=${this.onSaved}></dw-recipe-editor>
+      <dw-import-dialog .hass=${this._hass} @imported=${(e: CustomEvent<RecipeInput>) => void this.editor.open(e.detail)}></dw-import-dialog>
     `;
   }
 
@@ -588,6 +588,6 @@ export class EssensplanLibraryCard extends LitElement {
   }
 }
 
-if (!customElements.get("essensplan-library-card")) {
-  customElements.define("essensplan-library-card", EssensplanLibraryCard);
+if (!customElements.get("dishwish-library-card")) {
+  customElements.define("dishwish-library-card", DishWishLibraryCard);
 }

@@ -2,18 +2,18 @@
   "config": {
     "step": {
       "user": {
-        "title": "Essensplan",
-        "description": "Essensplan einrichten (Rezepte, Essenswünsche und Einkaufsliste)."
+        "title": "DishWish",
+        "description": "DishWish einrichten (Rezepte, Essenswünsche und Einkaufsliste)."
       }
     },
     "abort": {
-      "single_instance_allowed": "Essensplan ist bereits eingerichtet."
+      "single_instance_allowed": "DishWish ist bereits eingerichtet."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Essensplan-Optionen",
+        "title": "DishWish-Optionen",
         "data": {
           "default_shopping_list": "Standard-Einkaufsliste",
           "default_servings": "Standard-Portionen"
@@ -61,8 +61,8 @@
   },
   "issues": {
     "database_corrupt": {
-      "title": "Essensplan-Datenbank ist beschädigt",
-      "description": "Die Integritätsprüfung der Essensplan-Datenbank ist fehlgeschlagen. Die Integration wurde zum Schutz der Daten nicht gestartet. Stelle ein Backup von `{path}` wieder her."
+      "title": "DishWish-Datenbank ist beschädigt",
+      "description": "Die Integritätsprüfung der DishWish-Datenbank ist fehlgeschlagen. Die Integration wurde zum Schutz der Daten nicht gestartet. Stelle ein Backup von `{path}` wieder her."
     }
   }
 }

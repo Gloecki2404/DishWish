@@ -7,12 +7,12 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from custom_components.essensplan import db
+from custom_components.dishwish import db
 
 
 @pytest.fixture
 def conn(tmp_path):
-    connection = db.open_db(tmp_path / "essensplan.db", "de")
+    connection = db.open_db(tmp_path / "dishwish.db", "de")
     yield connection
     connection.close()
 

@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from custom_components.essensplan import ingredients
+from custom_components.dishwish import ingredients
 
 CASES = json.loads(
     (Path(__file__).parent / "fixtures" / "ingredient_cases.json").read_text("utf-8")

@@ -7,7 +7,7 @@ import { sharedStyles } from "../styles";
 import type { Category, HomeAssistant, Ingredient, Recipe, RecipeInput } from "../types";
 import { resizeImage } from "../utils/image";
 import "./base-dialog";
-import type { EsDialog } from "./base-dialog";
+import type { DwDialog } from "./base-dialog";
 
 const MAX_IMAGES = 10;
 
@@ -35,7 +35,7 @@ interface Draft {
   steps: { section: string | null; text: string }[];
 }
 
-const thumb = (id: string) => `/api/essensplan/images/${id}/thumb`;
+const thumb = (id: string) => `/api/dishwish/images/${id}/thumb`;
 
 const fmtNum = (n: number | null): string => (n === null ? "" : String(n).replace(".", ","));
 
@@ -108,7 +108,7 @@ function move<T>(list: T[], i: number, delta: number): T[] {
 }
 
 /** Create/edit a recipe. `open()` for new, `open(recipe)` to edit, `open(draft)` for imports. */
-export class EsRecipeEditor extends LitElement {
+export class DwRecipeEditor extends LitElement {
   static override properties = {
     hass: { attribute: false },
     categories: { attribute: false },
@@ -244,8 +244,8 @@ export class EsRecipeEditor extends LitElement {
     `,
   ];
 
-  private get dlg(): EsDialog {
-    return this.renderRoot.querySelector("es-dialog") as EsDialog;
+  private get dlg(): DwDialog {
+    return this.renderRoot.querySelector("dw-dialog") as DwDialog;
   }
 
   private get uiLang(): string {
@@ -508,7 +508,7 @@ export class EsRecipeEditor extends LitElement {
   protected override render() {
     const lang = this.uiLang;
     const d = this.draft;
-    return html`<es-dialog
+    return html`<dw-dialog
       .heading=${this.recipeId ? t(lang, "edit_recipe") : t(lang, "new_recipe")}
       .closeLabel=${t(lang, "close")}
       @close-request=${this.onCloseRequest}
@@ -579,8 +579,8 @@ export class EsRecipeEditor extends LitElement {
           <button slot="footer" class="btn primary" ?disabled=${this.saving || this.uploading > 0} @click=${() => this.save()}>
             ${this.saving ? t(lang, "saving") : t(lang, "save")}
           </button>`}
-    </es-dialog>`;
+    </dw-dialog>`;
   }
 }
 
-if (!customElements.get("es-recipe-editor")) customElements.define("es-recipe-editor", EsRecipeEditor);
+if (!customElements.get("dw-recipe-editor")) customElements.define("dw-recipe-editor", DwRecipeEditor);

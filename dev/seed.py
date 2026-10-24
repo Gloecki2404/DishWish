@@ -16,8 +16,8 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from custom_components.essensplan import db, images  # noqa: E402
-from custom_components.essensplan.ingredients import parse_line  # noqa: E402
+from custom_components.dishwish import db, images  # noqa: E402
+from custom_components.dishwish.ingredients import parse_line  # noqa: E402
 
 ADJECTIVES = ["Cremige", "Knusprige", "Scharfe", "Herzhafte", "Leichte", "Würzige", "Gebackene"]
 DISHES = ["Nudeln", "Suppe", "Auflauf", "Salat", "Pfanne", "Eintopf", "Curry", "Kuchen", "Burger"]
@@ -61,12 +61,12 @@ def main() -> None:
     """Seed the database."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--count", type=int, default=100)
-    parser.add_argument("--data-dir", type=Path, default=ROOT / "dev" / "config" / "essensplan")
+    parser.add_argument("--data-dir", type=Path, default=ROOT / "dev" / "config" / "dishwish")
     args = parser.parse_args()
 
     args.data_dir.mkdir(parents=True, exist_ok=True)
     images_dir = args.data_dir / "images"
-    conn = db.open_db(args.data_dir / "essensplan.db", "de")
+    conn = db.open_db(args.data_dir / "dishwish.db", "de")
     categories = [c["id"] for c in db.list_categories(conn)]
     rng = random.Random(42)
 

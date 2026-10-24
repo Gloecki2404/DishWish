@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from custom_components.essensplan import importer
-from custom_components.essensplan.store import get_store
+from custom_components.dishwish import importer
+from custom_components.dishwish.store import get_store
 
 from .conftest import call, jpeg_bytes
 
@@ -148,7 +148,7 @@ async def test_import_via_websocket(
     )
     client, _ = await make_client("alice")
 
-    resp = await call(client, "essensplan/recipes/import_url", url="https://old.example.org/r")
+    resp = await call(client, "dishwish/recipes/import_url", url="https://old.example.org/r")
     assert resp["success"], resp
     draft = resp["result"]
     assert draft["name"] == "Test Cake & Co"
@@ -156,13 +156,13 @@ async def test_import_via_websocket(
     assert len(draft["image_ids"]) == 1
     assert draft["category_ids"]
     # the draft is not saved
-    assert (await call(client, "essensplan/recipes/list"))["result"] == []
+    assert (await call(client, "dishwish/recipes/list"))["result"] == []
     # but the image is processed and can be attached when saving
     store = get_store(hass)
     assert (store.images_dir / f"{draft['image_ids'][0]}_thumb.jpg").is_file()
     saved = await call(
         client,
-        "essensplan/recipes/create",
+        "dishwish/recipes/create",
         **{k: v for k, v in draft.items() if k != "category_ids"},
     )
     assert saved["success"], saved
@@ -179,7 +179,7 @@ async def test_import_image_failure_does_not_fail(
     )
     aioclient_mock.get("https://img.example.org/cake.jpg", status=404)
     client, _ = await make_client("alice")
-    resp = await call(client, "essensplan/recipes/import_url", url="https://www.example.org/a")
+    resp = await call(client, "dishwish/recipes/import_url", url="https://www.example.org/a")
     assert resp["success"] and resp["result"]["image_ids"] == []
 
 
@@ -203,7 +203,7 @@ async def test_import_errors(hass, setup_integration, make_client, aioclient_moc
     client, _ = await make_client("alice")
 
     async def code(url: str) -> str:
-        return (await call(client, "essensplan/recipes/import_url", url=url))["error"]["code"]
+        return (await call(client, "dishwish/recipes/import_url", url=url))["error"]["code"]
 
     assert await code("https://www.example.org/none") == "no_recipe_found"
     assert await code("https://www.example.org/missing") == "fetch_failed"
@@ -242,7 +242,7 @@ async def test_import_uses_next_image_when_first_fails(
         headers={"Content-Type": "application/octet-stream"},
     )
     client, _ = await make_client("alice")
-    resp = await call(client, "essensplan/recipes/import_url", url="https://www.example.org/m")
+    resp = await call(client, "dishwish/recipes/import_url", url="https://www.example.org/m")
     assert resp["success"] and len(resp["result"]["image_ids"]) == 1
     sent = aioclient_mock.mock_calls[-1][3]
     assert sent["Referer"] == "https://www.example.org/m"
@@ -262,5 +262,5 @@ async def test_import_falls_back_to_og_image(
         headers={"Content-Type": "image/jpeg"},
     )
     client, _ = await make_client("alice")
-    resp = await call(client, "essensplan/recipes/import_url", url="https://www.example.org/og")
+    resp = await call(client, "dishwish/recipes/import_url", url="https://www.example.org/og")
     assert resp["success"] and len(resp["result"]["image_ids"]) == 1

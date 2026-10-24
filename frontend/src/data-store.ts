@@ -36,7 +36,7 @@ export class DataStore {
 
   private async start(): Promise<void> {
     this.unsub = this.conn.subscribeMessage<ChangeEvent>((ev) => this.onEvent(ev), {
-      type: "essensplan/subscribe",
+      type: "dishwish/subscribe",
     });
     this.unsub.catch(() => undefined);
     await this.refresh();

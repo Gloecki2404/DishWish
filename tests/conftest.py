@@ -13,7 +13,7 @@ from homeassistant.core import HomeAssistant
 from PIL import Image
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.essensplan.const import DOMAIN
+from custom_components.dishwish.const import DOMAIN
 
 CLIENT_ID = "https://example.com/app"
 
@@ -25,7 +25,7 @@ def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
 
 @pytest.fixture
 async def setup_integration(hass: HomeAssistant, tmp_path) -> MockConfigEntry:
-    """Set up Essensplan with a temporary config dir."""
+    """Set up DishWish with a temporary config dir."""
     hass.config.config_dir = str(tmp_path)
     entry = MockConfigEntry(domain=DOMAIN, data={})
     entry.add_to_hass(hass)
