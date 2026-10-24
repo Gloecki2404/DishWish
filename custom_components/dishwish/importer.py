@@ -135,12 +135,26 @@ def extract_recipe_node(html: str) -> dict[str, Any] | None:
     return None
 
 
+_MACRO = re.compile(r"\{\{(.*?)\}\}", re.S)
+_QUOTED = re.compile(r"\"([^\"]*)\"|'([^']*)'")
+
+
+def _macro_text(match: re.Match[str]) -> str:
+    """Template leftovers like {{ link("RZT", "1829", "Powidl") }} -> the last quoted text."""
+    quoted = [a or b for a, b in _QUOTED.findall(match.group(1))]
+    return quoted[-1] if quoted else ""
+
+
 def clean_text(value: Any) -> str:
-    """Strip HTML tags, unescape entities, collapse whitespace."""
+    """Plain text: template macros resolved, HTML tags removed, entities unescaped."""
     if not isinstance(value, str):
         return ""
+    value = _MACRO.sub(_macro_text, value)
     value = re.sub(r"<br\s*/?>|</(?:p|li|div)>", " ", value, flags=re.IGNORECASE)
-    return " ".join(unescape(re.sub(r"<[^>]+>", "", value)).split())
+    text = unescape(re.sub(r"<[^>]+>", "", value))
+    if "<" in text:  # markup that was escaped twice
+        text = re.sub(r"<[^>]+>", "", text)
+    return " ".join(text.split())
 
 
 _DURATION = re.compile(
@@ -218,14 +232,79 @@ def _steps(value: Any, section: str | None = None) -> list[dict[str, Any]]:
     return steps
 
 
-def _category_ids(node: dict[str, Any], categories: list[dict[str, Any]]) -> list[str]:
-    words: set[str] = set()
-    for key in ("recipeCategory", "keywords"):
-        value = node.get(key)
-        parts = value if isinstance(value, list) else str(value or "").split(",")
-        words.update(clean_text(p).casefold() for p in parts if isinstance(p, str))
+_STOP_STEP = re.compile(
+    r"^(gefällt dir|zurück zur|hol dir|schau dir|folge uns|newsletter|kommentar|jetzt bewerten"
+    r"|share|print)",
+    re.IGNORECASE,
+)
+
+
+def _clean_steps(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Drop page chrome that some sites put into the instructions (CSS, share links, ...)."""
+    kept: list[dict[str, Any]] = []
+    for step in steps:
+        text = step["text"]
+        if _STOP_STEP.match(text):
+            break  # everything after is page furniture
+        if "{" in text or "}" in text or text.endswith(";") or text.startswith("."):
+            continue
+        kept.append(step)
+    if len({s["section"] for s in kept}) == 1:
+        for step in kept:  # a single section only repeats the dish name
+            step["section"] = None
+    return kept
+
+
+_CATEGORY_SUFFIX = re.compile(r"\s+(rezepte|rezept|recipes|recipe)$", re.IGNORECASE)
+MAX_NEW_CATEGORIES = 3
+
+
+def _category_names(node: dict[str, Any]) -> list[str]:
+    """Categories named by the page (`recipeCategory`), without a trailing 'Rezepte'."""
+    value = node.get("recipeCategory")
+    parts = value if isinstance(value, list) else re.split(r"[,|]", str(value or ""))
+    names: list[str] = []
+    for part in parts:
+        name = _CATEGORY_SUFFIX.sub("", clean_text(part)).strip()
+        if name and len(name) <= 40 and name.casefold() not in {n.casefold() for n in names}:
+            names.append(name)
+    return names
+
+
+def _categories(
+    node: dict[str, Any], categories: list[dict[str, Any]]
+) -> tuple[list[str], list[str]]:
+    """(ids of existing categories that match, names of categories that do not exist yet)."""
     by_name = {c["name"].casefold(): c["id"] for c in categories}
-    return [by_name[w] for w in words if w in by_name]
+    ids: list[str] = []
+    new: list[str] = []
+    for name in _category_names(node):
+        if name.casefold() in by_name:
+            ids.append(by_name[name.casefold()])
+        elif len(new) < MAX_NEW_CATEGORIES:
+            new.append(name)
+    keywords = node.get("keywords")  # keywords only ever select existing categories
+    parts = keywords if isinstance(keywords, list) else str(keywords or "").split(",")
+    for part in parts:
+        key = clean_text(part).casefold()
+        if key in by_name and by_name[key] not in ids:
+            ids.append(by_name[key])
+    return ids, new
+
+
+def _ingredient_rows(node: dict[str, Any]) -> list[dict[str, Any]]:
+    """Parsed ingredients; site adapters may deliver them in named groups."""
+    groups = node.get("_ingredient_groups")
+    if not groups:
+        raw = node.get("recipeIngredient", node.get("ingredients", []))
+        lines = raw.splitlines() if isinstance(raw, str) else raw
+        groups = [(None, lines if isinstance(lines, list) else [])]
+    rows = []
+    for group, lines in groups:
+        for line in lines:
+            if text := clean_text(line):
+                rows.append({**parse_line(text), "group_name": group or None})
+    return rows
 
 
 def build_draft(
@@ -237,13 +316,8 @@ def build_draft(
     """Map a JSON-LD Recipe to a RecipeInput draft. Returns (draft, image_url)."""
     host = (urlsplit(source_url).hostname or "").removeprefix("www.")
 
-    raw = node.get("recipeIngredient", node.get("ingredients", []))
-    lines = raw.splitlines() if isinstance(raw, str) else raw
-    ingredients = []
-    for line in lines if isinstance(lines, list) else []:
-        if text := clean_text(line):
-            ingredients.append({**parse_line(text), "group_name": None})
-    steps = _steps(node.get("recipeInstructions", []))
+    ingredients = _ingredient_rows(node)
+    steps = _clean_steps(_steps(node.get("recipeInstructions", [])))
     name = clean_text(node.get("name"))[:MAX_NAME]
     if not (name or ingredients or steps):
         raise ImportFailed("no_recipe_found")
@@ -254,6 +328,7 @@ def build_draft(
     if prep is None and total is not None:
         prep = max(total - cook, 0) if cook is not None else total
 
+    category_ids, new_categories = _categories(node, categories)
     draft = {
         "name": name or host,
         "description": clean_text(node.get("description"))[:MAX_DESCRIPTION],
@@ -264,7 +339,8 @@ def build_draft(
         "source_url": source_url,
         "source_name": host or None,
         "visibility": "household",
-        "category_ids": _category_ids(node, categories),
+        "category_ids": category_ids,
+        "new_categories": new_categories,
         "image_ids": [],
         "ingredients": ingredients[:MAX_INGREDIENTS],
         "steps": [
@@ -272,6 +348,120 @@ def build_draft(
         ],
     }
     return draft, _first_url(node.get("image"))
+
+
+# --- site adapters (pages without usable schema.org data) ----------------------------
+
+_NEXT_DATA = re.compile(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', re.S)
+_AMOUNT_UNITS = {
+    "GRAM": "g", "KILOGRAM": "kg", "MILLILITER": "ml", "LITER": "l", "DECILITER": "dl",
+    "CENTILITER": "cl", "TABLESPOON": "EL", "TEASPOON": "TL", "PIECE": "Stk.", "PINCH": "Prise",
+    "PACKAGE": "Pck.", "CLOVE": "Zehe", "BUNCH": "Bund", "SLICE": "Scheibe", "CUP": "Tasse",
+    "CAN": "Dose", "NONE": "",
+    "MILLILITRE": "ml", "LITRE": "l", "DECILITRE": "dl", "CENTILITRE": "cl", "KILOGRAMME": "kg",
+}  # fmt: skip
+
+
+def _find_recipe_data(node: Any) -> dict[str, Any] | None:
+    """A dict holding both `ingredient_groups` and `steps` somewhere in Next.js page data."""
+    if isinstance(node, dict):
+        if isinstance(node.get("ingredient_groups"), list) and isinstance(node.get("steps"), list):
+            return node
+        for value in node.values():
+            if (found := _find_recipe_data(value)) is not None:
+                return found
+    elif isinstance(node, list):
+        for value in node:
+            if (found := _find_recipe_data(value)) is not None:
+                return found
+    return None
+
+
+def _next_data_node(html: str) -> dict[str, Any] | None:
+    """Recipe from a Next.js page (e.g. gusto.at) that has no JSON-LD, as a schema.org-like node."""
+    match = _NEXT_DATA.search(html)
+    if not match:
+        return None
+    try:
+        data = _find_recipe_data(json.loads(match.group(1)))
+    except ValueError:
+        return None
+    if data is None:
+        return None
+    groups = []
+    for group in data["ingredient_groups"]:
+        lines = []
+        for item in group.get("ingredients") or []:
+            title = (item.get("ingredient") or {}).get("title") or ""
+            amount = item.get("amount")
+            quantity = f"{amount:g}" if isinstance(amount, (int, float)) and amount else ""
+            kind = str(item.get("amount_type") or "NONE").upper()
+            unit = _AMOUNT_UNITS.get(kind, _AMOUNT_UNITS.get(kind.removesuffix("S"), ""))
+            line = " ".join(p for p in (quantity, unit, title) if p)
+            if suffix := (item.get("suffix") or "").strip():
+                line += f", {suffix}"
+            if title:
+                lines.append(line)
+        groups.append((clean_text(group.get("headline")), lines))
+    steps = []
+    for step in sorted(data["steps"], key=lambda s: s.get("sorting") or 0):
+        entry = {"@type": "HowToStep", "text": step.get("description") or ""}
+        headline = clean_text(step.get("headline"))
+        steps.append(
+            {"@type": "HowToSection", "name": headline, "itemListElement": [entry]}
+            if headline
+            else entry
+        )
+    cover = data.get("cover_image") or {}
+    return {
+        "name": data.get("title"),
+        "description": data.get("teaser") or data.get("teaser_short") or "",
+        "recipeYield": str(data.get("servings") or ""),
+        "totalTime": f"PT{int(data['time'])}M" if data.get("time") else None,
+        "recipeCategory": [c.get("title") for c in data.get("categories") or [] if c.get("title")],
+        "image": cover.get("url"),
+        "_ingredient_groups": groups,
+        "recipeInstructions": steps,
+    }
+
+
+_SHOP_INGREDIENT = re.compile(
+    r"(?:<h3[^>]*ingredient-list__title[^>]*>(?P<group>.*?)</h3>)"
+    r"|(?:<span[^>]*ingredient__quantity[^>]*>(?P<qty>.*?)</span>\s*"
+    r"<div[^>]*ingredient__title[^>]*>(?P<title>.*?)</div>)",
+    re.S,
+)
+
+
+def _enrich_with_page_quantities(node: dict[str, Any], html: str) -> None:
+    """Some shop-system recipe pages put amounts only into the HTML list, not into JSON-LD."""
+    existing = node.get("recipeIngredient")
+    if not isinstance(existing, list):
+        return
+    groups: list[tuple[str | None, list[str]]] = [(None, [])]
+    titles: list[str] = []
+    for match in _SHOP_INGREDIENT.finditer(html):
+        if match.group("group") is not None:
+            groups.append((clean_text(match.group("group")), []))
+            continue
+        qty, title = clean_text(match.group("qty")), clean_text(match.group("title"))
+        groups[-1][1].append(f"{qty} {title}".strip())
+        titles.append(title)
+    # only trust the page list if it is the same list as the JSON-LD one
+    if len(titles) == len(existing) and all(
+        title.casefold() == clean_text(line).casefold()
+        for title, line in zip(titles, existing, strict=True)
+    ):
+        node["_ingredient_groups"] = [g for g in groups if g[1]]
+
+
+def extract_node(html: str) -> dict[str, Any] | None:
+    """JSON-LD recipe, else a known site layout; enriched with amounts from the page if missing."""
+    node = extract_recipe_node(html)
+    if node is None:
+        return _next_data_node(html)
+    _enrich_with_page_quantities(node, html)
+    return node
 
 
 # --- fetching (network) --------------------------------------------------------
@@ -349,7 +539,7 @@ async def async_import_recipe(
         session, url, language, MAX_HTML_BYTES, "text/html,application/xhtml+xml"
     )
     html = body.decode(charset or "utf-8", errors="replace")
-    node = extract_recipe_node(html)
+    node = extract_node(html)
     if node is None:
         raise ImportFailed("no_recipe_found")
 

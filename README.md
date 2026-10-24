@@ -37,7 +37,7 @@ The integration has two options (**Settings → Devices & services → DishWish 
 | Default shopping list | `todo` entity that ingredients are added to when a card has no list of its own |
 | Default servings | Servings for imported recipes that do not state a yield |
 
-Permissions: every signed-in user sees the household's dishes and their own "only me" dishes. The creator and administrators can edit and delete a dish. Only administrators can rename or delete categories.
+Permissions: every signed-in user sees the household's dishes and their own "only me" dishes. Only the creator of a dish and administrators can edit or delete it; the starter dishes and dishes added by other people are read-only for everybody else. **Everyone can add a note** to any dish (it is appended with name and date and cannot be edited by others). Only administrators can rename or delete categories.
 
 ## Cards
 
@@ -152,7 +152,7 @@ The service `dishwish.import_starter_recipes` (optional `language`: `de` or `en`
 
 ## Link import
 
-The import reads the schema.org recipe data (JSON-LD) of a page: name, description, servings, times, ingredients, steps, categories and the photo. Imported recipes remember their source and are marked as not shareable. Pages without such data, or with bot protection, cannot be imported. For security reasons, addresses in your local network are rejected.
+The import reads the schema.org recipe data (JSON-LD) of a page: name, description, servings, times, ingredients, steps, categories and the photo. Categories named by the page are offered as new categories in the editor (you can switch them off); categories that already exist are selected automatically. Pages without schema.org data are supported for a few known layouts (for example gusto.at), and amounts that only appear in the page's ingredient list are picked up too. Imported recipes remember their source and are marked as not shareable. Pages without such data, or with bot protection, cannot be imported. For security reasons, addresses in your local network are rejected.
 
 ## Privacy
 

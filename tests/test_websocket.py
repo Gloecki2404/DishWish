@@ -234,3 +234,55 @@ async def test_bundle_is_served_without_caching(hass, hass_client_no_auth, setup
     assert resp.status == 200
     assert resp.headers["Cache-Control"] == "no-cache"
     assert "dishwish-library-card" in await resp.text()
+
+
+async def test_everybody_may_add_notes_but_only_owners_edit(hass, setup_integration, make_client):
+    alice, alice_user = await make_client("alice")
+    bob, _ = await make_client("bob")
+    recipe = (await call(alice, "dishwish/recipes/create", **recipe_input(notes="Eigene Notiz")))[
+        "result"
+    ]
+
+    noted = await call(
+        bob, "dishwish/recipes/add_note", recipe_id=recipe["id"], text="  Mehr Salz!  "
+    )
+    assert noted["success"], noted
+    lines = noted["result"]["notes"].split("\n\n")
+    assert lines[0] == "Eigene Notiz"
+    assert lines[1].startswith("bob (") and lines[1].endswith("): Mehr Salz!")
+    assert noted["result"]["can_edit"] is False
+    await call(alice, "dishwish/recipes/add_note", recipe_id=recipe["id"], text="Danke")
+    full = (await call(alice, "dishwish/recipes/get", recipe_id=recipe["id"]))["result"]
+    assert full["notes"].count("\n\n") == 2 and full["can_edit"] is True
+
+    # bob still cannot change or delete the dish itself
+    update = await call(
+        bob, "dishwish/recipes/update", recipe_id=recipe["id"], **recipe_input(name="X")
+    )
+    assert update["error"]["code"] == "unauthorized"
+    delete = await call(bob, "dishwish/recipes/delete", recipe_id=recipe["id"])
+    assert delete["error"]["code"] == "unauthorized"
+
+
+async def test_notes_respect_visibility_and_limits(hass, setup_integration, make_client):
+    alice, _ = await make_client("alice")
+    bob, _ = await make_client("bob")
+    secret = (await call(alice, "dishwish/recipes/create", **recipe_input(visibility="private")))[
+        "result"
+    ]
+    hidden = await call(bob, "dishwish/recipes/add_note", recipe_id=secret["id"], text="hi")
+    assert hidden["error"]["code"] == "not_found"
+
+    recipe = (await call(alice, "dishwish/recipes/create", **recipe_input(notes="x" * 9990)))[
+        "result"
+    ]
+    too_long = await call(
+        alice, "dishwish/recipes/add_note", recipe_id=recipe["id"], text="y" * 100
+    )
+    assert too_long["error"]["code"] == "too_large"
+    for bad in ("", "   ", "z" * 1001):
+        resp = await call(alice, "dishwish/recipes/add_note", recipe_id=recipe["id"], text=bad)
+        assert resp["error"]["code"] == "invalid_format"
+    assert (await call(alice, "dishwish/recipes/add_note", recipe_id="nope", text="a"))["error"][
+        "code"
+    ] == "not_found"

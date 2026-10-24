@@ -163,7 +163,7 @@ async def test_import_via_websocket(
     saved = await call(
         client,
         "dishwish/recipes/create",
-        **{k: v for k, v in draft.items() if k != "category_ids"},
+        **{k: v for k, v in draft.items() if k not in ("category_ids", "new_categories")},
     )
     assert saved["success"], saved
     assert saved["result"]["shareable"] == 0
@@ -264,3 +264,94 @@ async def test_import_falls_back_to_og_image(
     client, _ = await make_client("alice")
     resp = await call(client, "dishwish/recipes/import_url", url="https://www.example.org/og")
     assert resp["success"] and len(resp["result"]["image_ids"]) == 1
+
+
+def test_template_macros_and_escaped_markup_become_plain_text():
+    assert (
+        importer.clean_text('Put {{ link("RZT", "1829", "Powidl") }} inside') == "Put Powidl inside"
+    )
+    assert importer.clean_text("{{ other() }}x") == "x"
+    assert (
+        importer.clean_text('See &lt;a href="https://x.example"&gt;the video&lt;/a&gt; now')
+        == "See the video now"
+    )
+    html = (FIXTURES / "jsonld_template.html").read_text("utf-8")
+    draft, _ = importer.build_draft(importer.extract_node(html), "https://x.org/", [], 4)
+    assert draft["steps"][0]["text"] == "Put 1 tbsp plum jam on each disc."
+    assert draft["steps"][1]["text"] == "See the video for the folding."
+    assert (draft["ingredients"][0]["name"], draft["ingredients"][0]["note"]) == (
+        "flour",
+        "plain, type 480",
+    )
+    assert draft["ingredients"][1]["name"] == "onion (red, large)"
+
+
+def test_categories_new_ones_are_suggested_and_existing_ones_matched():
+    html = (FIXTURES / "jsonld_template.html").read_text("utf-8")
+    node = importer.extract_node(html)
+    draft, _ = importer.build_draft(node, "https://x.org/", CATEGORIES, 4)
+    assert draft["new_categories"] == ["Germteig"]  # "Rezepte" suffix removed
+    assert draft["category_ids"] == ["c-bake"]  # keyword "Baking" selects the existing category
+    # an existing category named by the page is not suggested again
+    node["recipeCategory"] = ["Baking Rezepte", "Soup", "A", "B", "C", "D"]
+    draft, _ = importer.build_draft(node, "https://x.org/", CATEGORIES, 4)
+    assert "c-bake" in draft["category_ids"] and "c-soup" in draft["category_ids"]
+    assert draft["new_categories"] == ["A", "B", "C"]  # at most three new ones
+
+
+def test_page_chrome_inside_the_instructions_is_dropped():
+    html = (FIXTURES / "jsonld_chrome_steps.html").read_text("utf-8")
+    draft, _ = importer.build_draft(importer.extract_node(html), "https://x.org/", [], 4)
+    assert [s["text"] for s in draft["steps"]] == ["Form patties.", "Fry them hot."]
+    assert all(s["section"] is None for s in draft["steps"])  # one section = the dish name, dropped
+
+
+def test_amounts_are_taken_from_the_page_list_when_json_ld_lacks_them():
+    html = (FIXTURES / "shop_quantities.html").read_text("utf-8")
+    draft, _ = importer.build_draft(importer.extract_node(html), "https://x.org/", [], 4)
+    rows = [
+        (i["group_name"], i["quantity"], i["unit"], i["name"], i["note"])
+        for i in draft["ingredients"]
+    ]
+    assert rows == [
+        ("For the patties", 600, "g", "Beef", "fatty"),
+        ("For the patties", None, "", "Salt", ""),
+        ("For the buns", 4, "", "Buns", ""),
+    ]
+
+
+def test_page_list_that_differs_from_json_ld_is_ignored():
+    html = (
+        (FIXTURES / "shop_quantities.html").read_text("utf-8").replace("Buns</div>", "Rolls</div>")
+    )
+    draft, _ = importer.build_draft(importer.extract_node(html), "https://x.org/", [], 4)
+    assert [i["quantity"] for i in draft["ingredients"]] == [None, None, None]
+
+
+def test_nextjs_page_without_json_ld():
+    html = (FIXTURES / "nextjs_page.html").read_text("utf-8")
+    assert importer.extract_recipe_node(html) is None
+    draft, image = importer.build_draft(
+        importer.extract_node(html), "https://www.example.at/r", CATEGORIES, 4
+    )
+    assert draft["name"] == "Test Quiche" and draft["servings"] == 12
+    assert draft["prep_minutes"] == 60 and draft["description"] == "Crisp and simple."
+    assert image == "https://img.example.org/quiche.jpg"
+    assert draft["new_categories"] == ["Gemüse", "Hauptspeise"]
+    rows = [
+        (i["group_name"], i["quantity"], i["unit"], i["name"], i["note"])
+        for i in draft["ingredients"]
+    ]
+    assert rows == [
+        ("Dough", 250, "g", "flour", ""),
+        ("Dough", 160, "g", "butter", "soft"),
+        ("Dough", 1, "", "egg", ""),
+        ("Filling", 100, "ml", "cream", ""),
+        ("Filling", 2, "Dose", "spread", ""),
+        ("Filling", None, "", "salt", ""),
+    ]
+    assert [(s["section"], s["text"]) for s in draft["steps"]] == [
+        (None, "Knead the dough."),
+        (None, "Bake it."),
+        ("Serve", "Slice."),
+    ]

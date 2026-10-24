@@ -69,3 +69,6 @@ export const addToShopping = (
   recipe_id: string,
   opts: { servings?: number; ingredient_ids?: number[]; entity_id?: string } = {},
 ) => call<ShoppingResult>(c, { type: "dishwish/shopping/add", recipe_id, ...opts });
+
+export const addNote = (c: Conn, recipe_id: string, text: string) =>
+  call<Recipe>(c, { type: "dishwish/recipes/add_note", recipe_id, text });

@@ -194,6 +194,7 @@ export class DwRecipeDialog extends LitElement {
             .recipe=${this.recipe}
             .categories=${this.categories}
             .shoppingList=${this.shoppingList}
+            @recipe-updated=${(e: CustomEvent<Recipe>) => (this.recipe = e.detail)}
           ></dw-recipe-view>`
         : nothing}
       ${this.recipe ? this.renderFooter(this.recipe) : nothing}

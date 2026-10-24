@@ -37,7 +37,7 @@ Die Integration hat zwei Optionen (**Einstellungen → Geräte & Dienste → Dis
 | Standard-Einkaufsliste | `todo`-Entität, in die Zutaten geschrieben werden, wenn eine Karte keine eigene Liste hat |
 | Standard-Portionen | Portionen für importierte Rezepte ohne Mengenangabe |
 
-Rechte: Alle angemeldeten Benutzer sehen die Gerichte des Haushalts und ihre eigenen „Nur für mich“-Gerichte. Bearbeiten und Löschen dürfen der Ersteller und Administratoren. Kategorien bearbeiten oder löschen dürfen nur Administratoren.
+Rechte: Alle angemeldeten Benutzer sehen die Gerichte des Haushalts und ihre eigenen „Nur für mich“-Gerichte. Bearbeiten und Löschen dürfen nur der Ersteller eines Gerichts und Administratoren; Beispielgerichte und Gerichte anderer sind für alle anderen schreibgeschützt. **Notizen dürfen alle hinzufügen** (sie werden mit Name und Datum angehängt und können von anderen nicht geändert werden). Kategorien bearbeiten oder löschen dürfen nur Administratoren.
 
 ## Karten
 
@@ -152,7 +152,7 @@ Der Service `dishwish.import_starter_recipes` (optional `language`: `de` oder `e
 
 ## Link-Import
 
-Der Import liest die schema.org-Rezeptdaten (JSON-LD) einer Seite: Name, Beschreibung, Portionen, Zeiten, Zutaten, Schritte, Kategorien und das Foto. Importierte Rezepte merken sich die Quelle und gelten als nicht teilbar. Seiten ohne solche Daten (oder mit Bot-Schutz) lassen sich nicht importieren. Aus Sicherheitsgründen werden Adressen im lokalen Netz abgelehnt.
+Der Import liest die schema.org-Rezeptdaten (JSON-LD) einer Seite: Name, Beschreibung, Portionen, Zeiten, Zutaten, Schritte, Kategorien und das Foto. Kategorien, die die Seite nennt, werden im Editor als neue Kategorien vorgeschlagen (abwählbar); vorhandene Kategorien werden automatisch gewählt. Seiten ohne schema.org-Daten werden für einige bekannte Aufbauten unterstützt (z. B. gusto.at), und Mengen, die nur in der Zutatenliste der Seite stehen, werden mit übernommen. Importierte Rezepte merken sich die Quelle und gelten als nicht teilbar. Seiten ohne solche Daten (oder mit Bot-Schutz) lassen sich nicht importieren. Aus Sicherheitsgründen werden Adressen im lokalen Netz abgelehnt.
 
 ## Datenschutz
 

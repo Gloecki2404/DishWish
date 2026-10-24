@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 DOMAIN = "dishwish"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 DATA_DIR_NAME = "dishwish"
 DB_FILE_NAME = "dishwish.db"
 IMAGES_DIR_NAME = "images"
 SCHEMA_VERSION = 2
-SYSTEM_USER = "system"  # created_by of dishes shipped with the integration; editable by everyone
+SYSTEM_USER = "system"  # created_by of dishes shipped with the integration (admins only)
+MAX_NOTE_ENTRY = 1000
 
 SIGNAL_CHANGED = "dishwish_changed"
 

@@ -87,6 +87,8 @@ export interface RecipeInput {
   image_ids: string[];
   ingredients: Ingredient[];
   steps: Step[];
+  /** Only in import drafts: category names found on the page that do not exist yet. */
+  new_categories?: string[];
 }
 
 /** Minimal subset of the Home Assistant frontend object that we use. */

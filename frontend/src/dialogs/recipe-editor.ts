@@ -30,6 +30,9 @@ interface Draft {
   source_url: string | null;
   source_name: string | null;
   category_ids: string[];
+  /** Suggested new categories (from an import) and which of them are selected. */
+  suggested: string[];
+  new_categories: string[];
   image_ids: string[];
   ingredients: IngRow[];
   steps: { section: string | null; text: string }[];
@@ -74,6 +77,8 @@ function emptyDraft(): Draft {
     source_url: null,
     source_name: null,
     category_ids: [],
+    suggested: [],
+    new_categories: [],
     image_ids: [],
     ingredients: [{ amount: "", unit: "", name: "", note: "", group_name: null }],
     steps: [{ section: null, text: "" }],
@@ -93,6 +98,8 @@ function draftFrom(src: Recipe | RecipeInput): Draft {
     source_url: src.source_url,
     source_name: src.source_name,
     category_ids: [...src.category_ids],
+    suggested: "new_categories" in src ? [...(src.new_categories ?? [])] : [],
+    new_categories: "new_categories" in src ? [...(src.new_categories ?? [])] : [],
     image_ids: [...image_ids],
     ingredients: src.ingredients.length ? src.ingredients.map(rowFromIngredient) : emptyDraft().ingredients,
     steps: src.steps.length ? src.steps.map((s) => ({ section: s.section, text: s.text })) : emptyDraft().steps,
@@ -310,6 +317,33 @@ export class DwRecipeEditor extends LitElement {
     this.patch({ category_ids: ids.includes(id) ? ids.filter((c) => c !== id) : [...ids, id] });
   }
 
+  private toggleSuggested(name: string): void {
+    const on = this.draft.new_categories;
+    this.patch({ new_categories: on.includes(name) ? on.filter((n) => n !== name) : [...on, name] });
+  }
+
+  /** Create the selected suggested categories (or reuse ones that appeared meanwhile). */
+  private async resolveNewCategories(): Promise<string[]> {
+    const ids: string[] = [];
+    for (const name of this.draft.new_categories) {
+      const known = this.categories.find((c) => c.name.toLowerCase() === name.toLowerCase());
+      if (known) {
+        ids.push(known.id);
+        continue;
+      }
+      try {
+        ids.push((await createCategory(this.hass.connection, name)).id);
+      } catch (err) {
+        if (errorCode(err) !== "invalid_format") throw err;
+        await getStore(this.hass).refresh(); // someone created it in the meantime
+        const again = getStore(this.hass).categories.find((c) => c.name.toLowerCase() === name.toLowerCase());
+        if (again) ids.push(again.id);
+      }
+    }
+    if (ids.length) await getStore(this.hass).refresh();
+    return ids;
+  }
+
   private async addCategory(): Promise<void> {
     const name = this.newCategory.trim();
     if (!name) return;
@@ -393,7 +427,9 @@ export class DwRecipeEditor extends LitElement {
     this.saving = true;
     this.error = "";
     try {
+      const newIds = await this.resolveNewCategories();
       const input = this.buildInput();
+      input.category_ids = [...new Set([...input.category_ids, ...newIds])];
       const saved = this.recipeId
         ? await updateRecipe(this.hass.connection, this.recipeId, input)
         : await createRecipe(this.hass.connection, input);
@@ -543,6 +579,16 @@ export class DwRecipeEditor extends LitElement {
             (c) => html`<button class="chip" aria-pressed=${d.category_ids.includes(c.id)} @click=${() => this.toggleCategory(c.id)}>${c.name}</button>`,
           )}
         </div>
+        ${d.suggested.length
+          ? html`<div class="chips add" aria-label=${t(lang, "suggested_categories")}>
+              <span class="muted">${t(lang, "suggested_categories")}</span>
+              ${d.suggested.map(
+                (name) => html`<button class="chip" aria-pressed=${d.new_categories.includes(name)} @click=${() => this.toggleSuggested(name)}>
+                  + ${name}
+                </button>`,
+              )}
+            </div>`
+          : nothing}
         <div class="inline add">
           <input placeholder=${t(lang, "new_category")} .value=${this.newCategory}
             @input=${(e: Event) => (this.newCategory = (e.target as HTMLInputElement).value)}

@@ -143,11 +143,7 @@ class DishWishStore:
         )
         if not visible:
             raise db.NotFound
-        if not (
-            actor.user_id is None
-            or actor.is_admin
-            or meta["created_by"] in (actor.user_id, SYSTEM_USER)
-        ):
+        if not (actor.user_id is None or actor.is_admin or meta["created_by"] == actor.user_id):
             raise Unauthorized
         return meta
 
@@ -179,6 +175,15 @@ class DishWishStore:
         await self._require_owner(actor, recipe_id)
         removed = await self._write(db.update_recipe, recipe_id, data, actor.user_id or "system")
         await self._delete_files(removed)
+        self._notify("recipes", [recipe_id])
+        return await self.async_get_recipe(actor, recipe_id)
+
+    async def async_add_note(self, actor: Actor, recipe_id: str, text: str) -> dict[str, Any]:
+        """Append a dated note to any visible recipe (everyone may; the text is never edited)."""
+        recipe = await self.async_get_recipe(actor, recipe_id)  # visibility check
+        author = await self.async_user_name(actor.user_id) if actor.user_id else "System"
+        entry = f"{author} ({db.now_iso()[:10]}): {text.strip()}"
+        await self._write(db.append_note, recipe["id"], entry)
         self._notify("recipes", [recipe_id])
         return await self.async_get_recipe(actor, recipe_id)
 

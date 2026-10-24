@@ -57,6 +57,19 @@ def parse_line(text: str) -> dict[str, Any]:
     return result if result["name"] else fallback
 
 
+def _split_note(rest: str) -> tuple[str, str] | None:
+    """Split at the first comma that is not inside parentheses: "Zwiebel (rot, groß), gewürfelt"."""
+    depth = 0
+    for i, char in enumerate(rest):
+        if char in "([":
+            depth += 1
+        elif char in ")]":
+            depth = max(0, depth - 1)
+        elif char == "," and depth == 0:
+            return rest[:i].strip(), rest[i + 1 :].strip()
+    return None
+
+
 def _parse(line: str) -> dict[str, Any]:
     rest = _APPROX.sub("", line).strip()
     quantity = quantity_max = None
@@ -81,8 +94,8 @@ def _parse(line: str) -> dict[str, Any]:
             quantity_max = None
 
     name, note = rest, ""
-    if "," in rest:
-        name, note = (part.strip() for part in rest.split(",", 1))
+    if (split := _split_note(rest)) is not None:
+        name, note = split
     elif paren := _TRAILING_PAREN.match(rest):
         name, note = paren.group(1).strip(), paren.group(2).strip()
     return {

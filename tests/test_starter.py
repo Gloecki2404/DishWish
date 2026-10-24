@@ -105,10 +105,22 @@ async def test_first_setup_adds_german_starter_dishes(hass: HomeAssistant, tmp_p
     assert all(r["thumb_url"] for r in recipes)  # every starter dish ships with a photo
     store = get_store(hass)
     assert len(list(store.images_dir.glob("*_thumb.jpg"))) == 20
-    # shipped dishes belong to the household: any user may edit or delete them
-    assert full["can_edit"] is True
-    deleted = await call(client, "dishwish/recipes/delete", recipe_id=schnitzel["id"])
-    assert deleted["success"]
+    # shipped dishes can only be changed by administrators; everybody may add notes
+    assert full["can_edit"] is False
+    denied = await call(client, "dishwish/recipes/delete", recipe_id=schnitzel["id"])
+    assert denied["error"]["code"] == "unauthorized"
+    noted = await call(
+        client, "dishwish/recipes/add_note", recipe_id=schnitzel["id"], text="Mit Preiselbeeren"
+    )
+    assert (
+        noted["result"]["notes"].endswith("Mit Preiselbeeren")
+        and noted["result"]["can_edit"] is False
+    )
+    admin, _ = await make_client("root", admin=True)
+    assert (await call(admin, "dishwish/recipes/get", recipe_id=schnitzel["id"]))["result"][
+        "can_edit"
+    ] is True
+    assert (await call(admin, "dishwish/recipes/delete", recipe_id=schnitzel["id"]))["success"]
 
     # reloading must neither duplicate dishes nor bring a deleted one back
     assert await hass.config_entries.async_reload(entry.entry_id)

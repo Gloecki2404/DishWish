@@ -18,6 +18,7 @@ from .const import (
     MAX_INGREDIENTS,
     MAX_MINUTES,
     MAX_NAME,
+    MAX_NOTE_ENTRY,
     MAX_NOTES,
     MAX_PARSE_LINES,
     MAX_SERVINGS,
@@ -140,6 +141,19 @@ async def ws_recipes_update(hass: HomeAssistant, connection: Any, msg: dict[str,
     recipe = await get_store(hass).async_update_recipe(
         _actor(connection), msg["recipe_id"], _recipe_data(msg)
     )
+    connection.send_result(msg["id"], recipe)
+
+
+@_command(
+    {
+        vol.Required("type"): "dishwish/recipes/add_note",
+        vol.Required("recipe_id"): str,
+        vol.Required("text"): vol.All(str, vol.Strip, vol.Length(min=1, max=MAX_NOTE_ENTRY)),
+    }
+)
+async def ws_recipes_add_note(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
+    """Add a note to any visible dish."""
+    recipe = await get_store(hass).async_add_note(_actor(connection), msg["recipe_id"], msg["text"])
     connection.send_result(msg["id"], recipe)
 
 
@@ -307,6 +321,7 @@ def async_register_websocket(hass: HomeAssistant) -> None:
         ws_recipes_get,
         ws_recipes_create,
         ws_recipes_update,
+        ws_recipes_add_note,
         ws_recipes_delete,
         ws_recipes_import_url,
         ws_ingredients_parse,

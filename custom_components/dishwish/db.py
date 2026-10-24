@@ -8,7 +8,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from .const import SCHEMA_VERSION, SEED_CATEGORIES, SYSTEM_USER
+from .const import MAX_NOTES, SCHEMA_VERSION, SEED_CATEGORIES
 
 Row = dict[str, Any]
 
@@ -29,6 +29,12 @@ class Invalid(DbError):
     """Input references something invalid."""
 
     code = "invalid_format"
+
+
+class TooLarge(DbError):
+    """The text would exceed its limit."""
+
+    code = "too_large"
 
 
 class AlreadyWished(DbError):
@@ -408,9 +414,7 @@ def get_recipe(
         (recipe_id, user_id or ""),
     ).fetchone()
     recipe["my_wish_id"] = my_wish[0] if my_wish else None
-    recipe["can_edit"] = (
-        user_id is None or is_admin or recipe["created_by"] in (user_id, SYSTEM_USER)
-    )
+    recipe["can_edit"] = user_id is None or is_admin or recipe["created_by"] == user_id
     return recipe
 
 
@@ -552,6 +556,27 @@ def delete_recipe(conn: sqlite3.Connection, recipe_id: str) -> list[str]:
     with conn:
         conn.execute("DELETE FROM recipes WHERE id = ?", (recipe_id,))
     return image_ids
+
+
+def append_note(conn: sqlite3.Connection, recipe_id: str, entry: str) -> None:
+    """Append an entry to the notes of a recipe; Invalid if the notes would get too long."""
+    notes = get_recipe_meta_notes(conn, recipe_id)
+    combined = f"{notes}\n\n{entry}" if notes else entry
+    if len(combined) > MAX_NOTES:
+        raise TooLarge
+    with conn:
+        conn.execute(
+            "UPDATE recipes SET notes = ?, updated_at = ? WHERE id = ?",
+            (combined, now_iso(), recipe_id),
+        )
+
+
+def get_recipe_meta_notes(conn: sqlite3.Connection, recipe_id: str) -> str:
+    """Current notes text or NotFound."""
+    row = conn.execute("SELECT notes FROM recipes WHERE id = ?", (recipe_id,)).fetchone()
+    if row is None:
+        raise NotFound
+    return row[0]
 
 
 # --- images ------------------------------------------------------------------

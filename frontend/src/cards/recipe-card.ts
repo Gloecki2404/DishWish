@@ -218,6 +218,7 @@ export class DishWishRecipeCard extends LitElement {
           .showIngredients=${cfg.show_ingredients !== false}
           .showSteps=${cfg.show_steps !== false}
           .cookable=${true}
+          @recipe-updated=${(e: CustomEvent<Recipe>) => (this.recipe = e.detail)}
           @cook=${(e: CustomEvent<{ servings: number }>) => {
             this.servings = e.detail.servings;
             void this.cook.open();

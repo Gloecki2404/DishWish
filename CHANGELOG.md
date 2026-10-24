@@ -6,6 +6,26 @@ versions; every database upgrade makes a backup copy first.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-24
+
+### Added
+- Everybody can add a note to any dish. It is appended with name and date; others cannot change it.
+- Link import: categories named by the page are suggested as new categories (switchable in the editor);
+  support for gusto.at style pages (Next.js data without JSON-LD); amounts that only exist in the page's
+  ingredient list are used; ingredient groups of the page are kept.
+- "Select all / none" for the ingredients that go onto the shopping list.
+
+### Changed
+- **Permissions:** only the creator and administrators can edit or delete a dish. The starter dishes and dishes
+  added by others are read-only for other users (before, starter dishes could be edited by everybody).
+- No ingredient is preselected for the shopping list any more.
+
+### Fixed
+- Import: template leftovers such as `{{ link("RZT", "1829", "Powidl") }}` and escaped links in the steps now
+  become plain text; commas inside parentheses ("Weizenmehl (glatt, W480)") no longer split the ingredient;
+  page furniture (CSS, "Gefällt dir das Rezept?", share links) inside the instructions is dropped, and a single
+  section that only repeats the dish name is removed.
+
 ## [0.2.0] - 2026-10-24
 
 ### Added

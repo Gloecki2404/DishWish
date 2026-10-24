@@ -1,5 +1,5 @@
 import { css, html, LitElement, nothing, type PropertyValues } from "lit";
-import { addToShopping, errorCode } from "../api";
+import { addNote, addToShopping, errorCode } from "../api";
 import { t, tError } from "../i18n";
 import { icon, paths } from "../icons";
 import { sharedStyles } from "../styles";
@@ -23,6 +23,8 @@ export class DwRecipeView extends LitElement {
     servings: { state: true },
     selected: { state: true },
     doneSteps: { state: true },
+    noteText: { state: true },
+    noteBusy: { state: true },
   };
   declare hass: HomeAssistant;
   declare recipe: Recipe | null;
@@ -34,6 +36,8 @@ export class DwRecipeView extends LitElement {
   declare servings: number;
   declare selected: Set<number>;
   declare doneSteps: Set<number>;
+  declare noteText: string;
+  declare noteBusy: boolean;
 
   constructor() {
     super();
@@ -45,6 +49,8 @@ export class DwRecipeView extends LitElement {
     this.servings = 4;
     this.selected = new Set();
     this.doneSteps = new Set();
+    this.noteText = "";
+    this.noteBusy = false;
   }
 
   static override styles = [
@@ -163,6 +169,20 @@ export class DwRecipeView extends LitElement {
       .notes {
         white-space: pre-wrap;
       }
+      .note-form {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .link {
+        margin-top: 4px;
+        padding: 8px 0;
+        border: none;
+        background: none;
+        color: var(--dw-accent, var(--primary-color));
+        cursor: pointer;
+        font: inherit;
+      }
       .pick {
         flex: none;
         width: 22px;
@@ -185,8 +205,11 @@ export class DwRecipeView extends LitElement {
     const prev = changed.get("recipe") as Recipe | null | undefined;
     if (prev?.id === this.recipe.id) return; // same dish reloaded: keep the user's choices
     this.servings = this.recipe.servings;
-    this.selected = new Set(this.recipe.ingredients.map((i) => i.id!));
+    this.selected = new Set(); // nothing preselected: pick what you actually need to buy
     this.doneSteps = new Set();
+    this.noteText = "";
+    this.noteText = "";
+    this.noteBusy = false;
   }
 
   private async addToList(): Promise<void> {
@@ -203,6 +226,26 @@ export class DwRecipeView extends LitElement {
     } catch (err) {
       notify(this, tError(lang, errorCode(err)));
     }
+  }
+
+  private async saveNote(): Promise<void> {
+    const r = this.recipe;
+    const text = this.noteText.trim();
+    if (!r || !text || this.noteBusy) return;
+    this.noteBusy = true;
+    try {
+      const updated = await addNote(this.hass.connection, r.id, text);
+      this.noteText = "";
+      this.dispatchEvent(new CustomEvent("recipe-updated", { detail: updated, bubbles: true, composed: true }));
+    } catch (err) {
+      notify(this, tError(this.uiLang, errorCode(err)));
+    }
+    this.noteBusy = false;
+  }
+
+  private toggleAll(): void {
+    const ids = this.recipe?.ingredients.map((i) => i.id!) ?? [];
+    this.selected = this.selected.size === ids.length ? new Set() : new Set(ids);
   }
 
   private toggleIngredient(id: number): void {
@@ -292,6 +335,11 @@ export class DwRecipeView extends LitElement {
                 </button>
               </span>
             </div>
+            ${r.ingredients.length
+              ? html`<button class="link" @click=${() => this.toggleAll()}>
+                  ${this.selected.size === r.ingredients.length ? t(lang, "select_none") : t(lang, "select_all")}
+                </button>`
+              : nothing}
             ${this.renderIngredients(r)}
             ${r.ingredients.length
               ? html`<button class="btn add" ?disabled=${this.selected.size === 0} @click=${() => this.addToList()}>
@@ -309,7 +357,21 @@ export class DwRecipeView extends LitElement {
               )}
             </ol>`
         : nothing}
-      ${r.notes ? html`<h3>${t(lang, "notes")}</h3><p class="notes">${r.notes}</p>` : nothing}
+      <h3>${t(lang, "notes")}</h3>
+      ${r.notes ? html`<p class="notes">${r.notes}</p>` : nothing}
+      <div class="note-form">
+        <input
+          placeholder=${t(lang, "note_add_placeholder")}
+          aria-label=${t(lang, "note_add_placeholder")}
+          maxlength="1000"
+          .value=${this.noteText}
+          @input=${(e: Event) => (this.noteText = (e.target as HTMLInputElement).value)}
+          @keydown=${(e: KeyboardEvent) => e.key === "Enter" && this.saveNote()}
+        />
+        <button class="btn" ?disabled=${!this.noteText.trim() || this.noteBusy} @click=${() => this.saveNote()}>
+          ${t(lang, "note_add")}
+        </button>
+      </div>
       ${r.source_url
         ? html`<p>
             <a href=${r.source_url} target="_blank" rel="noopener noreferrer">

@@ -51,6 +51,8 @@
     {"input": "1 Becher Joghurt", "quantity": 1, "quantity_max": null, "unit": "Becher", "name": "Joghurt", "note": ""},
     {"input": "10 g frischer Ingwer", "quantity": 10, "quantity_max": null, "unit": "g", "name": "frischer Ingwer", "note": ""},
     {"input": "2 Zehen Knoblauch, gepresst", "quantity": 2, "quantity_max": null, "unit": "Zehe", "name": "Knoblauch", "note": "gepresst"},
+    {"input": "500 g Weizenmehl (glatt, W480)", "quantity": 500, "quantity_max": null, "unit": "g", "name": "Weizenmehl", "note": "glatt, W480"},
+    {"input": "1 Zwiebel (groß, rot), gewürfelt", "quantity": 1, "quantity_max": null, "unit": "", "name": "Zwiebel (groß, rot)", "note": "gewürfelt"},
     {"input": "   ", "quantity": null, "quantity_max": null, "unit": "", "name": "", "note": ""}
   ],
   "format": [
