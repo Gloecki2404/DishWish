@@ -6,6 +6,13 @@ versions; every database upgrade makes a backup copy first.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-24
+
+### Added
+- Recipe from photos: photograph a cookbook page in the import dialog (up to 4 photos); a Home Assistant AI task
+  reads it and returns a draft to review. Any AI task entity with image support can be chosen in the options
+  (for example Google Gemini); empty uses the default AI task. Photos are not kept; recipes from photos are not shareable.
+
 ## [0.3.0] - 2026-10-24
 
 ### Added

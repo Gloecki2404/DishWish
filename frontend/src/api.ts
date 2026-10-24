@@ -72,3 +72,6 @@ export const addToShopping = (
 
 export const addNote = (c: Conn, recipe_id: string, text: string) =>
   call<Recipe>(c, { type: "dishwish/recipes/add_note", recipe_id, text });
+
+export const importPhotos = (c: Conn, image_ids: string[]) =>
+  call<RecipeInput>(c, { type: "dishwish/recipes/import_photos", image_ids });

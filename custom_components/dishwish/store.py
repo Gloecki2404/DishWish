@@ -322,6 +322,17 @@ class DishWishStore:
             raise
         return db.image_urls(image_id)
 
+    async def async_owned_uploads(self, actor: Actor, image_ids: list[str]) -> list[str]:
+        """Ids among `image_ids` that are this user's not yet assigned uploads."""
+        if actor.user_id is None:
+            return []
+        return await self._read(db.owned_uploads, image_ids, actor.user_id)
+
+    async def async_discard_uploads(self, image_ids: list[str]) -> None:
+        """Delete unassigned uploads (rows and files)."""
+        await self._write(db.delete_uploads, image_ids)
+        await self._delete_files(image_ids)
+
     async def async_attach_image(self, recipe_id: str, image_id: str) -> None:
         """Attach a freshly uploaded image to a recipe (system use)."""
         if await self._write(db.attach_image, recipe_id, image_id):

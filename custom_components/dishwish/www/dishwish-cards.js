@@ -1,15 +1,15 @@
-const G = globalThis, oe = G.ShadowRoot && (G.ShadyCSS === void 0 || G.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, ae = /* @__PURE__ */ Symbol(), ue = /* @__PURE__ */ new WeakMap();
-let Re = class {
+const G = globalThis, ae = G.ShadowRoot && (G.ShadyCSS === void 0 || G.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, ce = /* @__PURE__ */ Symbol(), ge = /* @__PURE__ */ new WeakMap();
+let Pe = class {
   constructor(e, t, i) {
-    if (this._$cssResult$ = !0, i !== ae) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
+    if (this._$cssResult$ = !0, i !== ce) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
     this.cssText = e, this.t = t;
   }
   get styleSheet() {
     let e = this.o;
     const t = this.t;
-    if (oe && e === void 0) {
+    if (ae && e === void 0) {
       const i = t !== void 0 && t.length === 1;
-      i && (e = ue.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), i && ue.set(t, e));
+      i && (e = ge.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), i && ge.set(t, e));
     }
     return e;
   }
@@ -17,69 +17,69 @@ let Re = class {
     return this.cssText;
   }
 };
-const Be = (n) => new Re(typeof n == "string" ? n : n + "", void 0, ae), $ = (n, ...e) => {
-  const t = n.length === 1 ? n[0] : e.reduce((i, s, r) => i + ((c) => {
+const Ge = (o) => new Pe(typeof o == "string" ? o : o + "", void 0, ce), $ = (o, ...e) => {
+  const t = o.length === 1 ? o[0] : e.reduce((i, s, r) => i + ((c) => {
     if (c._$cssResult$ === !0) return c.cssText;
     if (typeof c == "number") return c;
     throw Error("Value passed to 'css' function must be a 'css' function result: " + c + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
-  })(s) + n[r + 1], n[0]);
-  return new Re(t, n, ae);
-}, je = (n, e) => {
-  if (oe) n.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
+  })(s) + o[r + 1], o[0]);
+  return new Pe(t, o, ce);
+}, Ze = (o, e) => {
+  if (ae) o.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
   else for (const t of e) {
     const i = document.createElement("style"), s = G.litNonce;
-    s !== void 0 && i.setAttribute("nonce", s), i.textContent = t.cssText, n.appendChild(i);
+    s !== void 0 && i.setAttribute("nonce", s), i.textContent = t.cssText, o.appendChild(i);
   }
-}, ge = oe ? (n) => n : (n) => n instanceof CSSStyleSheet ? ((e) => {
+}, me = ae ? (o) => o : (o) => o instanceof CSSStyleSheet ? ((e) => {
   let t = "";
   for (const i of e.cssRules) t += i.cssText;
-  return Be(t);
-})(n) : n;
-const { is: Ze, defineProperty: Ge, getOwnPropertyDescriptor: Fe, getOwnPropertyNames: Ke, getOwnPropertySymbols: Je, getPrototypeOf: Ye } = Object, Y = globalThis, me = Y.trustedTypes, Qe = me ? me.emptyScript : "", Xe = Y.reactiveElementPolyfillSupport, q = (n, e) => n, se = { toAttribute(n, e) {
+  return Ge(t);
+})(o) : o;
+const { is: Ke, defineProperty: Je, getOwnPropertyDescriptor: Ye, getOwnPropertyNames: Qe, getOwnPropertySymbols: Xe, getPrototypeOf: et } = Object, Y = globalThis, fe = Y.trustedTypes, tt = fe ? fe.emptyScript : "", it = Y.reactiveElementPolyfillSupport, T = (o, e) => o, oe = { toAttribute(o, e) {
   switch (e) {
     case Boolean:
-      n = n ? Qe : null;
+      o = o ? tt : null;
       break;
     case Object:
     case Array:
-      n = n == null ? n : JSON.stringify(n);
+      o = o == null ? o : JSON.stringify(o);
   }
-  return n;
-}, fromAttribute(n, e) {
-  let t = n;
+  return o;
+}, fromAttribute(o, e) {
+  let t = o;
   switch (e) {
     case Boolean:
-      t = n !== null;
+      t = o !== null;
       break;
     case Number:
-      t = n === null ? null : Number(n);
+      t = o === null ? null : Number(o);
       break;
     case Object:
     case Array:
       try {
-        t = JSON.parse(n);
+        t = JSON.parse(o);
       } catch {
         t = null;
       }
   }
   return t;
-} }, De = (n, e) => !Ze(n, e), fe = { attribute: !0, type: String, converter: se, reflect: !1, useDefault: !1, hasChanged: De };
+} }, ze = (o, e) => !Ke(o, e), _e = { attribute: !0, type: String, converter: oe, reflect: !1, useDefault: !1, hasChanged: ze };
 Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), Y.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-let N = class extends HTMLElement {
+let D = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ??= []).push(e);
   }
   static get observedAttributes() {
     return this.finalize(), this._$Eh && [...this._$Eh.keys()];
   }
-  static createProperty(e, t = fe) {
+  static createProperty(e, t = _e) {
     if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
       const i = /* @__PURE__ */ Symbol(), s = this.getPropertyDescriptor(e, i, t);
-      s !== void 0 && Ge(this.prototype, e, s);
+      s !== void 0 && Je(this.prototype, e, s);
     }
   }
   static getPropertyDescriptor(e, t, i) {
-    const { get: s, set: r } = Fe(this.prototype, e) ?? { get() {
+    const { get: s, set: r } = Ye(this.prototype, e) ?? { get() {
       return this[t];
     }, set(c) {
       this[t] = c;
@@ -90,17 +90,17 @@ let N = class extends HTMLElement {
     }, configurable: !0, enumerable: !0 };
   }
   static getPropertyOptions(e) {
-    return this.elementProperties.get(e) ?? fe;
+    return this.elementProperties.get(e) ?? _e;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(q("elementProperties"))) return;
-    const e = Ye(this);
+    if (this.hasOwnProperty(T("elementProperties"))) return;
+    const e = et(this);
     e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(q("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(q("properties"))) {
-      const t = this.properties, i = [...Ke(t), ...Je(t)];
+    if (this.hasOwnProperty(T("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(T("properties"))) {
+      const t = this.properties, i = [...Qe(t), ...Xe(t)];
       for (const s of i) this.createProperty(s, t[s]);
     }
     const e = this[Symbol.metadata];
@@ -119,8 +119,8 @@ let N = class extends HTMLElement {
     const t = [];
     if (Array.isArray(e)) {
       const i = new Set(e.flat(1 / 0).reverse());
-      for (const s of i) t.unshift(ge(s));
-    } else e !== void 0 && t.push(ge(e));
+      for (const s of i) t.unshift(me(s));
+    } else e !== void 0 && t.push(me(e));
     return t;
   }
   static _$Eu(e, t) {
@@ -146,7 +146,7 @@ let N = class extends HTMLElement {
   }
   createRenderRoot() {
     const e = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
-    return je(e, this.constructor.elementStyles), e;
+    return Ze(e, this.constructor.elementStyles), e;
   }
   connectedCallback() {
     this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(!0), this._$EO?.forEach((e) => e.hostConnected?.());
@@ -162,14 +162,14 @@ let N = class extends HTMLElement {
   _$ET(e, t) {
     const i = this.constructor.elementProperties.get(e), s = this.constructor._$Eu(e, i);
     if (s !== void 0 && i.reflect === !0) {
-      const r = (i.converter?.toAttribute !== void 0 ? i.converter : se).toAttribute(t, i.type);
+      const r = (i.converter?.toAttribute !== void 0 ? i.converter : oe).toAttribute(t, i.type);
       this._$Em = e, r == null ? this.removeAttribute(s) : this.setAttribute(s, r), this._$Em = null;
     }
   }
   _$AK(e, t) {
     const i = this.constructor, s = i._$Eh.get(e);
     if (s !== void 0 && this._$Em !== s) {
-      const r = i.getPropertyOptions(s), c = typeof r.converter == "function" ? { fromAttribute: r.converter } : r.converter?.fromAttribute !== void 0 ? r.converter : se;
+      const r = i.getPropertyOptions(s), c = typeof r.converter == "function" ? { fromAttribute: r.converter } : r.converter?.fromAttribute !== void 0 ? r.converter : oe;
       this._$Em = s;
       const u = c.fromAttribute(t, r.type);
       this[s] = u ?? this._$Ej?.get(s) ?? u, this._$Em = null;
@@ -178,7 +178,7 @@ let N = class extends HTMLElement {
   requestUpdate(e, t, i, s = !1, r) {
     if (e !== void 0) {
       const c = this.constructor;
-      if (s === !1 && (r = this[e]), i ??= c.getPropertyOptions(e), !((i.hasChanged ?? De)(r, t) || i.useDefault && i.reflect && r === this._$Ej?.get(e) && !this.hasAttribute(c._$Eu(e, i)))) return;
+      if (s === !1 && (r = this[e]), i ??= c.getPropertyOptions(e), !((i.hasChanged ?? ze)(r, t) || i.useDefault && i.reflect && r === this._$Ej?.get(e) && !this.hasAttribute(c._$Eu(e, i)))) return;
       this.C(e, t, i);
     }
     this.isUpdatePending === !1 && (this._$ES = this._$EP());
@@ -246,48 +246,48 @@ let N = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-N.elementStyles = [], N.shadowRootOptions = { mode: "open" }, N[q("elementProperties")] = /* @__PURE__ */ new Map(), N[q("finalized")] = /* @__PURE__ */ new Map(), Xe?.({ ReactiveElement: N }), (Y.reactiveElementVersions ??= []).push("2.1.2");
-const ce = globalThis, _e = (n) => n, F = ce.trustedTypes, be = F ? F.createPolicy("lit-html", { createHTML: (n) => n }) : void 0, ze = "$lit$", C = `lit$${Math.random().toFixed(9).slice(2)}$`, Ne = "?" + C, et = `<${Ne}>`, R = document, I = () => R.createComment(""), W = (n) => n === null || typeof n != "object" && typeof n != "function", le = Array.isArray, tt = (n) => le(n) || typeof n?.[Symbol.iterator] == "function", ee = `[ 	
-\f\r]`, T = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, we = /-->/g, ve = />/g, L = RegExp(`>|${ee}(?:([^\\s"'>=/]+)(${ee}*=${ee}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), $e = /'/g, ye = /"/g, Pe = /^(?:script|style|textarea|title)$/i, He = (n) => (e, ...t) => ({ _$litType$: n, strings: e, values: t }), a = He(1), it = He(2), H = /* @__PURE__ */ Symbol.for("lit-noChange"), d = /* @__PURE__ */ Symbol.for("lit-nothing"), xe = /* @__PURE__ */ new WeakMap(), M = R.createTreeWalker(R, 129);
-function Oe(n, e) {
-  if (!le(n) || !n.hasOwnProperty("raw")) throw Error("invalid template strings array");
-  return be !== void 0 ? be.createHTML(e) : e;
+D.elementStyles = [], D.shadowRootOptions = { mode: "open" }, D[T("elementProperties")] = /* @__PURE__ */ new Map(), D[T("finalized")] = /* @__PURE__ */ new Map(), it?.({ ReactiveElement: D }), (Y.reactiveElementVersions ??= []).push("2.1.2");
+const le = globalThis, be = (o) => o, Z = le.trustedTypes, we = Z ? Z.createPolicy("lit-html", { createHTML: (o) => o }) : void 0, De = "$lit$", C = `lit$${Math.random().toFixed(9).slice(2)}$`, Ne = "?" + C, st = `<${Ne}>`, R = document, q = () => R.createComment(""), U = (o) => o === null || typeof o != "object" && typeof o != "function", de = Array.isArray, ot = (o) => de(o) || typeof o?.[Symbol.iterator] == "function", ee = `[ 	
+\f\r]`, I = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ve = /-->/g, $e = />/g, L = RegExp(`>|${ee}(?:([^\\s"'>=/]+)(${ee}*=${ee}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), ye = /'/g, xe = /"/g, He = /^(?:script|style|textarea|title)$/i, Oe = (o) => (e, ...t) => ({ _$litType$: o, strings: e, values: t }), a = Oe(1), rt = Oe(2), H = /* @__PURE__ */ Symbol.for("lit-noChange"), d = /* @__PURE__ */ Symbol.for("lit-nothing"), ke = /* @__PURE__ */ new WeakMap(), M = R.createTreeWalker(R, 129);
+function Ie(o, e) {
+  if (!de(o) || !o.hasOwnProperty("raw")) throw Error("invalid template strings array");
+  return we !== void 0 ? we.createHTML(e) : e;
 }
-const st = (n, e) => {
-  const t = n.length - 1, i = [];
-  let s, r = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", c = T;
+const nt = (o, e) => {
+  const t = o.length - 1, i = [];
+  let s, r = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", c = I;
   for (let u = 0; u < t; u++) {
-    const l = n[u];
+    const l = o[u];
     let h, p, f = -1, k = 0;
-    for (; k < l.length && (c.lastIndex = k, p = c.exec(l), p !== null); ) k = c.lastIndex, c === T ? p[1] === "!--" ? c = we : p[1] !== void 0 ? c = ve : p[2] !== void 0 ? (Pe.test(p[2]) && (s = RegExp("</" + p[2], "g")), c = L) : p[3] !== void 0 && (c = L) : c === L ? p[0] === ">" ? (c = s ?? T, f = -1) : p[1] === void 0 ? f = -2 : (f = c.lastIndex - p[2].length, h = p[1], c = p[3] === void 0 ? L : p[3] === '"' ? ye : $e) : c === ye || c === $e ? c = L : c === we || c === ve ? c = T : (c = L, s = void 0);
-    const A = c === L && n[u + 1].startsWith("/>") ? " " : "";
-    r += c === T ? l + et : f >= 0 ? (i.push(h), l.slice(0, f) + ze + l.slice(f) + C + A) : l + C + (f === -2 ? u : A);
+    for (; k < l.length && (c.lastIndex = k, p = c.exec(l), p !== null); ) k = c.lastIndex, c === I ? p[1] === "!--" ? c = ve : p[1] !== void 0 ? c = $e : p[2] !== void 0 ? (He.test(p[2]) && (s = RegExp("</" + p[2], "g")), c = L) : p[3] !== void 0 && (c = L) : c === L ? p[0] === ">" ? (c = s ?? I, f = -1) : p[1] === void 0 ? f = -2 : (f = c.lastIndex - p[2].length, h = p[1], c = p[3] === void 0 ? L : p[3] === '"' ? xe : ye) : c === xe || c === ye ? c = L : c === ve || c === $e ? c = I : (c = L, s = void 0);
+    const A = c === L && o[u + 1].startsWith("/>") ? " " : "";
+    r += c === I ? l + st : f >= 0 ? (i.push(h), l.slice(0, f) + De + l.slice(f) + C + A) : l + C + (f === -2 ? u : A);
   }
-  return [Oe(n, r + (n[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
+  return [Ie(o, r + (o[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
 };
-class U {
+class W {
   constructor({ strings: e, _$litType$: t }, i) {
     let s;
     this.parts = [];
     let r = 0, c = 0;
-    const u = e.length - 1, l = this.parts, [h, p] = st(e, t);
-    if (this.el = U.createElement(h, i), M.currentNode = this.el.content, t === 2 || t === 3) {
+    const u = e.length - 1, l = this.parts, [h, p] = nt(e, t);
+    if (this.el = W.createElement(h, i), M.currentNode = this.el.content, t === 2 || t === 3) {
       const f = this.el.content.firstChild;
       f.replaceWith(...f.childNodes);
     }
     for (; (s = M.nextNode()) !== null && l.length < u; ) {
       if (s.nodeType === 1) {
-        if (s.hasAttributes()) for (const f of s.getAttributeNames()) if (f.endsWith(ze)) {
+        if (s.hasAttributes()) for (const f of s.getAttributeNames()) if (f.endsWith(De)) {
           const k = p[c++], A = s.getAttribute(f).split(C), j = /([.?@])?(.*)/.exec(k);
-          l.push({ type: 1, index: r, name: j[2], strings: A, ctor: j[1] === "." ? rt : j[1] === "?" ? ot : j[1] === "@" ? at : Q }), s.removeAttribute(f);
+          l.push({ type: 1, index: r, name: j[2], strings: A, ctor: j[1] === "." ? ct : j[1] === "?" ? lt : j[1] === "@" ? dt : Q }), s.removeAttribute(f);
         } else f.startsWith(C) && (l.push({ type: 6, index: r }), s.removeAttribute(f));
-        if (Pe.test(s.tagName)) {
+        if (He.test(s.tagName)) {
           const f = s.textContent.split(C), k = f.length - 1;
           if (k > 0) {
-            s.textContent = F ? F.emptyScript : "";
-            for (let A = 0; A < k; A++) s.append(f[A], I()), M.nextNode(), l.push({ type: 2, index: ++r });
-            s.append(f[k], I());
+            s.textContent = Z ? Z.emptyScript : "";
+            for (let A = 0; A < k; A++) s.append(f[A], q()), M.nextNode(), l.push({ type: 2, index: ++r });
+            s.append(f[k], q());
           }
         }
       } else if (s.nodeType === 8) if (s.data === Ne) l.push({ type: 2, index: r });
@@ -303,13 +303,13 @@ class U {
     return i.innerHTML = e, i;
   }
 }
-function O(n, e, t = n, i) {
+function O(o, e, t = o, i) {
   if (e === H) return e;
   let s = i !== void 0 ? t._$Co?.[i] : t._$Cl;
-  const r = W(e) ? void 0 : e._$litDirective$;
-  return s?.constructor !== r && (s?._$AO?.(!1), r === void 0 ? s = void 0 : (s = new r(n), s._$AT(n, t, i)), i !== void 0 ? (t._$Co ??= [])[i] = s : t._$Cl = s), s !== void 0 && (e = O(n, s._$AS(n, e.values), s, i)), e;
+  const r = U(e) ? void 0 : e._$litDirective$;
+  return s?.constructor !== r && (s?._$AO?.(!1), r === void 0 ? s = void 0 : (s = new r(o), s._$AT(o, t, i)), i !== void 0 ? (t._$Co ??= [])[i] = s : t._$Cl = s), s !== void 0 && (e = O(o, s._$AS(o, e.values), s, i)), e;
 }
-class nt {
+class at {
   constructor(e, t) {
     this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
   }
@@ -326,7 +326,7 @@ class nt {
     for (; l !== void 0; ) {
       if (c === l.index) {
         let h;
-        l.type === 2 ? h = new B(r, r.nextSibling, this, e) : l.type === 1 ? h = new l.ctor(r, l.name, l.strings, this, e) : l.type === 6 && (h = new ct(r, this, e)), this._$AV.push(h), l = i[++u];
+        l.type === 2 ? h = new B(r, r.nextSibling, this, e) : l.type === 1 ? h = new l.ctor(r, l.name, l.strings, this, e) : l.type === 6 && (h = new ht(r, this, e)), this._$AV.push(h), l = i[++u];
       }
       c !== l?.index && (r = M.nextNode(), c++);
     }
@@ -356,7 +356,7 @@ class B {
     return this._$AB;
   }
   _$AI(e, t = this) {
-    e = O(this, e, t), W(e) ? e === d || e == null || e === "" ? (this._$AH !== d && this._$AR(), this._$AH = d) : e !== this._$AH && e !== H && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : tt(e) ? this.k(e) : this._(e);
+    e = O(this, e, t), U(e) ? e === d || e == null || e === "" ? (this._$AH !== d && this._$AR(), this._$AH = d) : e !== this._$AH && e !== H && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : ot(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -365,31 +365,31 @@ class B {
     this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
   }
   _(e) {
-    this._$AH !== d && W(this._$AH) ? this._$AA.nextSibling.data = e : this.T(R.createTextNode(e)), this._$AH = e;
+    this._$AH !== d && U(this._$AH) ? this._$AA.nextSibling.data = e : this.T(R.createTextNode(e)), this._$AH = e;
   }
   $(e) {
-    const { values: t, _$litType$: i } = e, s = typeof i == "number" ? this._$AC(e) : (i.el === void 0 && (i.el = U.createElement(Oe(i.h, i.h[0]), this.options)), i);
+    const { values: t, _$litType$: i } = e, s = typeof i == "number" ? this._$AC(e) : (i.el === void 0 && (i.el = W.createElement(Ie(i.h, i.h[0]), this.options)), i);
     if (this._$AH?._$AD === s) this._$AH.p(t);
     else {
-      const r = new nt(s, this), c = r.u(this.options);
+      const r = new at(s, this), c = r.u(this.options);
       r.p(t), this.T(c), this._$AH = r;
     }
   }
   _$AC(e) {
-    let t = xe.get(e.strings);
-    return t === void 0 && xe.set(e.strings, t = new U(e)), t;
+    let t = ke.get(e.strings);
+    return t === void 0 && ke.set(e.strings, t = new W(e)), t;
   }
   k(e) {
-    le(this._$AH) || (this._$AH = [], this._$AR());
+    de(this._$AH) || (this._$AH = [], this._$AR());
     const t = this._$AH;
     let i, s = 0;
-    for (const r of e) s === t.length ? t.push(i = new B(this.O(I()), this.O(I()), this, this.options)) : i = t[s], i._$AI(r), s++;
+    for (const r of e) s === t.length ? t.push(i = new B(this.O(q()), this.O(q()), this, this.options)) : i = t[s], i._$AI(r), s++;
     s < t.length && (this._$AR(i && i._$AB.nextSibling, s), t.length = s);
   }
   _$AR(e = this._$AA.nextSibling, t) {
     for (this._$AP?.(!1, !0, t); e !== this._$AB; ) {
-      const i = _e(e).nextSibling;
-      _e(e).remove(), e = i;
+      const i = be(e).nextSibling;
+      be(e).remove(), e = i;
     }
   }
   setConnected(e) {
@@ -409,11 +409,11 @@ class Q {
   _$AI(e, t = this, i, s) {
     const r = this.strings;
     let c = !1;
-    if (r === void 0) e = O(this, e, t, 0), c = !W(e) || e !== this._$AH && e !== H, c && (this._$AH = e);
+    if (r === void 0) e = O(this, e, t, 0), c = !U(e) || e !== this._$AH && e !== H, c && (this._$AH = e);
     else {
       const u = e;
       let l, h;
-      for (e = r[0], l = 0; l < r.length - 1; l++) h = O(this, u[i + l], t, l), h === H && (h = this._$AH[l]), c ||= !W(h) || h !== this._$AH[l], h === d ? e = d : e !== d && (e += (h ?? "") + r[l + 1]), this._$AH[l] = h;
+      for (e = r[0], l = 0; l < r.length - 1; l++) h = O(this, u[i + l], t, l), h === H && (h = this._$AH[l]), c ||= !U(h) || h !== this._$AH[l], h === d ? e = d : e !== d && (e += (h ?? "") + r[l + 1]), this._$AH[l] = h;
     }
     c && !s && this.j(e);
   }
@@ -421,7 +421,7 @@ class Q {
     e === d ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
   }
 }
-class rt extends Q {
+class ct extends Q {
   constructor() {
     super(...arguments), this.type = 3;
   }
@@ -429,7 +429,7 @@ class rt extends Q {
     this.element[this.name] = e === d ? void 0 : e;
   }
 }
-class ot extends Q {
+class lt extends Q {
   constructor() {
     super(...arguments), this.type = 4;
   }
@@ -437,7 +437,7 @@ class ot extends Q {
     this.element.toggleAttribute(this.name, !!e && e !== d);
   }
 }
-class at extends Q {
+class dt extends Q {
   constructor(e, t, i, s, r) {
     super(e, t, i, s, r), this.type = 5;
   }
@@ -450,7 +450,7 @@ class at extends Q {
     typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
   }
 }
-class ct {
+class ht {
   constructor(e, t, i) {
     this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = i;
   }
@@ -461,19 +461,19 @@ class ct {
     O(this, e);
   }
 }
-const lt = ce.litHtmlPolyfillSupport;
-lt?.(U, B), (ce.litHtmlVersions ??= []).push("3.3.3");
-const dt = (n, e, t) => {
+const pt = le.litHtmlPolyfillSupport;
+pt?.(W, B), (le.litHtmlVersions ??= []).push("3.3.3");
+const ut = (o, e, t) => {
   const i = t?.renderBefore ?? e;
   let s = i._$litPart$;
   if (s === void 0) {
     const r = t?.renderBefore ?? null;
-    i._$litPart$ = s = new B(e.insertBefore(I(), r), r, void 0, t ?? {});
+    i._$litPart$ = s = new B(e.insertBefore(q(), r), r, void 0, t ?? {});
   }
-  return s._$AI(n), s;
+  return s._$AI(o), s;
 };
-const de = globalThis;
-class w extends N {
+const he = globalThis;
+class v extends D {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -483,7 +483,7 @@ class w extends N {
   }
   update(e) {
     const t = this.render();
-    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = dt(t, this.renderRoot, this.renderOptions);
+    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = ut(t, this.renderRoot, this.renderOptions);
   }
   connectedCallback() {
     super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -495,15 +495,15 @@ class w extends N {
     return H;
   }
 }
-w._$litElement$ = !0, w.finalized = !0, de.litElementHydrateSupport?.({ LitElement: w });
-const ht = de.litElementPolyfillSupport;
-ht?.({ LitElement: w });
-(de.litElementVersions ??= []).push("4.2.2");
-const v = (n, e) => n.sendMessagePromise(e), pt = (n) => v(n, { type: "dishwish/recipes/list" }), ne = (n, e) => v(n, { type: "dishwish/recipes/get", recipe_id: e }), ut = (n, e) => v(n, { type: "dishwish/recipes/create", ...e }), gt = (n, e, t) => v(n, { type: "dishwish/recipes/update", recipe_id: e, ...t }), mt = (n, e) => v(n, { type: "dishwish/recipes/delete", recipe_id: e }), ft = (n, e) => v(n, { type: "dishwish/recipes/import_url", url: e }), _t = (n) => v(n, { type: "dishwish/categories/list" }), ke = (n, e, t) => v(n, { type: "dishwish/categories/create", name: e }), bt = (n, e) => v(n, { type: "dishwish/ingredients/parse", lines: e });
-async function wt(n, e) {
+v._$litElement$ = !0, v.finalized = !0, he.litElementHydrateSupport?.({ LitElement: v });
+const gt = he.litElementPolyfillSupport;
+gt?.({ LitElement: v });
+(he.litElementVersions ??= []).push("4.2.2");
+const w = (o, e) => o.sendMessagePromise(e), mt = (o) => w(o, { type: "dishwish/recipes/list" }), re = (o, e) => w(o, { type: "dishwish/recipes/get", recipe_id: e }), ft = (o, e) => w(o, { type: "dishwish/recipes/create", ...e }), _t = (o, e, t) => w(o, { type: "dishwish/recipes/update", recipe_id: e, ...t }), bt = (o, e) => w(o, { type: "dishwish/recipes/delete", recipe_id: e }), wt = (o, e) => w(o, { type: "dishwish/recipes/import_url", url: e }), vt = (o) => w(o, { type: "dishwish/categories/list" }), Ae = (o, e, t) => w(o, { type: "dishwish/categories/create", name: e }), $t = (o, e) => w(o, { type: "dishwish/ingredients/parse", lines: e });
+async function Te(o, e) {
   const t = new FormData();
   t.append("file", e, "photo.jpg");
-  const i = await n.fetchWithAuth("/api/dishwish/images", { method: "POST", body: t });
+  const i = await o.fetchWithAuth("/api/dishwish/images", { method: "POST", body: t });
   if (!i.ok) {
     let s = "upload_failed";
     try {
@@ -514,11 +514,11 @@ async function wt(n, e) {
   }
   return await i.json();
 }
-function _(n) {
-  return n && typeof n == "object" && "code" in n ? String(n.code) : "unknown";
+function _(o) {
+  return o && typeof o == "object" && "code" in o ? String(o.code) : "unknown";
 }
-const Te = (n, e = "open", t) => v(n, { type: "dishwish/wishes/list", status: e, ...t ? { limit: t } : {} }), X = (n, e, t = "") => v(n, { type: "dishwish/wishes/add", recipe_id: e, note: t }), he = (n, e) => v(n, { type: "dishwish/wishes/remove", wish_id: e }), vt = (n, e) => v(n, { type: "dishwish/wishes/complete", recipe_id: e }), $t = (n, e, t = {}) => v(n, { type: "dishwish/shopping/add", recipe_id: e, ...t }), yt = (n, e, t) => v(n, { type: "dishwish/recipes/add_note", recipe_id: e, text: t });
-class xt {
+const qe = (o, e = "open", t) => w(o, { type: "dishwish/wishes/list", status: e, ...t ? { limit: t } : {} }), X = (o, e, t = "") => w(o, { type: "dishwish/wishes/add", recipe_id: e, note: t }), pe = (o, e) => w(o, { type: "dishwish/wishes/remove", wish_id: e }), yt = (o, e) => w(o, { type: "dishwish/wishes/complete", recipe_id: e }), xt = (o, e, t = {}) => w(o, { type: "dishwish/shopping/add", recipe_id: e, ...t }), kt = (o, e, t) => w(o, { type: "dishwish/recipes/add_note", recipe_id: e, text: t }), At = (o, e) => w(o, { type: "dishwish/recipes/import_photos", image_ids: e });
+class Ct {
   constructor(e) {
     this.conn = e, this.recipes = [], this.categories = [], this.wishes = [], this.loaded = !1, this.error = null, this.listeners = /* @__PURE__ */ new Set(), this.unsub = null, this.timers = {};
   }
@@ -554,7 +554,7 @@ class xt {
   }
   async loadRecipes() {
     try {
-      this.recipes = await pt(this.conn), this.error = null;
+      this.recipes = await mt(this.conn), this.error = null;
     } catch (e) {
       this.error = e;
     }
@@ -562,7 +562,7 @@ class xt {
   }
   async loadWishes() {
     try {
-      this.wishes = await Te(this.conn, "open");
+      this.wishes = await qe(this.conn, "open");
     } catch (e) {
       this.error = e;
     }
@@ -570,7 +570,7 @@ class xt {
   }
   async loadCategories() {
     try {
-      this.categories = await _t(this.conn);
+      this.categories = await vt(this.conn);
     } catch (e) {
       this.error = e;
     }
@@ -580,12 +580,12 @@ class xt {
     this.listeners.forEach((e) => e());
   }
 }
-const Ae = /* @__PURE__ */ new WeakMap();
-function S(n) {
-  let e = Ae.get(n.connection);
-  return e || (e = new xt(n.connection), Ae.set(n.connection, e)), e;
+const Ce = /* @__PURE__ */ new WeakMap();
+function S(o) {
+  let e = Ce.get(o.connection);
+  return e || (e = new Ct(o.connection), Ce.set(o.connection, e)), e;
 }
-const qe = {
+const Ue = {
   // card picker
   card_library_name: "DishWish – Library",
   card_library_desc: "Dishes with photos, search and filters",
@@ -609,13 +609,13 @@ const qe = {
   search: "Search dishes",
   add_menu: "Add",
   new_recipe_menu: "New dish",
-  import_menu: "Import from link",
+  import_menu: "Import from link or photo",
   filter_all: "All",
   filter_quick: "Quick (≤ 30 min)",
   filter_mine: "Mine",
   empty_title: "No dishes yet",
   empty_first: "Create first dish",
-  empty_import: "Import from link",
+  empty_import: "Import from link or photo",
   no_results: "No dishes found",
   minutes_short: "{n} min",
   wishes_n: "{n} wishes",
@@ -693,7 +693,12 @@ const qe = {
   discard: "Discard",
   keep_editing: "Keep editing",
   // import
-  import_title: "Import from link",
+  import_title: "Import a recipe",
+  import_photo_title: "From photos",
+  import_photo_hint: "Photograph a cookbook page (up to 4 photos). An AI task of Home Assistant, for example Google Gemini, reads it. The photos are sent to that AI service and are not kept. Check the result carefully, especially amounts.",
+  import_photo_read: "Read recipe",
+  import_photo_reading: "Reading the photos… this can take up to a minute.",
+  photo_remove: "Remove photo",
   import_hint: "Paste the link of a recipe page. You can review the draft before saving.",
   import_url: "Recipe link",
   import_load: "Load",
@@ -710,6 +715,8 @@ const qe = {
   err_upload_failed: "Upload failed.",
   err_already_wished: "You already wished for this dish.",
   err_entity_not_found: "No shopping list chosen. Set one in the card or in the integration options.",
+  err_ai_failed: "The AI task could not read the photos. Check the AI task and try again with sharper photos.",
+  err_ai_not_configured: "No AI task is set up. Choose one in the DishWish options or set a default AI task in Home Assistant.",
   err_unknown: "Something went wrong.",
   // card editor
   cfg_title: "Title",
@@ -742,7 +749,7 @@ const qe = {
   cfg_layout_list: "List",
   cfg_layout_grid: "Grid",
   cfg_show_done: "Recently cooked to show"
-}, kt = {
+}, St = {
   card_library_name: "DishWish – Bibliothek",
   card_library_desc: "Gerichte mit Fotos, Suche und Filtern",
   card_wishes_name: "DishWish – Essenswünsche",
@@ -763,13 +770,13 @@ const qe = {
   search: "Gerichte suchen",
   add_menu: "Hinzufügen",
   new_recipe_menu: "Neues Gericht",
-  import_menu: "Per Link importieren",
+  import_menu: "Per Link oder Foto importieren",
   filter_all: "Alle",
   filter_quick: "Schnell (≤ 30 min)",
   filter_mine: "Meine",
   empty_title: "Noch keine Gerichte",
   empty_first: "Erstes Gericht anlegen",
-  empty_import: "Per Link importieren",
+  empty_import: "Per Link oder Foto importieren",
   no_results: "Keine Gerichte gefunden",
   minutes_short: "{n} min",
   wishes_n: "{n} Wünsche",
@@ -842,7 +849,12 @@ const qe = {
   discard_confirm: "Ungespeicherte Änderungen verwerfen?",
   discard: "Verwerfen",
   keep_editing: "Weiter bearbeiten",
-  import_title: "Per Link importieren",
+  import_title: "Rezept importieren",
+  import_photo_title: "Per Foto",
+  import_photo_hint: "Fotografiere eine Kochbuchseite (bis zu 4 Fotos). Eine KI-Aufgabe von Home Assistant, zum Beispiel Google Gemini, liest sie. Die Fotos gehen an diesen KI-Dienst und werden nicht gespeichert. Prüfe das Ergebnis genau, besonders die Mengen.",
+  import_photo_read: "Rezept auslesen",
+  import_photo_reading: "Fotos werden gelesen… das kann bis zu einer Minute dauern.",
+  photo_remove: "Foto entfernen",
   import_hint: "Füge den Link einer Rezeptseite ein. Den Entwurf kannst du vor dem Speichern prüfen.",
   import_url: "Rezept-Link",
   import_load: "Laden",
@@ -858,6 +870,8 @@ const qe = {
   err_upload_failed: "Upload fehlgeschlagen.",
   err_already_wished: "Das wünschst du dir schon.",
   err_entity_not_found: "Keine Einkaufsliste gewählt. Lege eine in der Karte oder in den Integrations-Optionen fest.",
+  err_ai_failed: "Die KI-Aufgabe konnte die Fotos nicht lesen. Prüfe die KI-Aufgabe und versuche es mit schärferen Fotos erneut.",
+  err_ai_not_configured: "Es ist keine KI-Aufgabe eingerichtet. Wähle eine in den DishWish-Optionen oder lege in Home Assistant eine Standard-KI-Aufgabe fest.",
   err_unknown: "Etwas ist schiefgelaufen.",
   cfg_title: "Titel",
   cfg_columns: "Spalten (auto oder 2–6)",
@@ -890,34 +904,34 @@ const qe = {
   cfg_layout_grid: "Raster",
   cfg_show_done: "Zuletzt gekocht anzeigen"
 };
-function o(n, e, t) {
-  let i = n.startsWith("de") ? kt[e] : qe[e];
+function n(o, e, t) {
+  let i = o.startsWith("de") ? St[e] : Ue[e];
   if (t) for (const [s, r] of Object.entries(t)) i = i.replace(`{${s}}`, String(r));
   return i;
 }
-function b(n, e) {
+function b(o, e) {
   const t = `err_${e}`;
-  return t in qe ? o(n, t) : o(n, "err_unknown");
+  return t in Ue ? n(o, t) : n(o, "err_unknown");
 }
-function Ie() {
+function We() {
   try {
-    const n = localStorage.getItem("selectedLanguage");
-    if (n) return String(JSON.parse(n));
+    const o = localStorage.getItem("selectedLanguage");
+    if (o) return String(JSON.parse(o));
   } catch {
   }
   return document.documentElement.lang || navigator.language || "en";
 }
-async function At() {
+async function Lt() {
   if (customElements.get("ha-form")) return;
-  const n = window;
+  const o = window;
   try {
-    await (await (await n.loadCardHelpers?.())?.createCardElement({ type: "entities", entities: [] }))?.constructor.getConfigElement?.();
+    await (await (await o.loadCardHelpers?.())?.createCardElement({ type: "entities", entities: [] }))?.constructor.getConfigElement?.();
   } catch {
   }
   await customElements.whenDefined("ha-form").catch(() => {
   });
 }
-const Ce = {
+const Se = {
   title: "cfg_title",
   columns: "cfg_columns",
   rows: "cfg_rows",
@@ -933,7 +947,7 @@ const Ce = {
   show_ingredients: "cfg_show_ingredients",
   show_steps: "cfg_show_steps"
 };
-class Ct extends w {
+class Et extends v {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -950,7 +964,7 @@ class Ct extends w {
     this.config = e;
   }
   connectedCallback() {
-    super.connectedCallback(), At().then(() => this.ready = !0);
+    super.connectedCallback(), Lt().then(() => this.ready = !0);
   }
   disconnectedCallback() {
     super.disconnectedCallback(), this.unsub?.(), this.unsub = void 0;
@@ -971,8 +985,8 @@ class Ct extends w {
             select: {
               mode: "dropdown",
               options: [
-                { value: "fixed", label: o(e, "cfg_mode_fixed") },
-                { value: "top_wish", label: o(e, "cfg_mode_top_wish") }
+                { value: "fixed", label: n(e, "cfg_mode_fixed") },
+                { value: "top_wish", label: n(e, "cfg_mode_top_wish") }
               ]
             }
           }
@@ -1003,9 +1017,9 @@ class Ct extends w {
           select: {
             mode: "dropdown",
             options: [
-              { value: "name", label: o(e, "cfg_sort_name") },
-              { value: "newest", label: o(e, "cfg_sort_newest") },
-              { value: "popular", label: o(e, "cfg_sort_popular") }
+              { value: "name", label: n(e, "cfg_sort_name") },
+              { value: "newest", label: n(e, "cfg_sort_newest") },
+              { value: "popular", label: n(e, "cfg_sort_popular") }
             ]
           }
         }
@@ -1029,13 +1043,31 @@ class Ct extends w {
       .hass=${this.hass}
       .data=${this.config}
       .schema=${this.schema()}
-      .computeLabel=${(t) => Ce[t.name] ? o(e, Ce[t.name]) : t.name}
+      .computeLabel=${(t) => Se[t.name] ? n(e, Se[t.name]) : t.name}
       @value-changed=${this.changed}
     ></ha-form>`;
   }
 }
-customElements.get("dw-card-editor") || customElements.define("dw-card-editor", Ct);
-const x = $`
+customElements.get("dw-card-editor") || customElements.define("dw-card-editor", Et);
+var Mt = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", Rt = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", Pt = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", zt = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", Dt = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", Nt = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", Ht = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Ot = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", It = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", Tt = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", qt = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", Ut = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", Wt = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", Vt = "M19,13H5V11H19V13Z", Bt = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", jt = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+const g = {
+  arrowDown: Mt,
+  arrowUp: Rt,
+  camera: Pt,
+  left: zt,
+  right: Dt,
+  clock: Nt,
+  close: Ht,
+  delete: Ot,
+  food: It,
+  image: Tt,
+  link: qt,
+  lock: Ut,
+  search: Wt,
+  minus: Vt,
+  edit: Bt,
+  plus: jt
+}, m = (o) => a`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${rt`<path d=${o}></path>`}</svg>`, x = $`
   :host {
     color: var(--primary-text-color);
     font-family: var(--paper-font-body1_-_font-family, inherit);
@@ -1154,35 +1186,25 @@ const x = $`
   .error {
     color: var(--error-color);
   }
-`;
-var St = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", Lt = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", Et = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", Mt = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", Rt = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", Dt = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", zt = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Nt = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", Pt = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", Ht = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", Ot = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", Tt = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", qt = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", It = "M19,13H5V11H19V13Z", Wt = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", Ut = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
-const g = {
-  arrowDown: St,
-  arrowUp: Lt,
-  camera: Et,
-  left: Mt,
-  right: Rt,
-  clock: Dt,
-  close: zt,
-  delete: Nt,
-  food: Pt,
-  image: Ht,
-  link: Ot,
-  lock: Tt,
-  search: qt,
-  minus: It,
-  edit: Wt,
-  plus: Ut
-}, m = (n) => a`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${it`<path d=${n}></path>`}</svg>`, E = [];
-let re = 0;
+`, Ft = 2048;
+async function Ve(o) {
+  try {
+    const e = await createImageBitmap(o, { imageOrientation: "from-image" }), t = Math.min(1, Ft / Math.max(e.width, e.height)), i = document.createElement("canvas");
+    return i.width = Math.round(e.width * t), i.height = Math.round(e.height * t), i.getContext("2d").drawImage(e, 0, 0, i.width, i.height), e.close(), await new Promise((r) => i.toBlob(r, "image/jpeg", 0.85)) ?? o;
+  } catch {
+    return o;
+  }
+}
+const E = [];
+let ne = 0;
 window.addEventListener("popstate", () => {
-  if (re > 0) {
-    re--;
+  if (ne > 0) {
+    ne--;
     return;
   }
   E[E.length - 1]?.onPopState();
 });
-class Vt extends w {
+class Gt extends v {
   constructor() {
     super(), this.pushed = !1, this.heading = "", this.closeLabel = "Close";
   }
@@ -1289,7 +1311,7 @@ class Vt extends w {
   }
   onClosed() {
     const e = E.indexOf(this);
-    e >= 0 && E.splice(e, 1), this.pushed && (this.pushed = !1, re++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
+    e >= 0 && E.splice(e, 1), this.pushed && (this.pushed = !1, ne++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -1318,18 +1340,21 @@ class Vt extends w {
     `;
   }
 }
-customElements.get("dw-dialog") || customElements.define("dw-dialog", Vt);
-class Bt extends w {
+customElements.get("dw-dialog") || customElements.define("dw-dialog", Gt);
+const te = 4;
+class Zt extends v {
   static {
     this.properties = {
       hass: { attribute: !1 },
       url: { state: !0 },
       loading: { state: !0 },
-      error: { state: !0 }
+      error: { state: !0 },
+      photos: { state: !0 },
+      reading: { state: !0 }
     };
   }
   constructor() {
-    super(), this.url = "", this.loading = !1, this.error = "";
+    super(), this.url = "", this.loading = !1, this.error = "", this.photos = [], this.reading = !1;
   }
   static {
     this.styles = [
@@ -1339,6 +1364,43 @@ class Bt extends w {
         display: flex;
         gap: 8px;
         margin-top: 12px;
+      }
+      h3 {
+        margin: 24px 0 4px;
+        font-size: 1.05em;
+      }
+      input[type="file"] {
+        display: none;
+      }
+      .photos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .photo {
+        position: relative;
+        width: 96px;
+      }
+      .photo img {
+        width: 96px;
+        height: 128px;
+        object-fit: cover;
+        border-radius: 8px;
+        display: block;
+      }
+      .photo .icon-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 32px;
+        height: 32px;
+        background: var(--card-background-color);
+        border-radius: 50%;
+      }
+      .photo .icon-btn .icon {
+        width: 18px;
+        height: 18px;
       }
     `
     ];
@@ -1350,14 +1412,43 @@ class Bt extends w {
     return this.hass?.locale?.language ?? "en";
   }
   async open() {
-    this.url = "", this.error = "", this.loading = !1, await this.updateComplete, this.dlg.show();
+    this.url = "", this.error = "", this.loading = !1, this.clearPhotos(), await this.updateComplete, this.dlg.show();
+  }
+  clearPhotos() {
+    this.photos.forEach((e) => URL.revokeObjectURL(e.preview)), this.photos = [];
+  }
+  addPhotos(e) {
+    const t = e.target, i = Array.from(t.files ?? []);
+    t.value = "";
+    const s = te - this.photos.length;
+    this.photos = [
+      ...this.photos,
+      ...i.slice(0, s).map((r) => ({ file: r, preview: URL.createObjectURL(r) }))
+    ];
+  }
+  removePhoto(e) {
+    URL.revokeObjectURL(this.photos[e].preview), this.photos = this.photos.filter((t, i) => i !== e);
+  }
+  async readPhotos() {
+    if (!(!this.photos.length || this.reading)) {
+      this.reading = !0, this.error = "";
+      try {
+        const e = [];
+        for (const i of this.photos) e.push((await Te(this.hass, await Ve(i.file))).id);
+        const t = await At(this.hass.connection, e);
+        this.dispatchEvent(new CustomEvent("imported", { detail: t })), this.clearPhotos(), this.dlg.close();
+      } catch (e) {
+        this.error = b(this.uiLang, _(e));
+      }
+      this.reading = !1;
+    }
   }
   async load() {
     const e = this.url.trim();
     if (!(!e || this.loading)) {
       this.loading = !0, this.error = "";
       try {
-        const t = await ft(this.hass.connection, e);
+        const t = await wt(this.hass.connection, e);
         this.dispatchEvent(new CustomEvent("imported", { detail: t })), this.dlg.close();
       } catch (t) {
         this.error = b(this.uiLang, _(t));
@@ -1368,64 +1459,93 @@ class Bt extends w {
   render() {
     const e = this.uiLang;
     return a`<dw-dialog exportparts="dialog,header,title,close-button,body,footer"
-      .heading=${o(e, "import_title")}
-      .closeLabel=${o(e, "close")}
+      .heading=${n(e, "import_title")}
+      .closeLabel=${n(e, "close")}
       @closed=${() => this.dispatchEvent(new CustomEvent("closed"))}
     >
-      <p class="muted">${o(e, "import_hint")}</p>
+      <p class="muted">${n(e, "import_hint")}</p>
       <div class="row">
         <input
           type="url"
           inputmode="url"
           placeholder="https://"
-          aria-label=${o(e, "import_url")}
+          aria-label=${n(e, "import_url")}
           .value=${this.url}
           ?disabled=${this.loading}
           @input=${(t) => this.url = t.target.value}
           @keydown=${(t) => t.key === "Enter" && this.load()}
         />
         <button class="btn primary" ?disabled=${this.loading || !this.url.trim()} @click=${() => this.load()}>
-          ${o(e, "import_load")}
+          ${n(e, "import_load")}
         </button>
       </div>
-      ${this.loading ? a`<p class="muted">${o(e, "import_loading")}</p>` : d}
+      ${this.loading ? a`<p class="muted">${n(e, "import_loading")}</p>` : d}
+      <h3>${n(e, "import_photo_title")}</h3>
+      <p class="muted">${n(e, "import_photo_hint")}</p>
+      <div class="row">
+        <button class="btn" ?disabled=${this.reading || this.photos.length >= te}
+          @click=${() => this.renderRoot.querySelector("#cam").click()}>
+          ${m(g.camera)} ${n(e, "camera")}
+        </button>
+        <button class="btn" ?disabled=${this.reading || this.photos.length >= te}
+          @click=${() => this.renderRoot.querySelector("#gal").click()}>
+          ${m(g.image)} ${n(e, "gallery")}
+        </button>
+      </div>
+      <input id="cam" type="file" accept="image/*" capture="environment" @change=${this.addPhotos} />
+      <input id="gal" type="file" accept="image/*" multiple @change=${this.addPhotos} />
+      ${this.photos.length ? a`<div class="photos">
+              ${this.photos.map(
+      (t, i) => a`<div class="photo">
+                  <img src=${t.preview} alt="" />
+                  <button class="icon-btn" aria-label=${n(e, "photo_remove")} ?disabled=${this.reading}
+                    @click=${() => this.removePhoto(i)}>${m(g.close)}</button>
+                </div>`
+    )}
+            </div>
+            <div class="row">
+              <button class="btn primary" ?disabled=${this.reading} @click=${() => this.readPhotos()}>
+                ${n(e, "import_photo_read")}
+              </button>
+            </div>` : d}
+      ${this.reading ? a`<p class="muted">${n(e, "import_photo_reading")}</p>` : d}
       ${this.error ? a`<p class="error">${this.error}</p>` : d}
     </dw-dialog>`;
   }
 }
-customElements.get("dw-import-dialog") || customElements.define("dw-import-dialog", Bt);
-function y(n, e) {
-  n.dispatchEvent(new CustomEvent("hass-notification", { detail: { message: e }, bubbles: !0, composed: !0 }));
+customElements.get("dw-import-dialog") || customElements.define("dw-import-dialog", Zt);
+function y(o, e) {
+  o.dispatchEvent(new CustomEvent("hass-notification", { detail: { message: e }, bubbles: !0, composed: !0 }));
 }
-const V = (n) => Math.floor(n + 0.5);
-function Se(n, e, t) {
-  return n * t / e;
+const V = (o) => Math.floor(o + 0.5);
+function Le(o, e, t) {
+  return o * t / e;
 }
-function jt(n, e) {
-  const i = (V(n * 100) / 100).toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+function Kt(o, e) {
+  const i = (V(o * 100) / 100).toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
   return e.startsWith("de") ? i.replace(".", ",") : i;
 }
-function Zt(n) {
-  if (n >= 10) return String(Math.max(1, V(n)));
-  const e = Math.max(1, V(n * 4)), t = Math.floor(e / 4), i = ["", "¼", "½", "¾"][e % 4];
+function Jt(o) {
+  if (o >= 10) return String(Math.max(1, V(o)));
+  const e = Math.max(1, V(o * 4)), t = Math.floor(e / 4), i = ["", "¼", "½", "¾"][e % 4];
   return t ? `${t}${i}` : i;
 }
-function Le(n, e, t) {
-  return e === "g" || e === "ml" ? n >= 100 ? String(V(n / 5) * 5) : String(Math.max(1, V(n))) : e === "kg" || e === "l" ? jt(n, t) : Zt(n);
+function Ee(o, e, t) {
+  return e === "g" || e === "ml" ? o >= 100 ? String(V(o / 5) * 5) : String(Math.max(1, V(o))) : e === "kg" || e === "l" ? Kt(o, t) : Jt(o);
 }
-function Gt(n, e, t, i = "de") {
-  if (n === null) return "";
-  const s = e ?? n;
+function Yt(o, e, t, i = "de") {
+  if (o === null) return "";
+  const s = e ?? o;
   let r = 1, c = t;
   (t === "g" || t === "ml") && s >= 1e3 && (r = 1e3, c = t === "g" ? "kg" : "l");
-  let u = Le(n / r, c, i);
-  return e !== null && (u += `–${Le(e / r, c, i)}`), `${u} ${c}`.trim();
+  let u = Ee(o / r, c, i);
+  return e !== null && (u += `–${Ee(e / r, c, i)}`), `${u} ${c}`.trim();
 }
-function We(n, e, t, i = "de") {
-  const s = n.quantity === null ? null : Se(n.quantity, e, t), r = n.quantity_max === null ? null : Se(n.quantity_max, e, t);
-  return Gt(s, r, n.unit, i);
+function Be(o, e, t, i = "de") {
+  const s = o.quantity === null ? null : Le(o.quantity, e, t), r = o.quantity_max === null ? null : Le(o.quantity_max, e, t);
+  return Yt(s, r, o.unit, i);
 }
-class Ft extends w {
+class Qt extends v {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -1600,12 +1720,12 @@ class Ft extends w {
     if (!e) return;
     const t = this.uiLang;
     try {
-      const i = await $t(this.hass.connection, e.id, {
+      const i = await xt(this.hass.connection, e.id, {
         servings: this.servings,
         ingredient_ids: [...this.selected],
         ...this.shoppingList ? { entity_id: this.shoppingList } : {}
       });
-      y(this, o(t, "shop_result", { added: i.added.length, skipped: i.skipped.length }));
+      y(this, n(t, "shop_result", { added: i.added.length, skipped: i.skipped.length }));
     } catch (i) {
       y(this, b(t, _(i)));
     }
@@ -1615,7 +1735,7 @@ class Ft extends w {
     if (!(!e || !t || this.noteBusy)) {
       this.noteBusy = !0;
       try {
-        const i = await yt(this.hass.connection, e.id, t);
+        const i = await kt(this.hass.connection, e.id, t);
         this.noteText = "", this.dispatchEvent(new CustomEvent("recipe-updated", { detail: i, bubbles: !0, composed: !0 }));
       } catch (i) {
         y(this, b(this.uiLang, _(i)));
@@ -1657,7 +1777,7 @@ class Ft extends w {
                 .checked=${this.selected.has(s.id)}
                 @change=${() => this.toggleIngredient(s.id)}
               />
-              <span class="amt">${We(s, e.servings, this.servings, this.uiLang)}</span>
+              <span class="amt">${Be(s, e.servings, this.servings, this.uiLang)}</span>
               <span>${s.name}${s.note ? a` <span class="muted">(${s.note})</span>` : d}</span>
             </li>`
       )}
@@ -1675,34 +1795,34 @@ class Ft extends w {
       </div>
       <div class="meta">
         ${i.map((s) => a`<span class="tag">${s.name}</span>`)}
-        ${e.prep_minutes !== null ? a`<span class="tag">${m(g.clock)} ${o(t, "prep", { n: e.prep_minutes })}</span>` : d}
-        ${e.cook_minutes !== null ? a`<span class="tag">${m(g.clock)} ${o(t, "cook", { n: e.cook_minutes })}</span>` : d}
-        ${e.visibility === "private" ? a`<span class="tag">${m(g.lock)} ${o(t, "only_me")}</span>` : d}
+        ${e.prep_minutes !== null ? a`<span class="tag">${m(g.clock)} ${n(t, "prep", { n: e.prep_minutes })}</span>` : d}
+        ${e.cook_minutes !== null ? a`<span class="tag">${m(g.clock)} ${n(t, "cook", { n: e.cook_minutes })}</span>` : d}
+        ${e.visibility === "private" ? a`<span class="tag">${m(g.lock)} ${n(t, "only_me")}</span>` : d}
       </div>
       ${e.description ? a`<p>${e.description}</p>` : d}
       ${this.cookable && e.steps.length ? a`<button class="btn primary" @click=${() => this.dispatchEvent(new CustomEvent("cook", { detail: { servings: this.servings } }))}>
-            ${o(t, "cook_mode")}
+            ${n(t, "cook_mode")}
           </button>` : d}
       ${this.showIngredients ? a`<div class="meta">
-              <h3 style="margin:0">${o(t, "ingredients")}</h3>
+              <h3 style="margin:0">${n(t, "ingredients")}</h3>
               <span class="servings">
-                <button class="icon-btn" aria-label=${o(t, "fewer")} @click=${() => this.setServings(this.servings - 1)}>
+                <button class="icon-btn" aria-label=${n(t, "fewer")} @click=${() => this.setServings(this.servings - 1)}>
                   ${m(g.minus)}
                 </button>
-                <output>${o(t, "servings_n", { n: this.servings })}</output>
-                <button class="icon-btn" aria-label=${o(t, "more")} @click=${() => this.setServings(this.servings + 1)}>
+                <output>${n(t, "servings_n", { n: this.servings })}</output>
+                <button class="icon-btn" aria-label=${n(t, "more")} @click=${() => this.setServings(this.servings + 1)}>
                   ${m(g.plus)}
                 </button>
               </span>
             </div>
             ${e.ingredients.length ? a`<button class="link" @click=${() => this.toggleAll()}>
-                  ${this.selected.size === e.ingredients.length ? o(t, "select_none") : o(t, "select_all")}
+                  ${this.selected.size === e.ingredients.length ? n(t, "select_none") : n(t, "select_all")}
                 </button>` : d}
             ${this.renderIngredients(e)}
             ${e.ingredients.length ? a`<button class="btn add" ?disabled=${this.selected.size === 0} @click=${() => this.addToList()}>
-                  ${o(t, "shop_n", { n: this.selected.size })}
+                  ${n(t, "shop_n", { n: this.selected.size })}
                 </button>` : d}` : d}
-      ${this.showSteps && e.steps.length ? a`<h3>${o(t, "steps")}</h3>
+      ${this.showSteps && e.steps.length ? a`<h3>${n(t, "steps")}</h3>
             <ol class="steps">
               ${e.steps.map(
       (s, r) => a`<li class=${this.doneSteps.has(r) ? "done" : ""} @click=${() => this.toggleStep(r)}>
@@ -1710,31 +1830,31 @@ class Ft extends w {
                 </li>`
     )}
             </ol>` : d}
-      <h3>${o(t, "notes")}</h3>
+      <h3>${n(t, "notes")}</h3>
       ${e.notes ? a`<p class="notes">${e.notes}</p>` : d}
       <div class="note-form">
         <input
-          placeholder=${o(t, "note_add_placeholder")}
-          aria-label=${o(t, "note_add_placeholder")}
+          placeholder=${n(t, "note_add_placeholder")}
+          aria-label=${n(t, "note_add_placeholder")}
           maxlength="1000"
           .value=${this.noteText}
           @input=${(s) => this.noteText = s.target.value}
           @keydown=${(s) => s.key === "Enter" && this.saveNote()}
         />
         <button class="btn" ?disabled=${!this.noteText.trim() || this.noteBusy} @click=${() => this.saveNote()}>
-          ${o(t, "note_add")}
+          ${n(t, "note_add")}
         </button>
       </div>
       ${e.source_url ? a`<p>
             <a href=${e.source_url} target="_blank" rel="noopener noreferrer">
-              ${o(t, "source")}: ${e.source_name ?? e.source_url}
+              ${n(t, "source")}: ${e.source_name ?? e.source_url}
             </a>
           </p>` : d}
     `;
   }
 }
-customElements.get("dw-recipe-view") || customElements.define("dw-recipe-view", Ft);
-class Kt extends w {
+customElements.get("dw-recipe-view") || customElements.define("dw-recipe-view", Qt);
+class Xt extends v {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -1786,7 +1906,7 @@ class Kt extends w {
   async open(e) {
     this.recipe = null, this.error = "", this.confirmDelete = !1, this.wishOpen = !1, this.wishNote = "", this.loading = !0, await this.updateComplete, this.dlg.show();
     try {
-      this.recipe = await ne(this.hass.connection, e);
+      this.recipe = await re(this.hass.connection, e);
     } catch (t) {
       this.error = b(this.uiLang, _(t));
     }
@@ -1798,20 +1918,20 @@ class Kt extends w {
   async doDelete() {
     if (this.recipe)
       try {
-        await mt(this.hass.connection, this.recipe.id), this.dispatchEvent(new CustomEvent("deleted", { detail: this.recipe.id })), this.close();
+        await bt(this.hass.connection, this.recipe.id), this.dispatchEvent(new CustomEvent("deleted", { detail: this.recipe.id })), this.close();
       } catch (e) {
         this.error = b(this.uiLang, _(e)), this.confirmDelete = !1;
       }
   }
   async reload() {
-    this.recipe && (this.recipe = await ne(this.hass.connection, this.recipe.id));
+    this.recipe && (this.recipe = await re(this.hass.connection, this.recipe.id));
   }
   async toggleWish() {
     const e = this.recipe;
     if (!e) return;
     const t = this.uiLang;
     try {
-      e.my_wish_id ? await he(this.hass.connection, e.my_wish_id) : (await X(this.hass.connection, e.id, this.wishNote.trim()), y(this, o(t, "wish_added"))), this.wishOpen = !1, this.wishNote = "", await this.reload();
+      e.my_wish_id ? await pe(this.hass.connection, e.my_wish_id) : (await X(this.hass.connection, e.id, this.wishNote.trim()), y(this, n(t, "wish_added"))), this.wishOpen = !1, this.wishNote = "", await this.reload();
     } catch (i) {
       y(this, b(t, _(i)));
     }
@@ -1819,47 +1939,47 @@ class Kt extends w {
   renderWish(e) {
     const t = this.uiLang;
     return e.my_wish_id ? a`<button slot="footer" class="btn" @click=${() => this.toggleWish()}>
-        ${o(t, "wish_remove")}
+        ${n(t, "wish_remove")}
       </button>` : this.wishOpen ? a`<div slot="footer" class="wishbox">
       <input
-        placeholder=${o(t, "wish_note")}
-        aria-label=${o(t, "wish_note")}
+        placeholder=${n(t, "wish_note")}
+        aria-label=${n(t, "wish_note")}
         maxlength="500"
         .value=${this.wishNote}
         @input=${(i) => this.wishNote = i.target.value}
         @keydown=${(i) => i.key === "Enter" && this.toggleWish()}
       />
-      <button class="btn primary" @click=${() => this.toggleWish()}>${o(t, "wish_send")}</button>
+      <button class="btn primary" @click=${() => this.toggleWish()}>${n(t, "wish_send")}</button>
     </div>` : a`<button slot="footer" class="btn" @click=${() => this.wishOpen = !0}>
-        ♥ ${o(t, "wish_add")}
+        ♥ ${n(t, "wish_add")}
       </button>`;
   }
   renderFooter(e) {
     const t = this.uiLang;
     return this.confirmDelete ? a`<div slot="footer" class="confirm">
-        <span>${o(t, "delete_confirm")}</span>
-        <button class="btn danger" @click=${() => this.doDelete()}>${o(t, "delete")}</button>
-        <button class="btn" @click=${() => this.confirmDelete = !1}>${o(t, "cancel")}</button>
+        <span>${n(t, "delete_confirm")}</span>
+        <button class="btn danger" @click=${() => this.doDelete()}>${n(t, "delete")}</button>
+        <button class="btn" @click=${() => this.confirmDelete = !1}>${n(t, "cancel")}</button>
       </div>` : a`${this.renderWish(e)}
     ${e.can_edit ? a`<button slot="footer" class="btn danger" @click=${() => this.confirmDelete = !0}>
-            ${m(g.delete)} ${o(t, "delete")}
+            ${m(g.delete)} ${n(t, "delete")}
           </button>
           <button
             slot="footer"
             class="btn primary"
             @click=${() => this.dispatchEvent(new CustomEvent("edit", { detail: e }))}
           >
-            ${m(g.edit)} ${o(t, "edit")}
+            ${m(g.edit)} ${n(t, "edit")}
           </button>` : d}`;
   }
   render() {
     const e = this.uiLang;
     return a`<dw-dialog exportparts="dialog,header,title,close-button,body,footer"
       .heading=${this.recipe?.name ?? ""}
-      .closeLabel=${o(e, "close")}
+      .closeLabel=${n(e, "close")}
       @closed=${() => this.dispatchEvent(new CustomEvent("closed"))}
     >
-      ${this.loading ? a`<p class="muted">${o(e, "loading")}</p>` : d}
+      ${this.loading ? a`<p class="muted">${n(e, "loading")}</p>` : d}
       ${this.error ? a`<p class="error">${this.error}</p>` : d}
       ${this.recipe ? a`<dw-recipe-view
             .hass=${this.hass}
@@ -1872,31 +1992,22 @@ class Kt extends w {
     </dw-dialog>`;
   }
 }
-customElements.get("dw-recipe-dialog") || customElements.define("dw-recipe-dialog", Kt);
-const Jt = 2048;
-async function Yt(n) {
-  try {
-    const e = await createImageBitmap(n, { imageOrientation: "from-image" }), t = Math.min(1, Jt / Math.max(e.width, e.height)), i = document.createElement("canvas");
-    return i.width = Math.round(e.width * t), i.height = Math.round(e.height * t), i.getContext("2d").drawImage(e, 0, 0, i.width, i.height), e.close(), await new Promise((r) => i.toBlob(r, "image/jpeg", 0.85)) ?? n;
-  } catch {
-    return n;
-  }
-}
-const Qt = 10, Xt = (n) => `/api/dishwish/images/${n}/thumb`, Ee = (n) => n === null ? "" : String(n).replace(".", ",");
-function Me(n) {
-  const e = n.trim().replace(",", ".");
+customElements.get("dw-recipe-dialog") || customElements.define("dw-recipe-dialog", Xt);
+const ei = 10, ti = (o) => `/api/dishwish/images/${o}/thumb`, Me = (o) => o === null ? "" : String(o).replace(".", ",");
+function Re(o) {
+  const e = o.trim().replace(",", ".");
   if (!e) return null;
   const t = /^(\d+)\/(\d+)$/.exec(e), i = t ? Number(t[1]) / Number(t[2]) : Number(e);
   return Number.isFinite(i) && i >= 0 ? i : null;
 }
-function ei(n) {
-  const e = /^\s*([\d.,/]+)\s*(?:[-–]\s*([\d.,/]+))?\s*$/.exec(n);
+function ii(o) {
+  const e = /^\s*([\d.,/]+)\s*(?:[-–]\s*([\d.,/]+))?\s*$/.exec(o);
   if (!e) return [null, null];
-  const t = Me(e[1]), i = e[2] ? Me(e[2]) : null;
+  const t = Re(e[1]), i = e[2] ? Re(e[2]) : null;
   return [t, t !== null && i !== null && i > t ? i : null];
 }
-function Ue(n) {
-  return { amount: n.quantity === null ? "" : Ee(n.quantity) + (n.quantity_max !== null ? `-${Ee(n.quantity_max)}` : ""), unit: n.unit, name: n.name, note: n.note, group_name: n.group_name };
+function je(o) {
+  return { amount: o.quantity === null ? "" : Me(o.quantity) + (o.quantity_max !== null ? `-${Me(o.quantity_max)}` : ""), unit: o.unit, name: o.name, note: o.note, group_name: o.group_name };
 }
 function K() {
   return {
@@ -1917,33 +2028,33 @@ function K() {
     steps: [{ section: null, text: "" }]
   };
 }
-function ti(n) {
-  const e = "images" in n ? n.images.map((t) => t.id) : n.image_ids;
+function si(o) {
+  const e = "images" in o ? o.images.map((t) => t.id) : o.image_ids;
   return {
-    name: n.name,
-    description: n.description,
-    servings: n.servings,
-    prep: n.prep_minutes === null ? "" : String(n.prep_minutes),
-    cook: n.cook_minutes === null ? "" : String(n.cook_minutes),
-    notes: n.notes,
-    private: n.visibility === "private",
-    source_url: n.source_url,
-    source_name: n.source_name,
-    category_ids: [...n.category_ids],
-    suggested: "new_categories" in n ? [...n.new_categories ?? []] : [],
-    new_categories: "new_categories" in n ? [...n.new_categories ?? []] : [],
+    name: o.name,
+    description: o.description,
+    servings: o.servings,
+    prep: o.prep_minutes === null ? "" : String(o.prep_minutes),
+    cook: o.cook_minutes === null ? "" : String(o.cook_minutes),
+    notes: o.notes,
+    private: o.visibility === "private",
+    source_url: o.source_url,
+    source_name: o.source_name,
+    category_ids: [...o.category_ids],
+    suggested: "new_categories" in o ? [...o.new_categories ?? []] : [],
+    new_categories: "new_categories" in o ? [...o.new_categories ?? []] : [],
     image_ids: [...e],
-    ingredients: n.ingredients.length ? n.ingredients.map(Ue) : K().ingredients,
-    steps: n.steps.length ? n.steps.map((t) => ({ section: t.section, text: t.text })) : K().steps
+    ingredients: o.ingredients.length ? o.ingredients.map(je) : K().ingredients,
+    steps: o.steps.length ? o.steps.map((t) => ({ section: t.section, text: t.text })) : K().steps
   };
 }
-function D(n, e, t) {
+function P(o, e, t) {
   const i = e + t;
-  if (i < 0 || i >= n.length) return n;
-  const s = [...n];
+  if (i < 0 || i >= o.length) return o;
+  const s = [...o];
   return [s[e], s[i]] = [s[i], s[e]], s;
 }
-class ii extends w {
+class oi extends v {
   constructor() {
     super(), this.recipeId = null, this.snapshot = "", this.categories = [], this.draft = K(), this.uploading = 0, this.saving = !1, this.error = "", this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", this.confirmDiscard = !1;
   }
@@ -2066,7 +2177,7 @@ class ii extends w {
   }
   /** New recipe (no argument), edit an existing one (Recipe), or review an import (RecipeInput). */
   async open(e) {
-    this.recipeId = e && "id" in e ? e.id : null, this.draft = e ? ti(e) : K(), this.snapshot = JSON.stringify(this.draft), this.error = "", this.confirmDiscard = !1, this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", await this.updateComplete, this.dlg.show();
+    this.recipeId = e && "id" in e ? e.id : null, this.draft = e ? si(e) : K(), this.snapshot = JSON.stringify(this.draft), this.error = "", this.confirmDiscard = !1, this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", await this.updateComplete, this.dlg.show();
   }
   get dirty() {
     return JSON.stringify(this.draft) !== this.snapshot;
@@ -2082,13 +2193,13 @@ class ii extends w {
     const t = e.target, i = Array.from(t.files ?? []);
     t.value = "";
     for (const s of i) {
-      if (this.draft.image_ids.length >= Qt) {
-        this.error = o(this.uiLang, "max_images");
+      if (this.draft.image_ids.length >= ei) {
+        this.error = n(this.uiLang, "max_images");
         break;
       }
       this.uploading++;
       try {
-        const r = await wt(this.hass, await Yt(s));
+        const r = await Te(this.hass, await Ve(s));
         this.patch({ image_ids: [...this.draft.image_ids, r.id] });
       } catch (r) {
         this.error = b(this.uiLang, _(r));
@@ -2115,7 +2226,7 @@ class ii extends w {
         continue;
       }
       try {
-        e.push((await ke(this.hass.connection, t)).id);
+        e.push((await Ae(this.hass.connection, t)).id);
       } catch (s) {
         if (_(s) !== "invalid_format") throw s;
         await S(this.hass).refresh();
@@ -2129,7 +2240,7 @@ class ii extends w {
     const e = this.newCategory.trim();
     if (e)
       try {
-        const t = await ke(this.hass.connection, e);
+        const t = await Ae(this.hass.connection, e);
         this.newCategory = "", this.patch({ category_ids: [...this.draft.category_ids, t.id] }), await S(this.hass).refresh();
       } catch (t) {
         this.error = b(this.uiLang, _(t));
@@ -2145,8 +2256,8 @@ class ii extends w {
 `).filter((t) => t.trim());
     if (e.length)
       try {
-        const t = await bt(this.hass.connection, e.slice(0, 100)), i = this.draft.ingredients.filter((s) => s.name.trim() || s.amount.trim());
-        this.patch({ ingredients: [...i, ...t.map(Ue)] }), this.pasteText = "", this.pasteOpen = !1;
+        const t = await $t(this.hass.connection, e.slice(0, 100)), i = this.draft.ingredients.filter((s) => s.name.trim() || s.amount.trim());
+        this.patch({ ingredients: [...i, ...t.map(je)] }), this.pasteText = "", this.pasteOpen = !1;
       } catch (t) {
         this.error = b(this.uiLang, _(t));
       }
@@ -2173,7 +2284,7 @@ class ii extends w {
       category_ids: e.category_ids,
       image_ids: e.image_ids,
       ingredients: e.ingredients.filter((i) => i.name.trim()).map((i) => {
-        const [s, r] = ei(i.amount);
+        const [s, r] = ii(i.amount);
         return {
           group_name: i.group_name,
           quantity: s,
@@ -2188,14 +2299,14 @@ class ii extends w {
   }
   async save() {
     if (!this.draft.name.trim()) {
-      this.error = o(this.uiLang, "name_required");
+      this.error = n(this.uiLang, "name_required");
       return;
     }
     this.saving = !0, this.error = "";
     try {
       const e = await this.resolveNewCategories(), t = this.buildInput();
       t.category_ids = [.../* @__PURE__ */ new Set([...t.category_ids, ...e])];
-      const i = this.recipeId ? await gt(this.hass.connection, this.recipeId, t) : await ut(this.hass.connection, t);
+      const i = this.recipeId ? await _t(this.hass.connection, this.recipeId, t) : await ft(this.hass.connection, t);
       this.snapshot = JSON.stringify(this.draft), this.dispatchEvent(new CustomEvent("saved", { detail: i })), this.dlg.close();
     } catch (e) {
       this.error = b(this.uiLang, _(e));
@@ -2206,19 +2317,19 @@ class ii extends w {
   renderPhotos() {
     const e = this.uiLang, t = this.draft.image_ids;
     return a`<section>
-      <h3>${o(e, "photos")}</h3>
+      <h3>${n(e, "photos")}</h3>
       <div class="photos">
         ${t.map(
       (i, s) => a`<div class="photo">
-            <img src=${Xt(i)} alt="" loading="lazy" />
+            <img src=${ti(i)} alt="" loading="lazy" />
             <div class="row-actions">
-              <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ image_ids: D(t, s, -1) })}>
+              <button class="icon-btn" aria-label=${n(e, "move_up")} @click=${() => this.patch({ image_ids: P(t, s, -1) })}>
                 ${m(g.left)}
               </button>
-              <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ image_ids: D(t, s, 1) })}>
+              <button class="icon-btn" aria-label=${n(e, "move_down")} @click=${() => this.patch({ image_ids: P(t, s, 1) })}>
                 ${m(g.right)}
               </button>
-              <button class="icon-btn" aria-label=${o(e, "remove")} @click=${() => this.patch({ image_ids: t.filter((r) => r !== i) })}>
+              <button class="icon-btn" aria-label=${n(e, "remove")} @click=${() => this.patch({ image_ids: t.filter((r) => r !== i) })}>
                 ${m(g.close)}
               </button>
             </div>
@@ -2227,12 +2338,12 @@ class ii extends w {
       </div>
       <div class="row-actions add">
         <button class="btn" @click=${() => this.renderRoot.querySelector("#cam").click()}>
-          ${m(g.camera)} ${o(e, "camera")}
+          ${m(g.camera)} ${n(e, "camera")}
         </button>
         <button class="btn" @click=${() => this.renderRoot.querySelector("#gal").click()}>
-          ${m(g.image)} ${o(e, "gallery")}
+          ${m(g.image)} ${n(e, "gallery")}
         </button>
-        ${this.uploading ? a`<span class="muted">${o(e, "uploading")}</span>` : d}
+        ${this.uploading ? a`<span class="muted">${n(e, "uploading")}</span>` : d}
       </div>
       <input id="cam" type="file" accept="image/*" capture="environment" @change=${this.onFiles} />
       <input id="gal" type="file" accept="image/*" multiple @change=${this.onFiles} />
@@ -2241,96 +2352,96 @@ class ii extends w {
   renderIngredients() {
     const e = this.uiLang, t = this.draft.ingredients;
     return a`<section>
-      <h3>${o(e, "ingredients")}</h3>
+      <h3>${n(e, "ingredients")}</h3>
       ${t.map(
       (i, s) => a`<div class="ing">
-          <input placeholder=${o(e, "amount")} aria-label=${o(e, "amount")} .value=${i.amount}
+          <input placeholder=${n(e, "amount")} aria-label=${n(e, "amount")} .value=${i.amount}
             @input=${(r) => this.setIng(s, { amount: r.target.value })} />
-          <input placeholder=${o(e, "unit")} aria-label=${o(e, "unit")} .value=${i.unit}
+          <input placeholder=${n(e, "unit")} aria-label=${n(e, "unit")} .value=${i.unit}
             @input=${(r) => this.setIng(s, { unit: r.target.value })} />
-          <input placeholder=${o(e, "ingredient")} aria-label=${o(e, "ingredient")} .value=${i.name}
+          <input placeholder=${n(e, "ingredient")} aria-label=${n(e, "ingredient")} .value=${i.name}
             @input=${(r) => this.setIng(s, { name: r.target.value })} />
-          <input class="note" placeholder=${o(e, "note")} aria-label=${o(e, "note")} .value=${i.note}
+          <input class="note" placeholder=${n(e, "note")} aria-label=${n(e, "note")} .value=${i.note}
             @input=${(r) => this.setIng(s, { note: r.target.value })} />
           <div class="row-actions">
-            <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ ingredients: D(t, s, -1) })}>${m(g.arrowUp)}</button>
-            <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ ingredients: D(t, s, 1) })}>${m(g.arrowDown)}</button>
-            <button class="icon-btn" aria-label=${o(e, "remove")} @click=${() => this.patch({ ingredients: t.filter((r, c) => c !== s) })}>${m(g.delete)}</button>
+            <button class="icon-btn" aria-label=${n(e, "move_up")} @click=${() => this.patch({ ingredients: P(t, s, -1) })}>${m(g.arrowUp)}</button>
+            <button class="icon-btn" aria-label=${n(e, "move_down")} @click=${() => this.patch({ ingredients: P(t, s, 1) })}>${m(g.arrowDown)}</button>
+            <button class="icon-btn" aria-label=${n(e, "remove")} @click=${() => this.patch({ ingredients: t.filter((r, c) => c !== s) })}>${m(g.delete)}</button>
           </div>
         </div>`
     )}
       <div class="row-actions add">
         <button class="btn" @click=${() => this.patch({ ingredients: [...t, { amount: "", unit: "", name: "", note: "", group_name: null }] })}>
-          ${m(g.plus)} ${o(e, "add_ingredient")}
+          ${m(g.plus)} ${n(e, "add_ingredient")}
         </button>
-        <button class="btn" @click=${() => this.pasteOpen = !this.pasteOpen}>${o(e, "paste_lines")}</button>
+        <button class="btn" @click=${() => this.pasteOpen = !this.pasteOpen}>${n(e, "paste_lines")}</button>
       </div>
       ${this.pasteOpen ? a`<div class="add">
-            <textarea rows="6" placeholder=${o(e, "paste_hint")} .value=${this.pasteText}
+            <textarea rows="6" placeholder=${n(e, "paste_hint")} .value=${this.pasteText}
               @input=${(i) => this.pasteText = i.target.value}></textarea>
-            <button class="btn add" @click=${() => this.applyPaste()}>${o(e, "apply_lines")}</button>
+            <button class="btn add" @click=${() => this.applyPaste()}>${n(e, "apply_lines")}</button>
           </div>` : d}
     </section>`;
   }
   renderSteps() {
     const e = this.uiLang, t = this.draft.steps;
     return a`<section>
-      <h3>${o(e, "steps")}</h3>
+      <h3>${n(e, "steps")}</h3>
       ${t.map(
       (i, s) => a`<div class="step">
-          <textarea rows="3" aria-label=${`${o(e, "step")} ${s + 1}`} placeholder=${`${o(e, "step")} ${s + 1}`} .value=${i.text}
+          <textarea rows="3" aria-label=${`${n(e, "step")} ${s + 1}`} placeholder=${`${n(e, "step")} ${s + 1}`} .value=${i.text}
             @input=${(r) => this.setStep(s, r.target.value)}></textarea>
           <div class="row-actions">
-            <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ steps: D(t, s, -1) })}>${m(g.arrowUp)}</button>
-            <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ steps: D(t, s, 1) })}>${m(g.arrowDown)}</button>
-            <button class="icon-btn" aria-label=${o(e, "remove")} @click=${() => this.patch({ steps: t.filter((r, c) => c !== s) })}>${m(g.delete)}</button>
+            <button class="icon-btn" aria-label=${n(e, "move_up")} @click=${() => this.patch({ steps: P(t, s, -1) })}>${m(g.arrowUp)}</button>
+            <button class="icon-btn" aria-label=${n(e, "move_down")} @click=${() => this.patch({ steps: P(t, s, 1) })}>${m(g.arrowDown)}</button>
+            <button class="icon-btn" aria-label=${n(e, "remove")} @click=${() => this.patch({ steps: t.filter((r, c) => c !== s) })}>${m(g.delete)}</button>
           </div>
         </div>`
     )}
       <button class="btn add" @click=${() => this.patch({ steps: [...t, { section: null, text: "" }] })}>
-        ${m(g.plus)} ${o(e, "add_step")}
+        ${m(g.plus)} ${n(e, "add_step")}
       </button>
     </section>`;
   }
   render() {
     const e = this.uiLang, t = this.draft;
     return a`<dw-dialog exportparts="dialog,header,title,close-button,body,footer"
-      .heading=${this.recipeId ? o(e, "edit_recipe") : o(e, "new_recipe")}
-      .closeLabel=${o(e, "close")}
+      .heading=${this.recipeId ? n(e, "edit_recipe") : n(e, "new_recipe")}
+      .closeLabel=${n(e, "close")}
       @close-request=${this.onCloseRequest}
       @closed=${() => this.dispatchEvent(new CustomEvent("closed"))}
     >
       <section>
-        <label class="field">${o(e, "name")}
+        <label class="field">${n(e, "name")}
           <input .value=${t.name} maxlength="200" @input=${(i) => this.patch({ name: i.target.value })} />
         </label>
       </section>
       ${this.renderPhotos()}
       <section>
         <div class="grid2">
-          <label class="field">${o(e, "servings")}
+          <label class="field">${n(e, "servings")}
             <input type="number" min="1" max="100" .value=${String(t.servings)}
               @input=${(i) => this.patch({ servings: Math.min(100, Math.max(1, parseInt(i.target.value, 10) || 1)) })} />
           </label>
-          <label class="field">${o(e, "prep_minutes")}
+          <label class="field">${n(e, "prep_minutes")}
             <input type="number" min="0" max="1440" .value=${t.prep}
               @input=${(i) => this.patch({ prep: i.target.value })} />
           </label>
-          <label class="field">${o(e, "cook_minutes")}
+          <label class="field">${n(e, "cook_minutes")}
             <input type="number" min="0" max="1440" .value=${t.cook}
               @input=${(i) => this.patch({ cook: i.target.value })} />
           </label>
         </div>
       </section>
       <section>
-        <h3>${o(e, "categories")}</h3>
+        <h3>${n(e, "categories")}</h3>
         <div class="chips">
           ${this.categories.map(
       (i) => a`<button class="chip" aria-pressed=${t.category_ids.includes(i.id)} @click=${() => this.toggleCategory(i.id)}>${i.name}</button>`
     )}
         </div>
-        ${t.suggested.length ? a`<div class="chips add" aria-label=${o(e, "suggested_categories")}>
-              <span class="muted">${o(e, "suggested_categories")}</span>
+        ${t.suggested.length ? a`<div class="chips add" aria-label=${n(e, "suggested_categories")}>
+              <span class="muted">${n(e, "suggested_categories")}</span>
               ${t.suggested.map(
       (i) => a`<button class="chip" aria-pressed=${t.new_categories.includes(i)} @click=${() => this.toggleSuggested(i)}>
                   + ${i}
@@ -2338,55 +2449,55 @@ class ii extends w {
     )}
             </div>` : d}
         <div class="inline add">
-          <input placeholder=${o(e, "new_category")} .value=${this.newCategory}
+          <input placeholder=${n(e, "new_category")} .value=${this.newCategory}
             @input=${(i) => this.newCategory = i.target.value}
             @keydown=${(i) => i.key === "Enter" && this.addCategory()} />
           <button class="btn" @click=${() => this.addCategory()}>${m(g.plus)}</button>
         </div>
       </section>
       <section>
-        <label class="field">${o(e, "description")}
+        <label class="field">${n(e, "description")}
           <textarea rows="2" .value=${t.description} @input=${(i) => this.patch({ description: i.target.value })}></textarea>
         </label>
       </section>
       ${this.renderIngredients()} ${this.renderSteps()}
       <section>
-        <label class="field">${o(e, "notes")}
+        <label class="field">${n(e, "notes")}
           <textarea rows="3" .value=${t.notes} @input=${(i) => this.patch({ notes: i.target.value })}></textarea>
         </label>
       </section>
       <section>
         <label class="switch">
           <input type="checkbox" .checked=${t.private} @change=${(i) => this.patch({ private: i.target.checked })} />
-          ${o(e, "only_me_switch")}
+          ${n(e, "only_me_switch")}
         </label>
-        ${t.source_url ? a`<p class="muted">${o(e, "source")}: ${t.source_name ?? t.source_url}</p>` : d}
+        ${t.source_url ? a`<p class="muted">${n(e, "source")}: ${t.source_name ?? t.source_url}</p>` : d}
       </section>
       ${this.error ? a`<p class="error">${this.error}</p>` : d}
       ${this.confirmDiscard ? a`<div slot="footer" class="confirm">
-            <span>${o(e, "discard_confirm")}</span>
+            <span>${n(e, "discard_confirm")}</span>
             <button class="btn danger" @click=${() => {
       this.snapshot = JSON.stringify(this.draft), this.dlg.close();
-    }}>${o(e, "discard")}</button>
-            <button class="btn" @click=${() => this.confirmDiscard = !1}>${o(e, "keep_editing")}</button>
-          </div>` : a`<button slot="footer" class="btn" @click=${() => this.dlg.requestClose()}>${o(e, "cancel")}</button>
+    }}>${n(e, "discard")}</button>
+            <button class="btn" @click=${() => this.confirmDiscard = !1}>${n(e, "keep_editing")}</button>
+          </div>` : a`<button slot="footer" class="btn" @click=${() => this.dlg.requestClose()}>${n(e, "cancel")}</button>
           <button slot="footer" class="btn primary" ?disabled=${this.saving || this.uploading > 0} @click=${() => this.save()}>
-            ${this.saving ? o(e, "saving") : o(e, "save")}
+            ${this.saving ? n(e, "saving") : n(e, "save")}
           </button>`}
     </dw-dialog>`;
   }
 }
-customElements.get("dw-recipe-editor") || customElements.define("dw-recipe-editor", ii);
-function pe(n) {
-  let e = n;
+customElements.get("dw-recipe-editor") || customElements.define("dw-recipe-editor", oi);
+function ue(o) {
+  let e = o;
   for (; ; ) {
     const t = e.getRootNode();
     if (!(t instanceof ShadowRoot)) return !1;
     if (e = t.host, e.nodeName === "HUI-CARD-PICKER") return !0;
   }
 }
-function si(n, e, t = Date.now()) {
-  const i = new Date(n).getTime();
+function ri(o, e, t = Date.now()) {
+  const i = new Date(o).getTime();
   if (Number.isNaN(i)) return "";
   const s = Math.round((i - t) / 1e3), r = new Intl.RelativeTimeFormat(e, { numeric: "auto" }), c = [
     ["minute", 60],
@@ -2401,22 +2512,22 @@ function si(n, e, t = Date.now()) {
   for (const h of c) u >= h[1] && (l = h);
   return r.format(Math.round(s / l[1]), l[0]);
 }
-function Ve(n, e) {
-  if (!n || (n.style.maxHeight = "", n.style.overflowY = "", !(e >= 1))) return;
-  const t = n.getBoundingClientRect(), s = [...n.children].filter((l) => l.id !== "more" && l.getBoundingClientRect().height > 0).map((l) => l.getBoundingClientRect()), r = [...new Set(s.map((l) => Math.round(l.top - t.top + n.scrollTop)))].sort((l, h) => l - h);
+function Fe(o, e) {
+  if (!o || (o.style.maxHeight = "", o.style.overflowY = "", !(e >= 1))) return;
+  const t = o.getBoundingClientRect(), s = [...o.children].filter((l) => l.id !== "more" && l.getBoundingClientRect().height > 0).map((l) => l.getBoundingClientRect()), r = [...new Set(s.map((l) => Math.round(l.top - t.top + o.scrollTop)))].sort((l, h) => l - h);
   if (r.length <= e) return;
   const c = r[e - 1], u = Math.max(
-    ...s.filter((l) => Math.round(l.top - t.top + n.scrollTop) === c).map((l) => l.bottom - t.top + n.scrollTop)
+    ...s.filter((l) => Math.round(l.top - t.top + o.scrollTop) === c).map((l) => l.bottom - t.top + o.scrollTop)
   );
-  n.style.maxHeight = `${Math.ceil(u) + 2}px`, n.style.overflowY = "auto";
+  o.style.maxHeight = `${Math.ceil(u) + 2}px`, o.style.overflowY = "auto";
 }
-function P(n) {
-  return n.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+function N(o) {
+  return o.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
-const Z = 60, te = "__quick", ie = "__mine";
-class ni extends w {
+const F = 60, ie = "__quick", se = "__mine";
+class ni extends v {
   constructor() {
-    super(), this.inPicker = !1, this.lastWidth = 0, this.config = { type: "custom:dishwish-library-card" }, this.query = "", this.filter = "", this.limit = Z, this.menuOpen = !1, this.tick = 0;
+    super(), this.inPicker = !1, this.lastWidth = 0, this.config = { type: "custom:dishwish-library-card" }, this.query = "", this.filter = "", this.limit = F, this.menuOpen = !1, this.tick = 0;
   }
   static {
     this.properties = {
@@ -2461,12 +2572,12 @@ class ni extends w {
     this.unsub || !this.store || (this.unsub = this.store.subscribe(() => this.tick++));
   }
   willUpdate() {
-    this.inPicker = pe(this), this.toggleAttribute("picker", this.inPicker);
+    this.inPicker = ue(this), this.toggleAttribute("picker", this.inPicker);
   }
   applyRows() {
     this.lastWidth = this.clientWidth;
     const e = this.inPicker ? 0 : Number(this.config.rows ?? 0);
-    Ve(this.renderRoot.querySelector(".grid"), e);
+    Fe(this.renderRoot.querySelector(".grid"), e);
   }
   updated() {
     this.applyRows(), this.resizer || (this.resizer = new ResizeObserver(() => {
@@ -2474,7 +2585,7 @@ class ni extends w {
     }), this.resizer.observe(this));
     const e = this.renderRoot.querySelector("#more");
     this.observer?.disconnect(), e && (this.observer = new IntersectionObserver((t) => {
-      t.some((i) => i.isIntersecting) && (this.limit += Z);
+      t.some((i) => i.isIntersecting) && (this.limit += F);
     }), this.observer.observe(e));
   }
   static {
@@ -2671,16 +2782,16 @@ class ni extends w {
     return t?.length ? e.filter((i) => t.includes(i.id)) : e;
   }
   filtered() {
-    const e = this.store, t = P(this.query.trim()), i = new Map(e.categories.map((l) => [l.id, P(l.name)])), s = this._hass?.user?.id;
+    const e = this.store, t = N(this.query.trim()), i = new Map(e.categories.map((l) => [l.id, N(l.name)])), s = this._hass?.user?.id;
     let r = e.recipes.filter((l) => {
-      if (this.filter === te) {
+      if (this.filter === ie) {
         const p = (l.prep_minutes ?? 0) + (l.cook_minutes ?? 0);
         if (l.prep_minutes === null && l.cook_minutes === null || p > 30) return !1;
-      } else if (this.filter === ie) {
+      } else if (this.filter === se) {
         if (l.created_by !== s) return !1;
       } else if (this.filter && !l.category_ids.includes(this.filter)) return !1;
       if (!t) return !0;
-      const h = P(l.name) + " " + l.category_ids.map((p) => i.get(p) ?? "").join(" ");
+      const h = N(l.name) + " " + l.category_ids.map((p) => i.get(p) ?? "").join(" ");
       return t.split(/\s+/).every((p) => h.includes(p));
     });
     const c = this.config.sort ?? "name", u = (l, h) => l.name.localeCompare(h.name, this.uiLang);
@@ -2708,7 +2819,7 @@ class ni extends w {
   async toggleWish(e) {
     const t = this._hass.connection;
     try {
-      e.my_wish_id ? await he(t, e.my_wish_id) : await X(t, e.id), await this.store?.refresh();
+      e.my_wish_id ? await pe(t, e.my_wish_id) : await X(t, e.id), await this.store?.refresh();
     } catch (i) {
       y(this, b(this.lang, _(i)));
     }
@@ -2730,15 +2841,15 @@ class ni extends w {
         <div class="info">
           <div class="name">${e.name}</div>
           <div class="sub">
-            ${i ? a`<span>${o(t, "minutes_short", { n: i })}</span>` : d}
-            ${e.visibility === "private" ? a`<span>${o(t, "only_me")}</span>` : d}
+            ${i ? a`<span>${n(t, "minutes_short", { n: i })}</span>` : d}
+            ${e.visibility === "private" ? a`<span>${n(t, "only_me")}</span>` : d}
           </div>
         </div>
       </button>
       <button
         class="heart"
         aria-pressed=${e.my_wish_id !== null}
-        aria-label=${e.my_wish_id ? o(t, "wish_remove") : o(t, "wish_heart")}
+        aria-label=${e.my_wish_id ? n(t, "wish_remove") : n(t, "wish_heart")}
         @click=${() => this.toggleWish(e)}
       >
         <span class="pill">${e.my_wish_id ? "♥" : "♡"}${e.open_wish_count ? ` ${e.open_wish_count}` : ""}</span>
@@ -2748,10 +2859,10 @@ class ni extends w {
   renderEmpty() {
     const e = this.uiLang;
     return a`<div class="empty">
-      <p class="muted">${o(e, "empty_title")}</p>
+      <p class="muted">${n(e, "empty_title")}</p>
       <div class="btns">
-        ${this.config.show_add !== !1 ? a`<button class="btn primary" @click=${() => this.newRecipe()}>${m(g.plus)} ${o(e, "empty_first")}</button>` : d}
-        ${this.config.show_import !== !1 ? a`<button class="btn" @click=${() => this.importRecipe()}>${m(g.link)} ${o(e, "empty_import")}</button>` : d}
+        ${this.config.show_add !== !1 ? a`<button class="btn primary" @click=${() => this.newRecipe()}>${m(g.plus)} ${n(e, "empty_first")}</button>` : d}
+        ${this.config.show_import !== !1 ? a`<button class="btn" @click=${() => this.importRecipe()}>${m(g.link)} ${n(e, "empty_import")}</button>` : d}
       </div>
     </div>`;
   }
@@ -2761,43 +2872,43 @@ class ni extends w {
     return a`
       <div class="card">
         <header>
-          <h1>${i.title ?? o(e, "library_title")}</h1>
+          <h1>${i.title ?? n(e, "library_title")}</h1>
           ${i.show_search !== !1 ? a`<div class="search">
                 ${m(g.search)}
                 <input
                   type="search"
-                  placeholder=${o(e, "search")}
-                  aria-label=${o(e, "search")}
+                  placeholder=${n(e, "search")}
+                  aria-label=${n(e, "search")}
                   .value=${this.query}
                   @input=${(p) => {
-      this.query = p.target.value, this.limit = Z;
+      this.query = p.target.value, this.limit = F;
     }}
                 />
               </div>` : a`<span class="spacer"></span>`}
           ${l || h ? a`<div class="menu-wrap">
-                <button class="icon-btn" aria-label=${o(e, "add_menu")} aria-expanded=${this.menuOpen}
+                <button class="icon-btn" aria-label=${n(e, "add_menu")} aria-expanded=${this.menuOpen}
                   @click=${() => this.menuOpen = !this.menuOpen}>${m(g.plus)}</button>
                 ${this.menuOpen ? a`<div class="menu">
-                      ${l ? a`<button @click=${() => this.newRecipe()}>${o(e, "new_recipe_menu")}</button>` : d}
-                      ${h ? a`<button @click=${() => this.importRecipe()}>${o(e, "import_menu")}</button>` : d}
+                      ${l ? a`<button @click=${() => this.newRecipe()}>${n(e, "new_recipe_menu")}</button>` : d}
+                      ${h ? a`<button @click=${() => this.importRecipe()}>${n(e, "import_menu")}</button>` : d}
                     </div>` : d}
               </div>` : d}
         </header>
         <div class="filters">
-          <button class="chip" aria-pressed=${this.filter === ""} @click=${() => this.setFilter("")}>${o(e, "filter_all")}</button>
+          <button class="chip" aria-pressed=${this.filter === ""} @click=${() => this.setFilter("")}>${n(e, "filter_all")}</button>
           ${this.visibleCategories.map(
       (p) => a`<button class="chip" aria-pressed=${this.filter === p.id} @click=${() => this.setFilter(p.id)}>
               <ha-icon icon=${p.icon} style="--mdc-icon-size:18px"></ha-icon>${p.name}
             </button>`
     )}
-          <button class="chip" aria-pressed=${this.filter === te} @click=${() => this.setFilter(te)}>${o(e, "filter_quick")}</button>
-          <button class="chip" aria-pressed=${this.filter === ie} @click=${() => this.setFilter(ie)}>${o(e, "filter_mine")}</button>
+          <button class="chip" aria-pressed=${this.filter === ie} @click=${() => this.setFilter(ie)}>${n(e, "filter_quick")}</button>
+          <button class="chip" aria-pressed=${this.filter === se} @click=${() => this.setFilter(se)}>${n(e, "filter_mine")}</button>
         </div>
         ${t.error ? a`<p class="error">${b(e, "unknown")}</p>` : d}
-        ${t.loaded ? t.recipes.length === 0 ? this.renderEmpty() : s.length === 0 ? a`<p class="muted empty">${o(e, "no_results")}</p>` : a`<div class="grid" style=${u}>
+        ${t.loaded ? t.recipes.length === 0 ? this.renderEmpty() : s.length === 0 ? a`<p class="muted empty">${n(e, "no_results")}</p>` : a`<div class="grid" style=${u}>
                   ${r.map((p) => this.renderTile(p))}
                   ${r.length < s.length ? a`<div id="more"></div>` : d}
-                </div>` : a`<p class="muted">${o(e, "loading")}</p>`}
+                </div>` : a`<p class="muted">${n(e, "loading")}</p>`}
       </div>
       <dw-recipe-dialog exportparts="dialog,header,title,close-button,body,footer"
         .hass=${this._hass}
@@ -2812,11 +2923,11 @@ class ni extends w {
     `;
   }
   setFilter(e) {
-    this.filter = e, this.limit = Z;
+    this.filter = e, this.limit = F;
   }
 }
 customElements.get("dishwish-library-card") || customElements.define("dishwish-library-card", ni);
-class ri extends w {
+class ai extends v {
   constructor() {
     super(), this.wakeLock = null, this.opened = !1, this.onVisible = () => {
       this.opened && document.visibilityState === "visible" && this.lock();
@@ -2925,29 +3036,29 @@ class ri extends w {
     const e = this.recipe, t = this.uiLang;
     if (!e || e.steps.length === 0) return a`<dw-dialog></dw-dialog>`;
     const i = e.steps.length, s = e.steps[Math.min(this.index, i - 1)], r = this.index >= i - 1;
-    return a`<dw-dialog exportparts="dialog,header,title,close-button,body,footer" .heading=${e.name} .closeLabel=${o(t, "close")} @closed=${() => this.onClosed()}>
+    return a`<dw-dialog exportparts="dialog,header,title,close-button,body,footer" .heading=${e.name} .closeLabel=${n(t, "close")} @closed=${() => this.onClosed()}>
       <div class="progress"><div style=${`width:${(this.index + 1) / i * 100}%`}></div></div>
-      <div class="count">${o(t, "step_of", { n: this.index + 1, total: i })}</div>
+      <div class="count">${n(t, "step_of", { n: this.index + 1, total: i })}</div>
       ${s.section ? a`<div class="section">${s.section}</div>` : d}
       <div class="step">${s.text}</div>
       <button class="btn" style="margin-top:16px" aria-expanded=${this.showIngredients} @click=${() => this.showIngredients = !this.showIngredients}>
-        ${o(t, "ingredients")}
+        ${n(t, "ingredients")}
       </button>
       ${this.showIngredients ? a`<ul class="ings">
             ${e.ingredients.map(
-      (c) => a`<li><b>${We(c, e.servings, this.servings, t)}</b>${c.name}</li>`
+      (c) => a`<li><b>${Be(c, e.servings, this.servings, t)}</b>${c.name}</li>`
     )}
           </ul>` : d}
       <div slot="footer" class="nav">
-        <button class="btn" ?disabled=${this.index === 0} @click=${() => this.go(-1)}>${o(t, "prev")}</button>
-        <button class="btn primary" @click=${() => this.go(1)}>${r ? o(t, "finish") : o(t, "next")}</button>
+        <button class="btn" ?disabled=${this.index === 0} @click=${() => this.go(-1)}>${n(t, "prev")}</button>
+        <button class="btn primary" @click=${() => this.go(1)}>${r ? n(t, "finish") : n(t, "next")}</button>
       </div>
     </dw-dialog>`;
   }
 }
-customElements.get("dw-cook-mode") || customElements.define("dw-cook-mode", ri);
-const oi = 80;
-class ai extends w {
+customElements.get("dw-cook-mode") || customElements.define("dw-cook-mode", ai);
+const ci = 80;
+class li extends v {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -3014,27 +3125,27 @@ class ai extends w {
     this.dispatchEvent(new CustomEvent("picked", { detail: e })), this.dlg.close();
   }
   filtered() {
-    const e = P(this.query.trim());
+    const e = N(this.query.trim());
     if (!e) return this.recipes;
-    const t = new Map(this.categories.map((i) => [i.id, P(i.name)]));
+    const t = new Map(this.categories.map((i) => [i.id, N(i.name)]));
     return this.recipes.filter((i) => {
-      const s = `${P(i.name)} ${i.category_ids.map((r) => t.get(r) ?? "").join(" ")}`;
+      const s = `${N(i.name)} ${i.category_ids.map((r) => t.get(r) ?? "").join(" ")}`;
       return e.split(/\s+/).every((r) => s.includes(r));
     });
   }
   render() {
     const e = this.uiLang, t = this.filtered();
-    return a`<dw-dialog exportparts="dialog,header,title,close-button,body,footer" .heading=${o(e, "picker_title")} .closeLabel=${o(e, "close")}>
+    return a`<dw-dialog exportparts="dialog,header,title,close-button,body,footer" .heading=${n(e, "picker_title")} .closeLabel=${n(e, "close")}>
       <input
         type="search"
-        placeholder=${o(e, "search")}
-        aria-label=${o(e, "search")}
+        placeholder=${n(e, "search")}
+        aria-label=${n(e, "search")}
         .value=${this.query}
         @input=${(i) => this.query = i.target.value}
       />
-      ${t.length === 0 ? a`<p class="muted">${o(e, "no_results")}</p>` : d}
+      ${t.length === 0 ? a`<p class="muted">${n(e, "no_results")}</p>` : d}
       <div class="list">
-        ${t.slice(0, oi).map(
+        ${t.slice(0, ci).map(
       (i) => a`<button class="item" @click=${() => this.pick(i.id)}>
             ${i.thumb_url ? a`<img src=${i.thumb_url} alt="" loading="lazy" decoding="async" />` : a`<div class="ph"></div>`}
             <span>${i.name}</span>
@@ -3044,8 +3155,8 @@ class ai extends w {
     </dw-dialog>`;
   }
 }
-customElements.get("dw-recipe-picker") || customElements.define("dw-recipe-picker", ai);
-class ci extends w {
+customElements.get("dw-recipe-picker") || customElements.define("dw-recipe-picker", li);
+class di extends v {
   constructor() {
     super(), this.requested = "", this.inPicker = !1, this.config = { type: "custom:dishwish-recipe-card" }, this.tick = 0, this.recipe = null, this.error = "", this.servings = 4;
   }
@@ -3100,7 +3211,7 @@ class ci extends w {
     return t;
   }
   willUpdate() {
-    if (this.inPicker = pe(this), this.toggleAttribute("picker", this.inPicker), !this._hass || !this.store?.loaded) return;
+    if (this.inPicker = ue(this), this.toggleAttribute("picker", this.inPicker), !this._hass || !this.store?.loaded) return;
     const e = this.targetId();
     if (!e) {
       this.recipe = null, this.requested = "";
@@ -3111,7 +3222,7 @@ class ci extends w {
   }
   async load(e) {
     try {
-      const t = await ne(this._hass.connection, e);
+      const t = await re(this._hass.connection, e);
       if (!this.requested.startsWith(`${e}@`)) return;
       this.recipe = t, this.error = "";
     } catch (t) {
@@ -3154,7 +3265,7 @@ class ci extends w {
   async onPicked(e) {
     const t = this.uiLang;
     try {
-      await X(this._hass.connection, e.detail), y(this, o(t, "wish_added")), await this.store?.refresh();
+      await X(this._hass.connection, e.detail), y(this, n(t, "wish_added")), await this.store?.refresh();
     } catch (i) {
       y(this, b(t, _(i)));
     }
@@ -3179,11 +3290,11 @@ class ci extends w {
           @cook=${(s) => {
       this.servings = s.detail.servings, this.cook.open();
     }}
-        ></dw-recipe-view>` : i = (t.mode ?? "fixed") === "fixed" ? a`<p class="muted">${o(e, "recipe_missing")}</p>` : a`<p>${o(e, "wishes_empty")}</p>
-            <p class="muted">${o(e, "wishes_hint")}</p>
+        ></dw-recipe-view>` : i = (t.mode ?? "fixed") === "fixed" ? a`<p class="muted">${n(e, "recipe_missing")}</p>` : a`<p>${n(e, "wishes_empty")}</p>
+            <p class="muted">${n(e, "wishes_hint")}</p>
             <button class="btn" @click=${() => {
       this.picker.open();
-    }}>${o(e, "add_wish")}</button>` : i = a`<p class="muted">${o(e, "loading")}</p>`, a`<div class="card">${i}</div>
+    }}>${n(e, "add_wish")}</button>` : i = a`<p class="muted">${n(e, "loading")}</p>`, a`<div class="card">${i}</div>
       <dw-recipe-picker
         exportparts="dialog,header,title,close-button,body,footer"
         .hass=${this._hass}
@@ -3194,8 +3305,8 @@ class ci extends w {
       ${this.recipe ? a`<dw-cook-mode exportparts="dialog,header,title,close-button,body,footer" .hass=${this._hass} .recipe=${this.recipe} .servings=${this.servings}></dw-cook-mode>` : d}`;
   }
 }
-customElements.get("dishwish-recipe-card") || customElements.define("dishwish-recipe-card", ci);
-class li extends w {
+customElements.get("dishwish-recipe-card") || customElements.define("dishwish-recipe-card", di);
+class hi extends v {
   constructor() {
     super(), this.inPicker = !1, this.lastWidth = 0, this.config = { type: "custom:dishwish-wishes-card" }, this.tick = 0, this.done = [];
   }
@@ -3210,7 +3321,7 @@ class li extends w {
     return { type: "custom:dishwish-wishes-card" };
   }
   static getConfigForm() {
-    const e = Ie(), t = [
+    const e = We(), t = [
       { name: "title", selector: { text: {} } },
       {
         name: "layout",
@@ -3218,8 +3329,8 @@ class li extends w {
           select: {
             mode: "dropdown",
             options: [
-              { value: "list", label: o(e, "cfg_layout_list") },
-              { value: "grid", label: o(e, "cfg_layout_grid") }
+              { value: "list", label: n(e, "cfg_layout_list") },
+              { value: "grid", label: n(e, "cfg_layout_grid") }
             ]
           }
         }
@@ -3230,9 +3341,9 @@ class li extends w {
           select: {
             mode: "dropdown",
             options: [
-              { value: "popular", label: o(e, "cfg_sort_popular") },
-              { value: "oldest", label: o(e, "cfg_sort_oldest") },
-              { value: "newest", label: o(e, "cfg_sort_newest") }
+              { value: "popular", label: n(e, "cfg_sort_popular") },
+              { value: "oldest", label: n(e, "cfg_sort_oldest") },
+              { value: "newest", label: n(e, "cfg_sort_newest") }
             ]
           }
         }
@@ -3258,7 +3369,7 @@ class li extends w {
     };
     return {
       schema: t,
-      computeLabel: (s) => i[s.name] ? o(e, i[s.name]) : s.name
+      computeLabel: (s) => i[s.name] ? n(e, i[s.name]) : s.name
     };
   }
   setConfig(e) {
@@ -3284,7 +3395,7 @@ class li extends w {
     super.disconnectedCallback(), this.unsub?.(), this.unsub = void 0, this.resizer?.disconnect(), this.resizer = void 0, clearTimeout(this.doneTimer);
   }
   willUpdate() {
-    this.inPicker = pe(this), this.toggleAttribute("picker", this.inPicker);
+    this.inPicker = ue(this), this.toggleAttribute("picker", this.inPicker);
   }
   updated() {
     this.applyRows(), this.resizer || (this.resizer = new ResizeObserver(() => {
@@ -3294,7 +3405,7 @@ class li extends w {
   applyRows() {
     this.lastWidth = this.clientWidth;
     const e = this.inPicker ? 0 : Number(this.config.rows ?? 0);
-    Ve(this.renderRoot.querySelector(".groups"), e);
+    Fe(this.renderRoot.querySelector(".groups"), e);
   }
   attach() {
     this.unsub || !this.store || (this.unsub = this.store.subscribe(() => {
@@ -3306,7 +3417,7 @@ class li extends w {
     const e = Number(this.config.show_done ?? 0);
     !e || !this._hass || (clearTimeout(this.doneTimer), this.doneTimer = setTimeout(async () => {
       try {
-        this.done = await Te(this._hass.connection, "done", Math.min(e * 5, 100));
+        this.done = await qe(this._hass.connection, "done", Math.min(e * 5, 100));
       } catch {
       }
     }, 200));
@@ -3493,21 +3604,21 @@ class li extends w {
     }
   }
   cooked(e) {
-    return this.run(async () => (await vt(this._hass.connection, e.recipeId), o(this.uiLang, "cooked_done")));
+    return this.run(async () => (await yt(this._hass.connection, e.recipeId), n(this.uiLang, "cooked_done")));
   }
   removeMine(e) {
     return this.run(async () => {
-      await he(this._hass.connection, e.id);
+      await pe(this._hass.connection, e.id);
     });
   }
   onPicked(e) {
-    return this.run(async () => (await X(this._hass.connection, e.detail), o(this.uiLang, "wish_added")));
+    return this.run(async () => (await X(this._hass.connection, e.detail), n(this.uiLang, "wish_added")));
   }
   renderGroup(e) {
     const t = this.uiLang, i = this._hass?.user?.id, s = e.wishes.find((r) => r.user_id === i);
     return a`<div class="group">
       <div class="top">
-        <button class="open" aria-label=${`${o(t, "open_recipe")}: ${e.name}`} @click=${() => {
+        <button class="open" aria-label=${`${n(t, "open_recipe")}: ${e.name}`} @click=${() => {
       this.recipeDialog.open(e.recipeId);
     }}>
           ${e.thumb ? a`<img class="thumb" src=${e.thumb} alt="" loading="lazy" decoding="async" />` : a`<div class="thumb"></div>`}
@@ -3518,13 +3629,13 @@ class li extends w {
       <ul class="notes">
         ${e.wishes.map(
       (r) => a`<li title=${new Date(r.created_at).toLocaleString(t)}>
-            ${o(t, "wished_ago", { name: r.user_name, when: si(r.created_at, t) })}${r.note ? a`: <span class="note">${r.note}</span>` : d}
+            ${n(t, "wished_ago", { name: r.user_name, when: ri(r.created_at, t) })}${r.note ? a`: <span class="note">${r.note}</span>` : d}
           </li>`
     )}
       </ul>
       <div class="actions">
-        <button class="btn primary" @click=${() => this.cooked(e)}>${o(t, "cooked")}</button>
-        ${s ? a`<button class="btn" @click=${() => this.removeMine(s)}>${o(t, "wish_remove")}</button>` : d}
+        <button class="btn primary" @click=${() => this.cooked(e)}>${n(t, "cooked")}</button>
+        ${s ? a`<button class="btn" @click=${() => this.removeMine(s)}>${n(t, "wish_remove")}</button>` : d}
       </div>
     </div>`;
   }
@@ -3534,20 +3645,20 @@ class li extends w {
     return a`
       <div class="card">
         <header>
-          <h1>${i.title ?? o(e, "wishes_title")}</h1>
+          <h1>${i.title ?? n(e, "wishes_title")}</h1>
           ${i.show_link_button ? a`<button
                 class="btn"
-                aria-label=${i.link_label || o(e, "link_default")}
+                aria-label=${i.link_label || n(e, "link_default")}
                 @click=${() => this.runLink()}
               >
                 ${i.link_icon || !i.link_label ? a`<ha-icon icon=${i.link_icon || "mdi:open-in-new"} style="--mdc-icon-size:20px"></ha-icon>` : d}${i.link_label ?? ""}
               </button>` : d}
           <button class="btn" @click=${() => {
       this.picker.open();
-    }}>${o(e, "add_wish")}</button>
+    }}>${n(e, "add_wish")}</button>
         </header>
-        ${t.loaded ? s.length === 0 ? a`<p class="muted empty">${o(e, "wishes_empty")}</p>` : a`<div class="groups ${i.layout === "grid" ? "grid" : ""}">${s.map((c) => this.renderGroup(c))}</div>` : a`<p class="muted">${o(e, "loading")}</p>`}
-        ${r.length ? a`<h2>${o(e, "recently_cooked")}</h2>
+        ${t.loaded ? s.length === 0 ? a`<p class="muted empty">${n(e, "wishes_empty")}</p>` : a`<div class="groups ${i.layout === "grid" ? "grid" : ""}">${s.map((c) => this.renderGroup(c))}</div>` : a`<p class="muted">${n(e, "loading")}</p>`}
+        ${r.length ? a`<h2>${n(e, "recently_cooked")}</h2>
               <ul class="done">${r.map((c) => a`<li>${c}</li>`)}</ul>` : d}
       </div>
       <dw-recipe-dialog exportparts="dialog,header,title,close-button,body,footer"
@@ -3579,13 +3690,13 @@ class li extends w {
     return e ? [...new Set(this.done.map((t) => t.recipe_name))].slice(0, e) : [];
   }
 }
-customElements.get("dishwish-wishes-card") || customElements.define("dishwish-wishes-card", li);
+customElements.get("dishwish-wishes-card") || customElements.define("dishwish-wishes-card", hi);
 const J = window;
 J.customCards = J.customCards ?? [];
-const z = Ie(), di = [
-  { type: "dishwish-library-card", name: o(z, "card_library_name"), description: o(z, "card_library_desc") },
-  { type: "dishwish-recipe-card", name: o(z, "card_recipe_name"), description: o(z, "card_recipe_desc") },
-  { type: "dishwish-wishes-card", name: o(z, "card_wishes_name"), description: o(z, "card_wishes_desc") }
+const z = We(), pi = [
+  { type: "dishwish-library-card", name: n(z, "card_library_name"), description: n(z, "card_library_desc") },
+  { type: "dishwish-recipe-card", name: n(z, "card_recipe_name"), description: n(z, "card_recipe_desc") },
+  { type: "dishwish-wishes-card", name: n(z, "card_wishes_name"), description: n(z, "card_wishes_desc") }
 ];
-for (const n of di)
-  J.customCards.some((e) => e.type === n.type) || J.customCards.push({ ...n, preview: !0, documentationURL: "https://github.com/Gloecki2404/DishWish" });
+for (const o of pi)
+  J.customCards.some((e) => e.type === o.type) || J.customCards.push({ ...o, preview: !0, documentationURL: "https://github.com/Gloecki2404/DishWish" });

@@ -491,7 +491,7 @@ def create_recipe(conn: sqlite3.Connection, data: Row, user_id: str) -> str:
     """Insert a recipe with all children in one transaction. Returns its id."""
     recipe_id = new_id()
     now = now_iso()
-    shareable = 0 if data.get("source_url") else 1
+    shareable = 0 if (data.get("source_url") or data.get("source_name")) else 1
     with conn:
         conn.execute(
             """INSERT INTO recipes (id, name, description, servings, prep_minutes, cook_minutes,
@@ -522,7 +522,7 @@ def create_recipe(conn: sqlite3.Connection, data: Row, user_id: str) -> str:
 def update_recipe(conn: sqlite3.Connection, recipe_id: str, data: Row, user_id: str) -> list[str]:
     """Replace a recipe's content. Returns ids of images that were removed."""
     get_recipe_meta(conn, recipe_id)
-    shareable = 0 if data.get("source_url") else 1
+    shareable = 0 if (data.get("source_url") or data.get("source_name")) else 1
     with conn:
         conn.execute(
             """UPDATE recipes SET name = ?, description = ?, servings = ?, prep_minutes = ?,
@@ -612,6 +612,28 @@ def attach_image(conn: sqlite3.Connection, recipe_id: str, image_id: str) -> boo
         if cur.rowcount:
             conn.execute("UPDATE recipes SET updated_at = ? WHERE id = ?", (now_iso(), recipe_id))
     return bool(cur.rowcount)
+
+
+def owned_uploads(conn: sqlite3.Connection, image_ids: list[str], user_id: str) -> list[str]:
+    """The given ids that are unassigned uploads of this user."""
+    if not image_ids:
+        return []
+    marks = ",".join("?" * len(image_ids))
+    rows = conn.execute(
+        f"SELECT id FROM recipe_images WHERE recipe_id IS NULL AND created_by = ? "  # noqa: S608
+        f"AND id IN ({marks})",
+        (user_id, *image_ids),
+    )
+    return [r[0] for r in rows]
+
+
+def delete_uploads(conn: sqlite3.Connection, image_ids: list[str]) -> None:
+    """Delete unassigned upload rows."""
+    with conn:
+        conn.executemany(
+            "DELETE FROM recipe_images WHERE id = ? AND recipe_id IS NULL",
+            [(i,) for i in image_ids],
+        )
 
 
 def all_image_ids(conn: sqlite3.Connection) -> set[str]:

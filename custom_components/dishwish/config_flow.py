@@ -15,6 +15,7 @@ from homeassistant.core import callback
 from homeassistant.helpers import selector
 
 from .const import (
+    CONF_AI_TASK_ENTITY,
     CONF_DEFAULT_SERVINGS,
     CONF_DEFAULT_SHOPPING_LIST,
     DEFAULT_SERVINGS,
@@ -55,6 +56,10 @@ class DishWishOptionsFlow(OptionsFlow):
                     CONF_DEFAULT_SHOPPING_LIST,
                     description={"suggested_value": opts.get(CONF_DEFAULT_SHOPPING_LIST)},
                 ): selector.EntitySelector(selector.EntitySelectorConfig(domain="todo")),
+                vol.Optional(
+                    CONF_AI_TASK_ENTITY,
+                    description={"suggested_value": opts.get(CONF_AI_TASK_ENTITY)},
+                ): selector.EntitySelector(selector.EntitySelectorConfig(domain="ai_task")),
                 vol.Required(
                     CONF_DEFAULT_SERVINGS,
                     default=opts.get(CONF_DEFAULT_SERVINGS, DEFAULT_SERVINGS),

@@ -21,6 +21,7 @@ from .const import (
     MAX_NOTE_ENTRY,
     MAX_NOTES,
     MAX_PARSE_LINES,
+    MAX_PHOTOS,
     MAX_SERVINGS,
     MAX_STEP_TEXT,
     MAX_STEPS,
@@ -30,6 +31,7 @@ from .const import (
 from .db import DbError
 from .importer import async_import_recipe
 from .ingredients import parse_line
+from .photo_import import async_import_photos
 from .shopping import async_add_recipe
 from .store import Actor, get_store
 
@@ -173,6 +175,20 @@ async def ws_recipes_delete(hass: HomeAssistant, connection: Any, msg: dict[str,
 async def ws_recipes_import_url(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
     """Load a recipe from a link as an unsaved draft."""
     draft = await async_import_recipe(hass, get_store(hass), _actor(connection), msg["url"])
+    connection.send_result(msg["id"], draft)
+
+
+@_command(
+    {
+        vol.Required("type"): "dishwish/recipes/import_photos",
+        vol.Required("image_ids"): vol.All([str], vol.Length(min=1, max=MAX_PHOTOS)),
+    }
+)
+async def ws_recipes_import_photos(
+    hass: HomeAssistant, connection: Any, msg: dict[str, Any]
+) -> None:
+    """Read photos of a cookbook page with an AI task and return an unsaved draft."""
+    draft = await async_import_photos(hass, get_store(hass), _actor(connection), msg["image_ids"])
     connection.send_result(msg["id"], draft)
 
 
@@ -324,6 +340,7 @@ def async_register_websocket(hass: HomeAssistant) -> None:
         ws_recipes_add_note,
         ws_recipes_delete,
         ws_recipes_import_url,
+        ws_recipes_import_photos,
         ws_ingredients_parse,
         ws_categories_list,
         ws_categories_create,

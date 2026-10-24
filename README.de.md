@@ -36,6 +36,7 @@ Die Integration hat zwei Optionen (**Einstellungen → Geräte & Dienste → Dis
 |---|---|
 | Standard-Einkaufsliste | `todo`-Entität, in die Zutaten geschrieben werden, wenn eine Karte keine eigene Liste hat |
 | Standard-Portionen | Portionen für importierte Rezepte ohne Mengenangabe |
+| KI-Aufgabe für den Foto-Import | `ai_task`-Entität, die Rezeptfotos liest (optional, siehe "Rezept aus einem Foto") |
 
 Rechte: Alle angemeldeten Benutzer sehen die Gerichte des Haushalts und ihre eigenen „Nur für mich“-Gerichte. Bearbeiten und Löschen dürfen nur der Ersteller eines Gerichts und Administratoren; Beispielgerichte und Gerichte anderer sind für alle anderen schreibgeschützt. **Notizen dürfen alle hinzufügen** (sie werden mit Name und Datum angehängt und können von anderen nicht geändert werden). Kategorien bearbeiten oder löschen dürfen nur Administratoren.
 
@@ -153,6 +154,15 @@ Der Service `dishwish.import_starter_recipes` (optional `language`: `de` oder `e
 ## Link-Import
 
 Der Import liest die schema.org-Rezeptdaten (JSON-LD) einer Seite: Name, Beschreibung, Portionen, Zeiten, Zutaten, Schritte, Kategorien und das Foto. Kategorien, die die Seite nennt, werden im Editor als neue Kategorien vorgeschlagen (abwählbar); vorhandene Kategorien werden automatisch gewählt. Seiten ohne schema.org-Daten werden für einige bekannte Aufbauten unterstützt (z. B. gusto.at), und Mengen, die nur in der Zutatenliste der Seite stehen, werden mit übernommen. Importierte Rezepte merken sich die Quelle und gelten als nicht teilbar. Seiten ohne solche Daten (oder mit Bot-Schutz) lassen sich nicht importieren. Aus Sicherheitsgründen werden Adressen im lokalen Netz abgelehnt.
+
+## Rezept aus einem Foto
+
+Im Import-Dialog kannst du eine Kochbuch- oder Zeitschriftenseite fotografieren (bis zu 4 Fotos für ein Rezept). DishWish übergibt die Fotos an eine **KI-Aufgabe von Home Assistant**, die das Rezept liest und einen Entwurf liefert, den du prüfst und speicherst, genau wie beim Link-Import.
+
+- Richte eine Home-Assistant-Integration mit KI-Aufgabe und Bildverständnis ein: Google Generative AI (Gemini), Anthropic, OpenAI, Ollama (mit einem Vision-Modell), OpenRouter oder Home Assistant Cloud. Groq und andere Anbieter funktionieren nur, wenn ihre Integration eine `ai_task`-Entität bereitstellt.
+- **Einstellungen → Geräte & Dienste → DishWish → Konfigurieren → "KI-Aufgabe für den Foto-Import"** wählt die Entität. Leer lassen, um die Standard-KI-Aufgabe von Home Assistant zu nutzen (Einstellungen → System → KI-Aufgaben).
+- Die Fotos gehen an diesen KI-Dienst und werden von DishWish **nicht gespeichert**. Für die Dauer des Aufrufs liegen temporäre Kopien im Ordner `dishwish_tmp` des Medienverzeichnisses von Home Assistant; ein Medienverzeichnis muss existieren (bei Home Assistant OS und standardmäßig ist das der Fall).
+- KI kann Mengen oder Schritte falsch lesen, deshalb erscheint das Ergebnis immer erst als Entwurf. Ein Rezept aus einem Foto gilt als nicht teilbar.
 
 ## Datenschutz
 

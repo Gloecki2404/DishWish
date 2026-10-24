@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 DOMAIN = "dishwish"
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 
 DATA_DIR_NAME = "dishwish"
 DB_FILE_NAME = "dishwish.db"
@@ -22,6 +22,9 @@ BUNDLE_NAME = "dishwish-cards.js"
 
 CONF_DEFAULT_SHOPPING_LIST = "default_shopping_list"
 CONF_DEFAULT_SERVINGS = "default_servings"
+CONF_AI_TASK_ENTITY = "ai_task_entity"
+MAX_PHOTOS = 4
+TMP_MEDIA_DIR = "dishwish_tmp"
 DEFAULT_SERVINGS = 4
 
 # Input limits

@@ -16,10 +16,12 @@
         "title": "DishWish-Optionen",
         "data": {
           "default_shopping_list": "Standard-Einkaufsliste",
+          "ai_task_entity": "KI-Aufgabe für den Foto-Import",
           "default_servings": "Standard-Portionen"
         },
         "data_description": {
           "default_shopping_list": "To-do-Liste, in die Zutaten geschrieben werden.",
+          "ai_task_entity": "KI-Aufgabe, die Rezeptfotos liest (braucht Bildverständnis, z. B. Google Gemini). Leer lassen, um die Standard-KI-Aufgabe von Home Assistant zu nutzen.",
           "default_servings": "Portionen für importierte Rezepte ohne Mengenangabe."
         }
       }

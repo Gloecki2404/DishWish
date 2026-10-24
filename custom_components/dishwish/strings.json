@@ -16,10 +16,12 @@
         "title": "DishWish options",
         "data": {
           "default_shopping_list": "Default shopping list",
+          "ai_task_entity": "AI task for photo import",
           "default_servings": "Default servings"
         },
         "data_description": {
           "default_shopping_list": "To-do list that ingredients are added to.",
+          "ai_task_entity": "AI task that reads recipe photos (needs image support, e.g. Google Gemini). Leave empty to use the default AI task of Home Assistant.",
           "default_servings": "Servings used for imported recipes without a yield."
         }
       }
