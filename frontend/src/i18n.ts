@@ -1,4 +1,11 @@
 const en = {
+  // card picker
+  card_library_name: "DishWish – Library",
+  card_library_desc: "Dishes with photos, search and filters",
+  card_wishes_name: "DishWish – Meal wishes",
+  card_wishes_desc: "Open meal wishes of the household",
+  card_recipe_name: "DishWish – Recipe & cook mode",
+  card_recipe_desc: "One dish with ingredients, steps and cook mode",
   // general
   close: "Close",
   cancel: "Cancel",
@@ -43,6 +50,13 @@ const en = {
   picker_title: "Pick a dish",
   recently_cooked: "Recently cooked",
   open_recipe: "Open dish",
+  // recipe card / cook mode
+  cook_mode: "Cook mode",
+  step_of: "Step {n} of {total}",
+  prev: "Back",
+  next: "Next",
+  finish: "Done",
+  recipe_missing: "Choose a dish in the card settings.",
   // recipe
   prep: "Prep {n} min",
   cook: "Cook {n} min",
@@ -119,6 +133,12 @@ const en = {
   cfg_sort_oldest: "Oldest first",
   wished_ago: "{name} · {when}",
   cfg_shopping_list: "Shopping list",
+  cfg_recipe: "Dish",
+  cfg_mode: "Which dish",
+  cfg_mode_fixed: "A fixed dish",
+  cfg_mode_top_wish: "The most wished dish",
+  cfg_show_ingredients: "Show ingredients",
+  cfg_show_steps: "Show steps",
   cfg_rows: "Visible rows (0 = all, the rest scrolls)",
   cfg_layout: "Layout",
   cfg_layout_list: "List",
@@ -129,6 +149,12 @@ const en = {
 export type Key = keyof typeof en;
 
 const de: Record<Key, string> = {
+  card_library_name: "DishWish – Bibliothek",
+  card_library_desc: "Gerichte mit Fotos, Suche und Filtern",
+  card_wishes_name: "DishWish – Essenswünsche",
+  card_wishes_desc: "Offene Essenswünsche des Haushalts",
+  card_recipe_name: "DishWish – Rezept & Kochmodus",
+  card_recipe_desc: "Ein Gericht mit Zutaten, Schritten und Kochmodus",
   close: "Schließen",
   cancel: "Abbrechen",
   save: "Speichern",
@@ -170,6 +196,12 @@ const de: Record<Key, string> = {
   picker_title: "Gericht wählen",
   recently_cooked: "Zuletzt gekocht",
   open_recipe: "Gericht öffnen",
+  cook_mode: "Kochmodus",
+  step_of: "Schritt {n} von {total}",
+  prev: "Zurück",
+  next: "Weiter",
+  finish: "Fertig",
+  recipe_missing: "Wähle in den Karteneinstellungen ein Gericht.",
   prep: "Vorbereiten {n} min",
   cook: "Kochen {n} min",
   only_me: "Nur ich",
@@ -241,6 +273,12 @@ const de: Record<Key, string> = {
   cfg_sort_oldest: "Älteste zuerst",
   wished_ago: "{name} · {when}",
   cfg_shopping_list: "Einkaufsliste",
+  cfg_recipe: "Gericht",
+  cfg_mode: "Welches Gericht",
+  cfg_mode_fixed: "Ein festes Gericht",
+  cfg_mode_top_wish: "Das meistgewünschte Gericht",
+  cfg_show_ingredients: "Zutaten anzeigen",
+  cfg_show_steps: "Zubereitung anzeigen",
   cfg_rows: "Sichtbare Zeilen (0 = alle, der Rest scrollt)",
   cfg_layout: "Layout",
   cfg_layout_list: "Liste",
@@ -259,4 +297,16 @@ export function t(lang: string, key: Key, vars?: Record<string, string | number>
 export function tError(lang: string, code: string): string {
   const key = `err_${code}` as Key;
   return key in en ? t(lang, key) : t(lang, "err_unknown");
+}
+
+
+/** Language of the Home Assistant frontend (user setting), for code that runs before `hass` exists. */
+export function uiLanguage(): string {
+  try {
+    const stored = localStorage.getItem("selectedLanguage");
+    if (stored) return String(JSON.parse(stored));
+  } catch {
+    /* fall through */
+  }
+  return document.documentElement.lang || navigator.language || "en";
 }

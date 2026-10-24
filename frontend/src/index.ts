@@ -1,5 +1,7 @@
 import "./cards/library-card";
+import "./cards/recipe-card";
 import "./cards/wishes-card";
+import { t, uiLanguage } from "./i18n";
 
 interface CustomCardEntry {
   type: string;
@@ -12,17 +14,11 @@ interface CustomCardEntry {
 const w = window as unknown as { customCards?: CustomCardEntry[] };
 w.customCards = w.customCards ?? [];
 
-const cards: Omit<CustomCardEntry, "preview" | "documentationURL">[] = [
-  {
-    type: "dishwish-library-card",
-    name: "DishWish – Bibliothek",
-    description: "Gerichte mit Fotos, Suche und Filtern / Dish library with photos, search and filters",
-  },
-  {
-    type: "dishwish-wishes-card",
-    name: "DishWish – Essenswünsche",
-    description: "Offene Essenswünsche der Familie / Open meal wishes of the household",
-  },
+const lang = uiLanguage();
+const cards = [
+  { type: "dishwish-library-card", name: t(lang, "card_library_name"), description: t(lang, "card_library_desc") },
+  { type: "dishwish-recipe-card", name: t(lang, "card_recipe_name"), description: t(lang, "card_recipe_desc") },
+  { type: "dishwish-wishes-card", name: t(lang, "card_wishes_name"), description: t(lang, "card_wishes_desc") },
 ];
 
 for (const card of cards) {

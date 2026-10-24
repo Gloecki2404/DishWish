@@ -7,7 +7,7 @@ import "../dialogs/recipe-picker";
 import type { DwRecipeDialog } from "../dialogs/recipe-dialog";
 import type { DwRecipeEditor } from "../dialogs/recipe-editor";
 import type { DwRecipePicker } from "../dialogs/recipe-picker";
-import { t, tError, type Key } from "../i18n";
+import { t, tError, uiLanguage, type Key } from "../i18n";
 import { sharedStyles } from "../styles";
 import type { CardConfig, HomeAssistant, Recipe, Wish } from "../types";
 import { notify } from "../utils/notify";
@@ -59,7 +59,7 @@ export class DishWishWishesCard extends LitElement {
   }
 
   static getConfigForm() {
-    const lang = document.documentElement.lang || navigator.language || "en";
+    const lang = uiLanguage();
     const schema = [
       { name: "title", selector: { text: {} } },
       {

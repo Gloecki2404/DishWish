@@ -568,15 +568,22 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 - Das Bundle wird jetzt über eine eigene View mit `Cache-Control: no-cache` ausgeliefert statt über `StaticPathConfig` (ein gecachter Seiten-HTML-Stand oder 31 Tage Browser-Cache lieferten sonst alte Versionen aus). Der `?v=`-Parameter bleibt.
 - Nicht geprüft: zwei verschiedene echte Benutzer in der Dev-HA (nur per Test), Local To-do, Avatar mit `person`-Bild.
 ### Phase 4 – Feinschliff & Veröffentlichung
-- [ ] 4.1 `recipe-card` inkl. Kochmodus
-- [ ] 4.2 Visuelle Editoren aller Karten vervollständigen, Vorschau im Karten-Picker
+- [x] 4.1 `recipe-card` inkl. Kochmodus
+- [x] 4.2 Visuelle Editoren aller Karten vervollständigen, Vorschau im Karten-Picker
 - [ ] 4.3 UI-Prüfung: Handy (iOS + Android Companion App), Tablet, Desktop, Dark Mode, 1.000 Testgerichte
-- [ ] 4.4 README: Installation über HACS, YAML-Beispiele aller Karten inkl. `todo-list`-Karte, Screenshots
-- [ ] 4.5 GitHub Actions: Backend-Tests + ruff, Frontend-Build/Lint/Tests, `hassfest`, HACS-Validierung. Release-Workflow (Version in `manifest.json` = Tag).
+- [x] 4.4 README: Installation über HACS, YAML-Beispiele aller Karten inkl. `todo-list`-Karte (Screenshots fehlen noch, siehe Notizen)
+- [x] 4.5 GitHub Actions: Backend-Tests + ruff, Frontend-Build/Lint/Tests, `hassfest`, HACS-Validierung. Release-Workflow (Version in `manifest.json` = Tag).
 - [ ] 4.6 (optional) Export/Import eigener Gerichte als ZIP (JSON + Bilder)
 
 **Fertig wenn:** Installation über HACS (Custom Repository) in einer frischen HA funktioniert, die Karten sind ohne manuelle Ressource verfügbar, hassfest und HACS-Validierung sind grün.
 
+**Abweichungen/Notizen Phase 4 (2026-10-24):**
+- `recipe-card` (`dishwish-recipe-card`) mit Modus `fixed`/`top_wish` und Kochmodus (`dw-cook-mode`: Schritt für Schritt, große Schrift, Zurück/Weiter, Pfeiltasten, `navigator.wakeLock` falls verfügbar, Zutaten einblendbar). Der Rezept-Inhalt steckt jetzt in der gemeinsamen Komponente `dw-recipe-view`, die `recipe-dialog` und `recipe-card` nutzen.
+- Karten-Editoren: Bibliothek und Rezept-Karte nutzen `getConfigElement()` mit `ha-form` (`dw-card-editor`, lädt `ha-form` über den Lazy-Load-Trick) damit Kategorien und Gerichte aus `categories/list` bzw. `recipes/list` wählbar sind. Die Wünsche-Karte bleibt bei `getConfigForm()`. Alle drei Karten rendern in der Kartenauswahl verkürzt.
+- 4.3 nur teilweise geprüft: programmatisch in der Dev-HA mit 1.000 Gerichten (schnell), Karten ohne horizontales Überlaufen bei 360/768 px Containerbreite. **Offen (manuell):** echte Geräte (iOS/Android Companion App), Dialoge im Vollbild unter 600 px Fenster, Dark Mode und Themes, Kamera. Das Browserfenster ließ sich nicht verkleinern, Screenshots waren nicht möglich.
+- 4.4: README ohne Screenshots (keine Möglichkeit, sie hier aufzunehmen). Bitte `docs/screenshots/` nachliefern und in der README einbinden.
+- 4.5: `.github/workflows/ci.yml` (Backend: ruff + pytest, Frontend: lint/typecheck/test/build + Prüfung, dass das eingecheckte Bundle zum Quelltext passt, hassfest, HACS-Validierung mit `ignore: brands`) und `release.yml` (Tag `vX.Y.Z` muss `manifest.json` entsprechen, erzeugt Release mit `dishwish.zip`). `hassfest` lokal mit dem offiziellen Image geprüft: 0 ungültige Integrationen. Die Actions selbst sind noch nicht auf GitHub gelaufen. HACS verlangt für die Aufnahme ggf. Marken-Bilder (`brand/icon.png`) und Repo-Beschreibung/Topics.
+- 4.6 (optional, ZIP-Export/-Import) nicht umgesetzt.
 ## 15. Prüfpunkte (zu Beginn der jeweiligen Phase gegen aktuelle Doku/Quellcode prüfen)
 
 1. **Karten-Editor:** Unterstützt die aktuelle HA-Version `static getConfigForm()` für Custom Cards? (Im HA-Frontend-Quellcode nach `getConfigForm` suchen.) Sonst `getConfigElement()` + `ha-form`; dann den Lazy-Load-Trick nutzen, damit `ha-form` geladen ist. *(Phase 2)*

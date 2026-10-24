@@ -1,6 +1,8 @@
 import { css, html, LitElement, nothing } from "lit";
 import { addWish, errorCode, removeWish } from "../api";
 import { getStore, type DataStore } from "../data-store";
+import "../components/card-editor";
+import type { DwCardEditor } from "../components/card-editor";
 import "../dialogs/import-dialog";
 import "../dialogs/recipe-dialog";
 import "../dialogs/recipe-editor";
@@ -71,48 +73,10 @@ export class DishWishLibraryCard extends LitElement {
     return { type: "custom:dishwish-library-card" };
   }
 
-  /** Visual editor (static schema; category pickers follow in phase 4). */
-  static getConfigForm() {
-    const lang = document.documentElement.lang || navigator.language || "en";
-    const schema = [
-      { name: "title", selector: { text: {} } },
-      {
-        name: "columns",
-        selector: { select: { mode: "dropdown", options: ["auto", "2", "3", "4", "5", "6"] } },
-      },
-      { name: "rows", selector: { number: { min: 0, max: 50, mode: "box" } } },
-      { name: "show_search", selector: { boolean: {} } },
-      { name: "show_add", selector: { boolean: {} } },
-      { name: "show_import", selector: { boolean: {} } },
-      {
-        name: "sort",
-        selector: {
-          select: {
-            mode: "dropdown",
-            options: [
-              { value: "name", label: t(lang, "cfg_sort_name") },
-              { value: "newest", label: t(lang, "cfg_sort_newest") },
-              { value: "popular", label: t(lang, "cfg_sort_popular") },
-            ],
-          },
-        },
-      },
-      { name: "shopping_list", selector: { entity: { domain: "todo" } } },
-    ];
-    const labels: Record<string, Parameters<typeof t>[1]> = {
-      title: "cfg_title",
-      columns: "cfg_columns",
-      rows: "cfg_rows",
-      show_search: "cfg_show_search",
-      show_add: "cfg_show_add",
-      show_import: "cfg_show_import",
-      sort: "cfg_sort",
-      shopping_list: "cfg_shopping_list",
-    };
-    return {
-      schema,
-      computeLabel: (s: { name: string }) => (labels[s.name] ? t(lang, labels[s.name]) : s.name),
-    };
+  static getConfigElement(): HTMLElement {
+    const editor = document.createElement("dw-card-editor") as DwCardEditor;
+    editor.kind = "library";
+    return editor;
   }
 
   setConfig(config: LibraryConfig): void {
