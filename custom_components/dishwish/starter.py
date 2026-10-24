@@ -13,6 +13,7 @@ from .ingredients import parse_line
 from .store import SYSTEM, Actor, DishWishStore
 
 _FILE = Path(__file__).parent / "starter_recipes.json"
+SEEDED_FLAG = "starter_seeded"
 
 
 def _load() -> list[dict[str, Any]]:
@@ -62,3 +63,12 @@ async def async_import_starter(
         )
         created += 1
     return {"created": created, "skipped": skipped}
+
+
+async def async_seed_starter_once(hass: HomeAssistant, store: DishWishStore) -> None:
+    """Add the starter dishes to a library that has never had any (runs once per database)."""
+    if await store.async_meta_get(SEEDED_FLAG):
+        return
+    if await store.async_count_recipes() == 0:
+        await async_import_starter(hass, store, SYSTEM, hass.config.language)
+    await store.async_meta_set(SEEDED_FLAG, "1")

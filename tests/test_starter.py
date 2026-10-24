@@ -5,10 +5,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.dishwish import starter
+from custom_components.dishwish import db, starter
 from custom_components.dishwish.const import (
     DOMAIN,
     MAX_INGREDIENTS,
@@ -19,7 +20,7 @@ from custom_components.dishwish.const import (
 )
 from custom_components.dishwish.ingredients import parse_line
 
-from .conftest import call
+from .conftest import call, recipe_input
 
 DISHES = json.loads((Path(starter.__file__).parent / "starter_recipes.json").read_text("utf-8"))
 
@@ -45,19 +46,20 @@ def test_starter_file_is_complete_and_valid():
         assert len(set(names)) == 20
 
 
-async def test_import_german_via_websocket(hass: HomeAssistant, tmp_path, make_client):
+async def _setup(hass: HomeAssistant, tmp_path, language: str) -> MockConfigEntry:
     hass.config.config_dir = str(tmp_path)
-    hass.config.language = "de"
+    hass.config.language = language
     entry = MockConfigEntry(domain=DOMAIN, data={})
     entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
-    client, _ = await make_client("alice")
+    return entry
 
-    result = await call(client, "dishwish/recipes/import_starter")
-    assert result["result"] == {"created": 20, "skipped": 0}
-    again = await call(client, "dishwish/recipes/import_starter")
-    assert again["result"] == {"created": 0, "skipped": 20}
+
+@pytest.mark.starter
+async def test_first_setup_adds_german_starter_dishes(hass: HomeAssistant, tmp_path, make_client):
+    entry = await _setup(hass, tmp_path, "de")
+    client, _ = await make_client("alice")
 
     recipes = (await call(client, "dishwish/recipes/list"))["result"]
     assert len(recipes) == 20
@@ -73,28 +75,46 @@ async def test_import_german_via_websocket(hass: HomeAssistant, tmp_path, make_c
         "Kalbsschnitzel",
         "je ca. 150 g",
     )
-    assert len(full["steps"]) == 4 and full["prep_minutes"] == 20 and full["can_edit"] is True
+    assert len(full["steps"]) == 4 and full["prep_minutes"] == 20
+    # shipped dishes belong to the household: any user may edit or delete them
+    assert full["can_edit"] is True
+    deleted = await call(client, "dishwish/recipes/delete", recipe_id=schnitzel["id"])
+    assert deleted["success"]
+
+    # reloading must neither duplicate dishes nor bring a deleted one back
+    assert await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+    names = [r["name"] for r in (await call(client, "dishwish/recipes/list"))["result"]]
+    assert len(names) == 19 and "Wiener Schnitzel" not in names
 
 
-async def test_import_english_and_skip_existing(
-    hass: HomeAssistant, setup_integration, make_client
-):
+@pytest.mark.starter
+async def test_first_setup_in_english(hass: HomeAssistant, tmp_path, make_client):
+    await _setup(hass, tmp_path, "en")
     client, _ = await make_client("alice")
-    await call(client, "dishwish/recipes/create", name="Linseneintopf (lentil stew)", servings=2)
-    result = await call(client, "dishwish/recipes/import_starter", language="en")
-    assert result["result"] == {"created": 19, "skipped": 1}
-    names = {r["name"] for r in (await call(client, "dishwish/recipes/list"))["result"]}
-    assert "Beef goulash (Rindsgulasch)" in names and "Wiener Schnitzel" in names
-    goulash = next(
-        r
-        for r in (await call(client, "dishwish/recipes/list"))["result"]
-        if r["name"].startswith("Beef")
-    )
+    recipes = (await call(client, "dishwish/recipes/list"))["result"]
+    names = {r["name"] for r in recipes}
+    assert len(recipes) == 20 and "Beef goulash (Rindsgulasch)" in names
     cats = {c["id"]: c["name"] for c in (await call(client, "dishwish/categories/list"))["result"]}
+    goulash = next(r for r in recipes if r["name"].startswith("Beef"))
     assert [cats[i] for i in goulash["category_ids"]] == ["Meat"]
 
 
-async def test_import_service(hass: HomeAssistant, setup_integration):
+@pytest.mark.starter
+async def test_existing_library_is_left_alone(hass: HomeAssistant, tmp_path, make_client):
+    data_dir = tmp_path / "dishwish"
+    data_dir.mkdir()
+    conn = db.open_db(data_dir / "dishwish.db", "en")
+    db.create_recipe(conn, recipe_input(name="Mein Gericht"), "someone")
+    conn.close()
+
+    await _setup(hass, tmp_path, "en")
+    client, _ = await make_client("alice")
+    names = [r["name"] for r in (await call(client, "dishwish/recipes/list"))["result"]]
+    assert names == ["Mein Gericht"]
+
+
+async def test_import_service_adds_missing_dishes(hass: HomeAssistant, setup_integration):
     response = await hass.services.async_call(
         DOMAIN, "import_starter_recipes", {"language": "de"}, blocking=True, return_response=True
     )

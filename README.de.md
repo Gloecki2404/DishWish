@@ -140,7 +140,9 @@ automation:
 
 ## Beispielgerichte
 
-Eine leere Bibliothek bietet **20 Beispielgerichte hinzufügen** an: deutsche und österreichische Klassiker (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) mit Zutaten, Schritten und Kategorien, in der Sprache deiner Home-Assistant-Installation. Die Rezepte sind für dieses Projekt geschrieben und haben keine Fotos. Alternativ kannst du den Service `dishwish.import_starter_recipes` aufrufen (optional `language`: `de` oder `en`). Gerichte, die es dem Namen nach schon gibt, werden übersprungen.
+Eine neue, leere Bibliothek startet mit 20 deutschen und österreichischen Klassikern (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) mit Zutaten, Schritten und Kategorien, in der Sprache deiner Home-Assistant-Installation. Sie werden einmalig beim ersten Start angelegt. Eine Bibliothek, in der schon Gerichte liegen, bleibt unberührt, und ein gelöschtes Beispielgericht bleibt gelöscht. Die Rezepte sind für dieses Projekt geschrieben und haben keine Fotos. Alle im Haushalt dürfen sie bearbeiten oder löschen.
+
+Der Service `dishwish.import_starter_recipes` (optional `language`: `de` oder `en`) ergänzt fehlende Beispielgerichte später; Gerichte, die es dem Namen nach schon gibt, werden übersprungen.
 
 ## Link-Import
 
@@ -164,3 +166,14 @@ docker compose -f dev/docker-compose.yml run --rm test python dev/seed.py --coun
 ```
 
 Das gebaute Bundle wird mit eingecheckt (HACS). Der CI-Lauf prüft, dass es zum Quelltext passt. Details und Entscheidungen: [PLAN.md](PLAN.md).
+
+## Versionen und Releases
+
+DishWish nutzt [semantische Versionierung](https://semver.org/lang/de/) (`0.1.0`, `0.2.0`, ...), siehe [CHANGELOG.md](CHANGELOG.md). Die Version steht in `manifest.json`, `const.py` und `frontend/package.json`; ein Test hält sie gleich. So veröffentlichst du:
+
+1. `python dev/bump_version.py 0.2.0`
+2. Die Notizen aus `[Unreleased]` im `CHANGELOG.md` in einen neuen Abschnitt `## [0.2.0] - Datum` verschieben.
+3. `npm --prefix frontend run build`, committen und pushen.
+4. `git tag v0.2.0` und `git push origin v0.2.0`. Der Release-Workflow prüft, ob der Tag zur `manifest.json` passt, nimmt die Release-Notizen aus dem Changelog und veröffentlicht das GitHub-Release.
+
+HACS bietet das neueste Release zur Installation an.

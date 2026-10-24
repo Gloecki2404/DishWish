@@ -219,13 +219,13 @@ def test_migration_makes_backup_and_upgrades(tmp_path):
     db.open_db(path).close()
     extra = ("ALTER TABLE recipes ADD COLUMN rating INTEGER",)
     conn = db.open_db(path, migrations=[*db.MIGRATIONS, extra])
-    assert conn.execute("PRAGMA user_version").fetchone()[0] == 2
+    assert conn.execute("PRAGMA user_version").fetchone()[0] == db.SCHEMA_VERSION + 1
     conn.execute("SELECT rating FROM recipes")
     conn.close()
-    backup = tmp_path / "m.db.bak-v1"
+    backup = tmp_path / f"m.db.bak-v{db.SCHEMA_VERSION}"
     assert backup.exists()
     old = sqlite3.connect(backup)
-    assert old.execute("PRAGMA user_version").fetchone()[0] == 1
+    assert old.execute("PRAGMA user_version").fetchone()[0] == db.SCHEMA_VERSION
     old.close()
 
 
@@ -236,7 +236,7 @@ def test_failed_migration_rolls_back(tmp_path):
     with pytest.raises(sqlite3.Error):
         db.open_db(path, migrations=[*db.MIGRATIONS, bad])
     conn = db.open_db(path)
-    assert conn.execute("PRAGMA user_version").fetchone()[0] == 1
+    assert conn.execute("PRAGMA user_version").fetchone()[0] == db.SCHEMA_VERSION
     columns = [r[1] for r in conn.execute("PRAGMA table_info(recipes)")]
     assert "ok" not in columns
     conn.close()
@@ -259,3 +259,22 @@ def test_newer_version_refused(tmp_path):
     raw.close()
     with pytest.raises(db.DatabaseCorrupt):
         db.open_db(path)
+
+
+def test_upgrade_from_v1_keeps_data_and_adds_meta(tmp_path):
+    path = tmp_path / "old.db"
+    old = db.open_db(
+        path, "en", migrations=[db.SCHEMA_V1]
+    )  # a database as written by version 0.1 before meta
+    rid = db.create_recipe(old, _recipe(name="Alt"), "u1")
+    old.close()
+
+    conn = db.open_db(path, "en")
+    assert conn.execute("PRAGMA user_version").fetchone()[0] == 2
+    assert (tmp_path / "old.db.bak-v1").exists()
+    assert db.get_recipe(conn, rid, "u1")["name"] == "Alt"
+    assert db.get_meta(conn, "flag") is None
+    db.set_meta(conn, "flag", "a")
+    db.set_meta(conn, "flag", "b")
+    assert db.get_meta(conn, "flag") == "b"
+    conn.close()

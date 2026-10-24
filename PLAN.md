@@ -617,3 +617,8 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 4. Eingabefelder über `--dw-input-*` mit Rückfall auf `--ha-color-form-background`.
 5. Sensoren haben feste Entity-IDs (`sensor.dishwish_open_wishes`, `sensor.dishwish_recipes`) in jeder Sprache. Bereits registrierte Entitäten behalten ihre IDs.
 6. Leerer Zustand der Rezept-Karte (Modus `top_wish`) mit Hinweis und Button „+ Wunsch“. Nicht umgesetzt: eine Mobil-Vorschau im Karten-Editor (die Vorschaubreite bestimmt Home Assistant).
+
+**Versionierung und Beispielgerichte als Basis (2026-10-24):**
+- Versionierung nach SemVer, erste Version `0.1.0` (Tag `v0.1.0`). `CHANGELOG.md`, `dev/bump_version.py`, `tests/test_version.py` (Manifest = `const.VERSION` = `package.json` = Changelog-Eintrag) und `release.yml` (Release-Notizen aus dem Changelog).
+- Die 20 Beispielgerichte werden beim ersten Start einer leeren Bibliothek automatisch angelegt (neues Schema v2: Tabelle `meta` mit Flag `starter_seeded`; bestehende Datenbanken werden mit Sicherungskopie migriert, nicht-leere Bibliotheken bleiben unberührt, gelöschte Beispiele kommen nicht zurück). Der Button und der WebSocket-Befehl `recipes/import_starter` sind entfernt; der Service `dishwish.import_starter_recipes` bleibt. Beispielgerichte gehören `created_by = "system"` und sind für alle Benutzer bearbeitbar.
+- HACS-Katalog ohne Bild: Home Assistant liefert lokale `brand/`-Bilder erst für **installierte** Integrationen (`/api/brands/integration/dishwish/icon.png`, in der Dev-HA geprüft). Der Katalog nicht installierter Repos nutzt das CDN von `home-assistant/brands`; dafür müsste das Logo dort eingereicht werden (Ordner `custom_integrations` ist laut README ein Altbestand).

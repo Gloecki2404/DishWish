@@ -140,7 +140,9 @@ automation:
 
 ## Starter dishes
 
-An empty library offers **Add 20 starter dishes**: classic German and Austrian dishes (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) with ingredients, steps and categories, in the language of your Home Assistant. The recipes are written for this project and come without photos. You can also run the service `dishwish.import_starter_recipes` (optional `language`: `de` or `en`); dishes that already exist by name are skipped.
+A new, empty library starts with 20 classic German and Austrian dishes (Wiener Schnitzel, Tafelspitz, Kaiserschmarrn, Apfelstrudel, Rindsgulasch, Käsespätzle, Rinderrouladen, Currywurst, Flammkuchen, ...) with ingredients, steps and categories, in the language of your Home Assistant. They are added once, on the first start. A library that already contains dishes is left alone, and deleting a starter dish keeps it deleted. The recipes are written for this project and come without photos. Everyone in the household may edit or delete them.
+
+The service `dishwish.import_starter_recipes` (optional `language`: `de` or `en`) adds missing starter dishes later; dishes that already exist by name are skipped.
 
 ## Link import
 
@@ -164,3 +166,14 @@ docker compose -f dev/docker-compose.yml run --rm test python dev/seed.py --coun
 ```
 
 The built bundle is committed (HACS needs it) and CI checks that it matches the source. Design decisions and status: [PLAN.md](PLAN.md) (German).
+
+## Versions and releases
+
+DishWish uses [semantic versioning](https://semver.org/) (`0.1.0`, `0.2.0`, ...), see [CHANGELOG.md](CHANGELOG.md). The version lives in `manifest.json`, `const.py` and `frontend/package.json`; a test keeps them identical. To release:
+
+1. `python dev/bump_version.py 0.2.0`
+2. Move the notes from `[Unreleased]` to a new `## [0.2.0] - date` section in `CHANGELOG.md`.
+3. `npm --prefix frontend run build`, commit and push.
+4. `git tag v0.2.0` and `git push origin v0.2.0`. The release workflow checks that the tag matches the manifest, takes the release notes from the changelog and publishes the GitHub release.
+
+HACS offers the newest release for installation.

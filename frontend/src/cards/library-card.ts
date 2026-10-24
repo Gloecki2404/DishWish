@@ -1,5 +1,5 @@
 import { css, html, LitElement, nothing } from "lit";
-import { addWish, errorCode, importStarter, removeWish } from "../api";
+import { addWish, errorCode, removeWish } from "../api";
 import { getStore, type DataStore } from "../data-store";
 import "../components/card-editor";
 import type { DwCardEditor } from "../components/card-editor";
@@ -414,16 +414,6 @@ export class DishWishLibraryCard extends LitElement {
     }
   }
 
-  private async addStarter(): Promise<void> {
-    try {
-      const res = await importStarter(this._hass!.connection, this.lang);
-      notify(this, t(this.lang, "starter_done", { n: res.created }));
-      await this.store?.refresh();
-    } catch (err) {
-      notify(this, tError(this.lang, errorCode(err)));
-    }
-  }
-
   private onEdit(e: CustomEvent<Recipe>): void {
     this.recipeDialog.close();
     void this.editor.open(e.detail);
@@ -475,9 +465,6 @@ export class DishWishLibraryCard extends LitElement {
           : nothing}
         ${this.config.show_import !== false
           ? html`<button class="btn" @click=${() => this.importRecipe()}>${icon(paths.link)} ${t(lang, "empty_import")}</button>`
-          : nothing}
-        ${this.config.show_add !== false
-          ? html`<button class="btn" @click=${() => this.addStarter()}>${t(lang, "starter_import")}</button>`
           : nothing}
       </div>
     </div>`;

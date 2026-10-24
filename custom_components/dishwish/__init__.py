@@ -20,6 +20,7 @@ from .const import BUNDLE_NAME, CLEANUP_INTERVAL_H, DATA_DIR_NAME, DOMAIN, STATI
 from .db import DatabaseCorrupt
 from .http import BundleView, ImageUploadView, ImageView
 from .services import async_register_services
+from .starter import async_seed_starter_once
 from .store import DishWishStore
 from .websocket_api import async_register_websocket
 
@@ -69,6 +70,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: DishWishConfigEntry) -> 
         raise ConfigEntryError("DishWish database is damaged") from err
     ir.async_delete_issue(hass, DOMAIN, "database_corrupt")
     entry.runtime_data = store
+    try:
+        await async_seed_starter_once(hass, store)
+    except Exception:
+        _LOGGER.exception("Could not add the starter dishes")
 
     async def _cleanup(_now: object = None) -> None:
         try:

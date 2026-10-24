@@ -23,6 +23,18 @@ def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
     """Allow loading custom_components in every test."""
 
 
+@pytest.fixture(autouse=True)
+def no_starter_dishes(request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Most tests want an empty library; mark a test with `starter` to keep the first-run seeding."""
+    if request.node.get_closest_marker("starter"):
+        return
+
+    async def _skip(*_args: Any) -> None:
+        return None
+
+    monkeypatch.setattr("custom_components.dishwish.async_seed_starter_once", _skip)
+
+
 @pytest.fixture
 async def setup_integration(hass: HomeAssistant, tmp_path) -> MockConfigEntry:
     """Set up DishWish with a temporary config dir."""

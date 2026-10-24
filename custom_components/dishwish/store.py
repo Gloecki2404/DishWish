@@ -23,6 +23,7 @@ from .const import (
     ORPHAN_FILE_MAX_AGE_H,
     ORPHAN_ROW_MAX_AGE_H,
     SIGNAL_CHANGED,
+    SYSTEM_USER,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -103,6 +104,16 @@ class DishWishStore:
     def _notify(self, kind: str, ids: list[str] | None = None) -> None:
         async_dispatcher_send(self.hass, SIGNAL_CHANGED, {"kind": kind, "ids": ids or []})
 
+    # --- one-time flags ------------------------------------------------------
+
+    async def async_meta_get(self, key: str) -> str | None:
+        """Read a one-time flag."""
+        return await self._read(db.get_meta, key)
+
+    async def async_meta_set(self, key: str, value: str) -> None:
+        """Write a one-time flag."""
+        await self._write(db.set_meta, key, value)
+
     # --- backup lock ---------------------------------------------------------
 
     async def async_lock_writes(self) -> None:
@@ -132,7 +143,11 @@ class DishWishStore:
         )
         if not visible:
             raise db.NotFound
-        if not (actor.user_id is None or actor.is_admin or meta["created_by"] == actor.user_id):
+        if not (
+            actor.user_id is None
+            or actor.is_admin
+            or meta["created_by"] in (actor.user_id, SYSTEM_USER)
+        ):
             raise Unauthorized
         return meta
 
@@ -152,7 +167,7 @@ class DishWishStore:
 
     async def async_create_recipe(self, actor: Actor, data: dict[str, Any]) -> dict[str, Any]:
         """Create a recipe."""
-        owner = actor.user_id or "system"
+        owner = actor.user_id or SYSTEM_USER
         recipe_id = await self._write(db.create_recipe, data, owner)
         self._notify("recipes", [recipe_id])
         return await self.async_get_recipe(actor, recipe_id)

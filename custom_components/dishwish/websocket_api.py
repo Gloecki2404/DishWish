@@ -30,7 +30,6 @@ from .db import DbError
 from .importer import async_import_recipe
 from .ingredients import parse_line
 from .shopping import async_add_recipe
-from .starter import async_import_starter
 from .store import Actor, get_store
 
 _Handler = Callable[
@@ -161,22 +160,6 @@ async def ws_recipes_import_url(hass: HomeAssistant, connection: Any, msg: dict[
     """Load a recipe from a link as an unsaved draft."""
     draft = await async_import_recipe(hass, get_store(hass), _actor(connection), msg["url"])
     connection.send_result(msg["id"], draft)
-
-
-@_command(
-    {
-        vol.Required("type"): "dishwish/recipes/import_starter",
-        vol.Optional("language"): vol.All(str, vol.Length(max=10)),
-    }
-)
-async def ws_recipes_import_starter(
-    hass: HomeAssistant, connection: Any, msg: dict[str, Any]
-) -> None:
-    """Add the starter dishes (German/Austrian classics) in the given language."""
-    result = await async_import_starter(
-        hass, get_store(hass), _actor(connection), msg.get("language") or hass.config.language
-    )
-    connection.send_result(msg["id"], result)
 
 
 @_command(
@@ -326,7 +309,6 @@ def async_register_websocket(hass: HomeAssistant) -> None:
         ws_recipes_update,
         ws_recipes_delete,
         ws_recipes_import_url,
-        ws_recipes_import_starter,
         ws_ingredients_parse,
         ws_categories_list,
         ws_categories_create,

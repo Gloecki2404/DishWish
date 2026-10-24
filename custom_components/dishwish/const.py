@@ -8,7 +8,8 @@ VERSION = "0.1.0"
 DATA_DIR_NAME = "dishwish"
 DB_FILE_NAME = "dishwish.db"
 IMAGES_DIR_NAME = "images"
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+SYSTEM_USER = "system"  # created_by of dishes shipped with the integration; editable by everyone
 
 SIGNAL_CHANGED = "dishwish_changed"
 

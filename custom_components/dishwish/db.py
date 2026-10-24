@@ -8,7 +8,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from .const import SCHEMA_VERSION, SEED_CATEGORIES
+from .const import SCHEMA_VERSION, SEED_CATEGORIES, SYSTEM_USER
 
 Row = dict[str, Any]
 
@@ -115,8 +115,11 @@ SCHEMA_V1: tuple[str, ...] = (
     "WHERE status = 'open'",
 )
 
+# v2: small key/value table for one-time flags (e.g. "starter dishes were added").
+SCHEMA_V2: tuple[str, ...] = ("CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)",)
+
 # Ordered list; MIGRATIONS[i] upgrades user_version i -> i + 1.
-MIGRATIONS: list[tuple[str, ...]] = [SCHEMA_V1]
+MIGRATIONS: list[tuple[str, ...]] = [SCHEMA_V1, SCHEMA_V2]
 assert len(MIGRATIONS) == SCHEMA_VERSION
 
 
@@ -215,6 +218,25 @@ def seed_categories(conn: sqlite3.Connection, language: str) -> None:
 def wal_checkpoint(conn: sqlite3.Connection) -> None:
     """Flush the WAL into the main file (used before backups)."""
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchall()
+
+
+# --- meta flags ----------------------------------------------------------------
+
+
+def get_meta(conn: sqlite3.Connection, key: str) -> str | None:
+    """Value of a flag or None."""
+    row = conn.execute("SELECT value FROM meta WHERE key = ?", (key,)).fetchone()
+    return row[0] if row else None
+
+
+def set_meta(conn: sqlite3.Connection, key: str, value: str) -> None:
+    """Set a flag."""
+    with conn:
+        conn.execute(
+            "INSERT INTO meta (key, value) VALUES (?, ?) "
+            "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+            (key, value),
+        )
 
 
 # --- categories --------------------------------------------------------------
@@ -386,7 +408,9 @@ def get_recipe(
         (recipe_id, user_id or ""),
     ).fetchone()
     recipe["my_wish_id"] = my_wish[0] if my_wish else None
-    recipe["can_edit"] = user_id is None or is_admin or recipe["created_by"] == user_id
+    recipe["can_edit"] = (
+        user_id is None or is_admin or recipe["created_by"] in (user_id, SYSTEM_USER)
+    )
     return recipe
 
 
