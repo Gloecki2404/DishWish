@@ -27,6 +27,6 @@ const cards: Omit<CustomCardEntry, "preview" | "documentationURL">[] = [
 
 for (const card of cards) {
   if (!w.customCards.some((c) => c.type === card.type)) {
-    w.customCards.push({ ...card, preview: true, documentationURL: "https://github.com/GITHUB_USER/essensplan" });
+    w.customCards.push({ ...card, preview: true, documentationURL: "https://github.com/Gloecki2404/DishWish" });
   }
 }

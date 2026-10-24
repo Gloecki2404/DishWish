@@ -1,13 +1,13 @@
 {
   "domain": "essensplan",
   "name": "Essensplan",
-  "codeowners": ["@GITHUB_USER"],
+  "codeowners": ["@Gloecki2404"],
   "config_flow": true,
   "dependencies": ["http", "frontend", "websocket_api", "todo"],
-  "documentation": "https://github.com/GITHUB_USER/essensplan",
+  "documentation": "https://github.com/Gloecki2404/DishWish",
   "integration_type": "service",
   "iot_class": "calculated",
-  "issue_tracker": "https://github.com/GITHUB_USER/essensplan/issues",
+  "issue_tracker": "https://github.com/Gloecki2404/DishWish/issues",
   "requirements": [],
   "single_config_entry": true,
   "version": "0.1.0"
