@@ -6,6 +6,8 @@ import logging
 from datetime import timedelta
 from pathlib import Path
 
+from homeassistant.components import frontend
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryError
@@ -14,7 +16,7 @@ from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.typing import ConfigType
 
-from .const import CLEANUP_INTERVAL_H, DATA_DIR_NAME, DOMAIN
+from .const import BUNDLE_NAME, CLEANUP_INTERVAL_H, DATA_DIR_NAME, DOMAIN, STATIC_URL, VERSION
 from .db import DatabaseCorrupt
 from .http import ImageUploadView, ImageView
 from .store import EssensplanStore
@@ -32,6 +34,15 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     async_register_websocket(hass)
     hass.http.register_view(ImageUploadView())
     hass.http.register_view(ImageView())
+
+    www = Path(__file__).parent / "www"
+    bundle = www / BUNDLE_NAME
+    if await hass.async_add_executor_job(bundle.is_file):
+        mtime = int((await hass.async_add_executor_job(bundle.stat)).st_mtime)
+        await hass.http.async_register_static_paths([StaticPathConfig(STATIC_URL, str(www))])
+        frontend.add_extra_js_url(hass, f"{STATIC_URL}/{BUNDLE_NAME}?v={VERSION}-{mtime}")
+    else:
+        _LOGGER.warning("Frontend bundle %s not found; cards are unavailable", bundle)
     return True
 
 

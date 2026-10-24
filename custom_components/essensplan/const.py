@@ -12,6 +12,9 @@ SCHEMA_VERSION = 1
 
 SIGNAL_CHANGED = "essensplan_changed"
 
+STATIC_URL = "/essensplan_static"
+BUNDLE_NAME = "essensplan-cards.js"
+
 CONF_DEFAULT_SHOPPING_LIST = "default_shopping_list"
 CONF_DEFAULT_SERVINGS = "default_servings"
 DEFAULT_SERVINGS = 4

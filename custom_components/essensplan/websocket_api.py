@@ -25,6 +25,7 @@ from .const import (
     SIGNAL_CHANGED,
 )
 from .db import DbError
+from .importer import async_import_recipe
 from .ingredients import parse_line
 from .store import Actor, get_store
 
@@ -148,6 +149,18 @@ async def ws_recipes_delete(hass: HomeAssistant, connection: Any, msg: dict[str,
 
 @_command(
     {
+        vol.Required("type"): "essensplan/recipes/import_url",
+        vol.Required("url"): vol.All(str, vol.Length(max=10_000)),
+    }
+)
+async def ws_recipes_import_url(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
+    """Load a recipe from a link as an unsaved draft."""
+    draft = await async_import_recipe(hass, get_store(hass), _actor(connection), msg["url"])
+    connection.send_result(msg["id"], draft)
+
+
+@_command(
+    {
         vol.Required("type"): "essensplan/ingredients/parse",
         vol.Required("lines"): vol.All(
             [vol.All(str, vol.Length(max=500))], vol.Length(max=MAX_PARSE_LINES)
@@ -227,6 +240,7 @@ def async_register_websocket(hass: HomeAssistant) -> None:
         ws_recipes_create,
         ws_recipes_update,
         ws_recipes_delete,
+        ws_recipes_import_url,
         ws_ingredients_parse,
         ws_categories_list,
         ws_categories_create,

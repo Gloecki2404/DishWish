@@ -522,22 +522,30 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 - `get_store(hass)` liegt in `store.py` statt `__init__.py` (vermeidet zirkuläre Imports mit `http.py`/`backup.py`).
 - Statische Auslieferung von `www/` und `add_extra_js_url` bewusst erst in Phase 2 (2.1), da es noch kein JS gibt. Plattform `sensor` + Aufräum-Job: Job ist da, Sensoren folgen in Phase 3.
 - Antwortgröße `recipes/list` (1.000 Gerichte): ~430 KB roh, < 250 KB komprimiert (HA nutzt WebSocket-Kompression). Test prüft die komprimierte Größe.
-- Dev-HA startet und erkennt die Integration; 50 Seed-Gerichte liegen in `dev/config/essensplan`. Einrichten der Integration über die HA-Oberfläche (Onboarding/Benutzer) steht noch aus und ist manuell zu machen.
+- Dev-HA startet und erkennt die Integration; 50 Seed-Gerichte liegen in `dev/config/essensplan`. Manuell in der Dev-HA geprüft (über WS im Browser): Integration eingerichtet, Gericht anlegen/lesen/ändern/löschen, Bild-Upload per `fetchWithAuth` (201), Bilddateien verschwinden mit dem Gericht.
 
 ### Phase 2 – Bibliothek, Rezepte, Link-Import
-- [ ] 2.1 Frontend-Projekt: Vite, TS strict, Lit, ESLint, vitest. Build nach `custom_components/essensplan/www/`. Auslieferung + `add_extra_js_url` in `__init__.py`.
-- [ ] 2.2 `api.ts`, `types.ts`, `data-store.ts`, `i18n.ts`, `styles.ts`, `base-dialog.ts`
-- [ ] 2.3 `library-card` inkl. Filter, Suche, Sortierung, Editor
-- [ ] 2.4 `recipe-dialog` inkl. Portionen-Umrechnung (`utils/scale.ts`, gleiche Fixture wie Backend)
-- [ ] 2.5 `recipe-editor` inkl. Kamera/Galerie, Verkleinern im Browser, Zutaten-Mehrzeilen-Eingabe
-- [ ] 2.6 `importer.py` + WS `recipes/import_url` + `import-dialog`
-- [ ] 2.7 Tests: Importer (synthetische Fixtures, Abschnitt 8), `scale.ts` (vitest), Build/Lint/Typecheck
+- [x] 2.1 Frontend-Projekt: Vite, TS strict, Lit, ESLint, vitest. Build nach `custom_components/essensplan/www/`. Auslieferung + `add_extra_js_url` in `__init__.py`.
+- [x] 2.2 `api.ts`, `types.ts`, `data-store.ts`, `i18n.ts`, `styles.ts`, `base-dialog.ts`
+- [x] 2.3 `library-card` inkl. Filter, Suche, Sortierung, Editor
+- [x] 2.4 `recipe-dialog` inkl. Portionen-Umrechnung (`utils/scale.ts`, gleiche Fixture wie Backend)
+- [x] 2.5 `recipe-editor` inkl. Kamera/Galerie, Verkleinern im Browser, Zutaten-Mehrzeilen-Eingabe
+- [x] 2.6 `importer.py` + WS `recipes/import_url` + `import-dialog`
+- [x] 2.7 Tests: Importer (synthetische Fixtures, Abschnitt 8), `scale.ts` (vitest), Build/Lint/Typecheck
 
 **Fertig wenn:**
 - Am Handy (Companion App) Foto aufnehmen → Gericht speichern → erscheint sofort in der Bibliothek auf einem zweiten Gerät (Live-Update).
 - Ein Chefkoch-Link übernimmt Name, Zutaten, Schritte und Bild.
 - Mit 100+ Gerichten scrollt die Bibliothek flüssig und der Filter reagiert sofort.
 
+**Abweichungen/Notizen Phase 2 (2026-10-24):**
+- Prüfpunkte: (1) `getConfigForm()` wird vom HA-Frontend für Custom Cards aufgerufen (Editor-Code geprüft). Die Bibliothekskarte nutzt ein statisches Schema; `categories`/`default_category` sind vorerst nur per YAML einstellbar, da `getConfigForm` keine dynamischen Optionen kennt → `getConfigElement()` + `ha-form` in Phase 4.2. (2) `frontend.add_extra_js_url(hass, url)` und `http.async_register_static_paths([StaticPathConfig(url_path, path)])` bestätigt. (8) `hass.fetchWithAuth` funktioniert (Upload getestet). (9) Kamera-Input (`capture`) **nicht** auf echten Geräten geprüft – manuell mit iOS/Android Companion App testen. (10) Chefkoch-Link **nicht** gegen die echte Seite geprüft (keine echten Seiten im Repo/Test) – manuell mit einem echten Link testen.
+- Toolchain: Windows-Anwendungssteuerung blockiert die native Rolldown-Binärdatei → Vite 7 (esbuild) statt Vite 8; TypeScript `~6.0` (typescript-eslint unterstützt noch kein TS 7). Node 24.
+- Cache-Buster der Bundle-URL: `?v={VERSION}-{mtime}` statt nur Version.
+- Importer blockiert Hosts mit nicht-öffentlichen IPs (Schutz vor Zugriff auf das lokale Netz), Weiterleitungen werden einzeln geprüft. In Tests wird `_check_host` ersetzt.
+- `wishes/list` wird im `data-store.ts` erst in Phase 3 geladen. Wunsch-Herz und Einkaufslisten-Button folgen in Phase 3. Im Dialog sind noch keine Zutaten-Checkboxen.
+- Gemessen in der Dev-HA mit 1.000 Gerichten: `recipes/list` 54 ms im Browser, erster Karten-Render 34 ms, Suche 13 ms. Kacheln werden schrittweise (60 pro Schritt) gerendert.
+- Manuell in der Dev-HA geprüft: Karte lädt, Dialog, Editor (inkl. Mehrzeilen-Zutaten, Verwerfen-Abfrage), Anlegen, Löschen, Suche mit Umlauten, Filter.
 ### Phase 3 – Wünsche & Einkaufsliste
 - [ ] 3.1 WS `wishes/*`, Events, Sensoren
 - [ ] 3.2 `shopping.py`, WS `shopping/add`, Services `add_to_shopping_list` + `add_open_wishes_to_shopping_list` (`services.yaml`, Übersetzungen)
