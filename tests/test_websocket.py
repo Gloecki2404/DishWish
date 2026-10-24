@@ -232,3 +232,11 @@ async def test_subscribe_receives_changes(hass, setup_integration, make_client):
     await call(alice, "essensplan/categories/create", name="Neu")
     event = await bob.receive_json()
     assert event["event"]["kind"] == "categories"
+
+
+async def test_bundle_is_served_without_caching(hass, hass_client_no_auth, setup_integration):
+    client = await hass_client_no_auth()
+    resp = await client.get("/essensplan_static/essensplan-cards.js?v=anything")
+    assert resp.status == 200
+    assert resp.headers["Cache-Control"] == "no-cache"
+    assert "essensplan-library-card" in await resp.text()

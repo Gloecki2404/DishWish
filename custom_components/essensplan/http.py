@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 from aiohttp import web
 from homeassistant.components.http import HomeAssistantView
 from homeassistant.core import HomeAssistant
 
-from .const import MAX_UPLOAD_BYTES
+from .const import BUNDLE_NAME, MAX_UPLOAD_BYTES, STATIC_URL
 from .db import DbError
 from .images import SIZES, image_path
 from .store import Actor, get_store
@@ -64,3 +65,19 @@ class ImageView(HomeAssistantView):
         if not await hass.async_add_executor_job(path.is_file):
             raise web.HTTPNotFound
         return web.FileResponse(path, headers={"Cache-Control": _CACHE})
+
+
+class BundleView(HomeAssistantView):
+    """The card bundle. `no-cache` makes browsers revalidate, so an update is never shadowed
+    by a cached copy (or by a cached page that still points at an older `?v=` URL)."""
+
+    url = f"{STATIC_URL}/{BUNDLE_NAME}"
+    name = "essensplan:bundle"
+    requires_auth = False
+
+    def __init__(self, path: Path) -> None:
+        self._path = path
+
+    async def get(self, request: web.Request) -> web.StreamResponse:
+        """Serve the bundle."""
+        return web.FileResponse(self._path, headers={"Cache-Control": "no-cache"})

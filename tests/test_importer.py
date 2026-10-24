@@ -210,3 +210,57 @@ async def test_import_errors(hass, setup_integration, make_client, aioclient_moc
     assert await code("https://www.example.org/huge") == "too_large"
     assert await code("https://www.example.org/loop") == "fetch_failed"
     assert await code("ftp://www.example.org/x") == "invalid_url"
+
+
+def test_image_candidates_and_meta_images():
+    html = (FIXTURES / "jsonld_images.html").read_text("utf-8")
+    node = importer.extract_recipe_node(html)
+    assert importer.image_candidates(node) == [
+        "https://img.example.org/broken.jpg",
+        "https://img.example.org/ok.jpg",
+    ]
+    og = (FIXTURES / "jsonld_ogimage.html").read_text("utf-8")
+    assert importer.extract_meta_images(og) == ["https://img.example.org/og.jpg?x=1&y=2"]
+    assert importer.image_candidates({"@type": "Recipe"}) == []
+
+
+async def test_import_uses_next_image_when_first_fails(
+    hass, setup_integration, make_client, aioclient_mock, public_hosts
+):
+    page = (FIXTURES / "jsonld_images.html").read_bytes()
+    aioclient_mock.get(
+        "https://www.example.org/m", content=page, headers={"Content-Type": "text/html"}
+    )
+    aioclient_mock.get(
+        "https://img.example.org/broken.jpg",
+        content=b"<html>not an image</html>",
+        headers={"Content-Type": "image/jpeg"},
+    )
+    aioclient_mock.get(
+        "https://img.example.org/ok.jpg",
+        content=jpeg_bytes(),
+        headers={"Content-Type": "application/octet-stream"},
+    )
+    client, _ = await make_client("alice")
+    resp = await call(client, "essensplan/recipes/import_url", url="https://www.example.org/m")
+    assert resp["success"] and len(resp["result"]["image_ids"]) == 1
+    sent = aioclient_mock.mock_calls[-1][3]
+    assert sent["Referer"] == "https://www.example.org/m"
+    assert "image/webp" in sent["Accept"]
+
+
+async def test_import_falls_back_to_og_image(
+    hass, setup_integration, make_client, aioclient_mock, public_hosts
+):
+    page = (FIXTURES / "jsonld_ogimage.html").read_bytes()
+    aioclient_mock.get(
+        "https://www.example.org/og", content=page, headers={"Content-Type": "text/html"}
+    )
+    aioclient_mock.get(
+        "https://img.example.org/og.jpg?x=1&y=2",
+        content=jpeg_bytes(),
+        headers={"Content-Type": "image/jpeg"},
+    )
+    client, _ = await make_client("alice")
+    resp = await call(client, "essensplan/recipes/import_url", url="https://www.example.org/og")
+    assert resp["success"] and len(resp["result"]["image_ids"]) == 1

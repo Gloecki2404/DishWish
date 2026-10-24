@@ -563,6 +563,9 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 - Entity-IDs der Sensoren richten sich nach der HA-Sprache (z. B. `sensor.essensplan_offene_wunsche`, `sensor.essensplan_gerichte` bei Deutsch).
 - Wünsche werden nach `created_at` und Einfüge-Reihenfolge sortiert (Sekundenauflösung, `rowid` als Tiebreaker).
 - Im `recipe-dialog`: Zutaten-Checkboxen, Einkaufslisten-Button (nutzt `shopping_list` der Karte, sonst Integrations-Option), Wunsch mit Notiz. Herz in der `library-card`, `wishes-card` und `recipe-picker` sind da. „Zuletzt gekocht“ (`show_done`) lädt `wishes/list?status=done` nach.
+- Nachträglich (Feedback): In der Kartenauswahl von HA (`hui-card-picker`) rendern beide Karten verkürzt (Bibliothek 4 Kacheln, Wünsche 1 Gericht, begrenzte Höhe). Die Wünsche-Karte zeigt je Wunsch "Name · vor 3 Tagen" (+ Notiz) und hat die Option `sort` (`popular` | `oldest` | `newest`). Der Button "Auf Einkaufsliste" ist aus der Wünsche-Karte entfernt, die Einkaufsliste steckt weiterhin im Rezept-Dialog.
+- Nachträglich (Feedback 2): Beide Karten haben `rows` (sichtbare Zeilen, 0 = alle; der Rest scrollt, die Bibliothek lädt beim Scrollen weiter). Der Link-Import probiert nacheinander alle Bild-URLs aus JSON-LD, dann `og:image`/`twitter:image`, mit `Referer` und ohne Content-Type-Zwang (Pillow prüft); ein unbrauchbares Bild lässt den Import weiter nicht scheitern. Mit einer echten Seite (lecker.de) getestet; Chefkoch selbst nicht.
+- Das Bundle wird jetzt über eine eigene View mit `Cache-Control: no-cache` ausgeliefert statt über `StaticPathConfig` (ein gecachter Seiten-HTML-Stand oder 31 Tage Browser-Cache lieferten sonst alte Versionen aus). Der `?v=`-Parameter bleibt.
 - Nicht geprüft: zwei verschiedene echte Benutzer in der Dev-HA (nur per Test), Local To-do, Avatar mit `person`-Bild.
 ### Phase 4 – Feinschliff & Veröffentlichung
 - [ ] 4.1 `recipe-card` inkl. Kochmodus

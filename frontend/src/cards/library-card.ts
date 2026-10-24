@@ -12,6 +12,7 @@ import { icon, paths } from "../icons";
 import { sharedStyles } from "../styles";
 import type { CardConfig, HomeAssistant, Recipe, RecipeInput, RecipeSummary } from "../types";
 import { notify } from "../utils/notify";
+import { inCardPicker, limitRows } from "../utils/picker";
 import { normalize } from "../utils/search";
 
 const PAGE = 60;
@@ -25,6 +26,7 @@ interface LibraryConfig extends CardConfig {
   show_add?: boolean;
   show_import?: boolean;
   sort?: "name" | "newest" | "popular";
+  rows?: number;
   shopping_list?: string;
 }
 
@@ -51,6 +53,9 @@ export class EssensplanLibraryCard extends LitElement {
   private store?: DataStore;
   private unsub?: () => void;
   private observer?: IntersectionObserver;
+  private inPicker = false;
+  private lastWidth = 0;
+  private resizer?: ResizeObserver;
 
   constructor() {
     super();
@@ -75,6 +80,7 @@ export class EssensplanLibraryCard extends LitElement {
         name: "columns",
         selector: { select: { mode: "dropdown", options: ["auto", "2", "3", "4", "5", "6"] } },
       },
+      { name: "rows", selector: { number: { min: 0, max: 50, mode: "box" } } },
       { name: "show_search", selector: { boolean: {} } },
       { name: "show_add", selector: { boolean: {} } },
       { name: "show_import", selector: { boolean: {} } },
@@ -96,6 +102,7 @@ export class EssensplanLibraryCard extends LitElement {
     const labels: Record<string, Parameters<typeof t>[1]> = {
       title: "cfg_title",
       columns: "cfg_columns",
+      rows: "cfg_rows",
       show_search: "cfg_show_search",
       show_add: "cfg_show_add",
       show_import: "cfg_show_import",
@@ -146,6 +153,8 @@ export class EssensplanLibraryCard extends LitElement {
     this.unsub?.();
     this.unsub = undefined;
     this.observer?.disconnect();
+    this.resizer?.disconnect();
+    this.resizer = undefined;
   }
 
   private attach(): void {
@@ -153,7 +162,25 @@ export class EssensplanLibraryCard extends LitElement {
     this.unsub = this.store.subscribe(() => this.tick++);
   }
 
+  protected override willUpdate(): void {
+    this.inPicker = inCardPicker(this);
+    this.toggleAttribute("picker", this.inPicker);
+  }
+
+  private applyRows(): void {
+    this.lastWidth = this.clientWidth;
+    const rows = this.inPicker ? 0 : Number(this.config.rows ?? 0);
+    limitRows(this.renderRoot.querySelector(".grid"), rows);
+  }
+
   protected override updated(): void {
+    this.applyRows();
+    if (!this.resizer) {
+      this.resizer = new ResizeObserver(() => {
+        if (this.clientWidth !== this.lastWidth) this.applyRows();
+      });
+      this.resizer.observe(this);
+    }
     const sentinel = this.renderRoot.querySelector("#more");
     this.observer?.disconnect();
     if (sentinel) {
@@ -176,6 +203,10 @@ export class EssensplanLibraryCard extends LitElement {
         box-shadow: var(--ha-card-box-shadow, none);
         border: var(--ha-card-border-width, 1px) solid var(--ha-card-border-color, var(--divider-color));
         padding: 12px;
+      }
+      :host([picker]) .card {
+        max-height: 340px;
+        overflow: hidden;
       }
       header {
         display: flex;
@@ -337,6 +368,7 @@ export class EssensplanLibraryCard extends LitElement {
         margin-top: 12px;
       }
       #more {
+        grid-column: 1 / -1;
         height: 1px;
       }
     `,
@@ -479,7 +511,7 @@ export class EssensplanLibraryCard extends LitElement {
     const store = this.store;
     const cfg = this.config;
     const list = store.loaded ? this.filtered() : [];
-    const shown = list.slice(0, this.limit);
+    const shown = list.slice(0, this.inPicker ? 4 : this.limit);
     const cols = Number(cfg.columns);
     const gridStyle = cols >= 2 && cols <= 6 ? `grid-template-columns: repeat(${cols}, 1fr)` : "";
     const canAdd = cfg.show_add !== false;
@@ -534,8 +566,10 @@ export class EssensplanLibraryCard extends LitElement {
             ? this.renderEmpty()
             : list.length === 0
               ? html`<p class="muted empty">${t(lang, "no_results")}</p>`
-              : html`<div class="grid" style=${gridStyle}>${shown.map((r) => this.renderTile(r))}</div>
-                  ${shown.length < list.length ? html`<div id="more"></div>` : nothing}`}
+              : html`<div class="grid" style=${gridStyle}>
+                  ${shown.map((r) => this.renderTile(r))}
+                  ${shown.length < list.length ? html`<div id="more"></div>` : nothing}
+                </div>`}
       </div>
       <es-recipe-dialog
         .hass=${this._hass}

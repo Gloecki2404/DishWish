@@ -1,5 +1,5 @@
 import { css, html, LitElement, nothing } from "lit";
-import { addToShopping, addWish, completeWishes, errorCode, listWishes, removeWish } from "../api";
+import { addWish, completeWishes, errorCode, listWishes, removeWish } from "../api";
 import { getStore, type DataStore } from "../data-store";
 import "../dialogs/recipe-dialog";
 import "../dialogs/recipe-editor";
@@ -11,10 +11,13 @@ import { t, tError, type Key } from "../i18n";
 import { sharedStyles } from "../styles";
 import type { CardConfig, HomeAssistant, Recipe, Wish } from "../types";
 import { notify } from "../utils/notify";
+import { inCardPicker, limitRows, relativeTime } from "../utils/picker";
 
 interface WishesConfig extends CardConfig {
   title?: string;
   layout?: "list" | "grid";
+  sort?: "popular" | "oldest" | "newest";
+  rows?: number;
   show_done?: number;
   shopping_list?: string;
 }
@@ -40,6 +43,9 @@ export class EssensplanWishesCard extends LitElement {
   private store?: DataStore;
   private unsub?: () => void;
   private doneTimer?: ReturnType<typeof setTimeout>;
+  private inPicker = false;
+  private lastWidth = 0;
+  private resizer?: ResizeObserver;
 
   constructor() {
     super();
@@ -68,12 +74,28 @@ export class EssensplanWishesCard extends LitElement {
           },
         },
       },
+      {
+        name: "sort",
+        selector: {
+          select: {
+            mode: "dropdown",
+            options: [
+              { value: "popular", label: t(lang, "cfg_sort_popular") },
+              { value: "oldest", label: t(lang, "cfg_sort_oldest") },
+              { value: "newest", label: t(lang, "cfg_sort_newest") },
+            ],
+          },
+        },
+      },
+      { name: "rows", selector: { number: { min: 0, max: 50, mode: "box" } } },
       { name: "show_done", selector: { number: { min: 0, max: 20, mode: "box" } } },
       { name: "shopping_list", selector: { entity: { domain: "todo" } } },
     ];
     const labels: Record<string, Key> = {
       title: "cfg_title",
       layout: "cfg_layout",
+      sort: "cfg_sort",
+      rows: "cfg_rows",
       show_done: "cfg_show_done",
       shopping_list: "cfg_shopping_list",
     };
@@ -119,7 +141,31 @@ export class EssensplanWishesCard extends LitElement {
     super.disconnectedCallback();
     this.unsub?.();
     this.unsub = undefined;
+    this.resizer?.disconnect();
+    this.resizer = undefined;
     clearTimeout(this.doneTimer);
+  }
+
+  protected override willUpdate(): void {
+    this.inPicker = inCardPicker(this);
+    this.toggleAttribute("picker", this.inPicker);
+  }
+
+  protected override updated(): void {
+    this.applyRows();
+    if (!this.resizer) {
+      this.resizer = new ResizeObserver(() => {
+        const width = this.clientWidth;
+        if (width !== this.lastWidth) this.applyRows();
+      });
+      this.resizer.observe(this);
+    }
+  }
+
+  private applyRows(): void {
+    this.lastWidth = this.clientWidth;
+    const rows = this.inPicker ? 0 : Number(this.config.rows ?? 0);
+    limitRows(this.renderRoot.querySelector(".groups"), rows);
   }
 
   private attach(): void {
@@ -231,6 +277,13 @@ export class EssensplanWishesCard extends LitElement {
         color: var(--text-primary-color, #fff);
         font-size: 0.85em;
       }
+      :host([picker]) .card {
+        max-height: 240px;
+        overflow: hidden;
+      }
+      .note {
+        color: var(--primary-text-color);
+      }
       .notes {
         margin: 0;
         padding: 0;
@@ -286,8 +339,17 @@ export class EssensplanWishesCard extends LitElement {
       g.wishes.push(w);
       map.set(w.recipe_id, g);
     }
-    // most wishes first, then the group with the oldest wish (wishes arrive oldest first)
-    return [...map.values()].sort((a, b) => b.wishes.length - a.wishes.length);
+    // wishes arrive oldest first, so the first entry is the oldest wish of a group
+    const oldest = (g: Group) => g.wishes[0].created_at;
+    const newest = (g: Group) => g.wishes[g.wishes.length - 1].created_at;
+    const sort = this.config.sort ?? "popular";
+    return [...map.values()].sort((a, b) =>
+      sort === "oldest"
+        ? oldest(a).localeCompare(oldest(b))
+        : sort === "newest"
+          ? newest(b).localeCompare(newest(a))
+          : b.wishes.length - a.wishes.length || oldest(a).localeCompare(oldest(b)),
+    );
   }
 
   private avatar(w: Wish) {
@@ -324,15 +386,6 @@ export class EssensplanWishesCard extends LitElement {
     });
   }
 
-  private toList(g: Group): Promise<void> {
-    return this.run(async () => {
-      const res = await addToShopping(this._hass!.connection, g.recipeId, {
-        ...(this.config.shopping_list ? { entity_id: this.config.shopping_list } : {}),
-      });
-      return t(this.uiLang, "shop_result", { added: res.added.length, skipped: res.skipped.length });
-    });
-  }
-
   private removeMine(w: Wish): Promise<void> {
     return this.run(async () => {
       await removeWish(this._hass!.connection, w.id);
@@ -350,7 +403,6 @@ export class EssensplanWishesCard extends LitElement {
     const lang = this.uiLang;
     const me = this._hass?.user?.id;
     const mine = g.wishes.find((w) => w.user_id === me);
-    const notes = g.wishes.filter((w) => w.note);
     return html`<div class="group">
       <div class="top">
         <button class="open" aria-label=${`${t(lang, "open_recipe")}: ${g.name}`} @click=${() => void this.recipeDialog.open(g.recipeId)}>
@@ -359,12 +411,17 @@ export class EssensplanWishesCard extends LitElement {
         </button>
         <div class="avatars">${g.wishes.map((w) => this.avatar(w))}</div>
       </div>
-      ${notes.length
-        ? html`<ul class="notes">${notes.map((w) => html`<li><strong>${w.user_name}:</strong> ${w.note}</li>`)}</ul>`
-        : nothing}
+      <ul class="notes">
+        ${g.wishes.map(
+          (w) => html`<li title=${new Date(w.created_at).toLocaleString(lang)}>
+            ${t(lang, "wished_ago", { name: w.user_name, when: relativeTime(w.created_at, lang) })}${w.note
+              ? html`: <span class="note">${w.note}</span>`
+              : nothing}
+          </li>`,
+        )}
+      </ul>
       <div class="actions">
         <button class="btn primary" @click=${() => this.cooked(g)}>${t(lang, "cooked")}</button>
-        <button class="btn" @click=${() => this.toList(g)}>${t(lang, "shop_to_list")}</button>
         ${mine ? html`<button class="btn" @click=${() => this.removeMine(mine)}>${t(lang, "wish_remove")}</button>` : nothing}
       </div>
     </div>`;
@@ -375,7 +432,7 @@ export class EssensplanWishesCard extends LitElement {
     const lang = this.uiLang;
     const store = this.store;
     const cfg = this.config;
-    const groups = store.loaded ? this.groups() : [];
+    const groups = store.loaded ? this.groups().slice(0, this.inPicker ? 1 : undefined) : [];
     const doneShown = this.groupDone();
     return html`
       <div class="card">

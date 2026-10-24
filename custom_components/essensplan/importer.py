@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import ipaddress
 import json
+import logging
 import re
 import socket
 from html import unescape
@@ -33,10 +34,13 @@ from .images import ImageError
 from .ingredients import parse_line
 from .store import Actor, EssensplanStore
 
+_LOGGER = logging.getLogger(__name__)
+
 MAX_URL = 2000
 MAX_HTML_BYTES = 5 * 1024 * 1024
 MAX_IMAGE_BYTES = 10 * 1024 * 1024
 MAX_REDIRECTS = 5
+IMAGE_ACCEPT = "image/webp,image/jpeg,image/png,image/*;q=0.8,*/*;q=0.5"
 TIMEOUT = aiohttp.ClientTimeout(total=15)
 USER_AGENT = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -61,9 +65,16 @@ class _JsonLdCollector(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=False)
         self.blocks: list[str] = []
+        self.meta_images: list[str] = []
         self._current: list[str] | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "meta":
+            meta = {k.lower(): v for k, v in attrs if v is not None}
+            key = (meta.get("property") or meta.get("name") or "").lower()
+            url = (meta.get("content") or "").strip()
+            if url and key in ("og:image", "og:image:url", "og:image:secure_url", "twitter:image"):
+                self.meta_images.append(unescape(url))
         if tag == "script" and any(
             k == "type" and v and v.split(";")[0].strip().lower() == "application/ld+json"
             for k, v in attrs
@@ -99,11 +110,21 @@ def _find_recipe(node: Any) -> dict[str, Any] | None:
     return None
 
 
-def extract_recipe_node(html: str) -> dict[str, Any] | None:
-    """First schema.org Recipe object found in the page's JSON-LD blocks."""
+def _collect(html: str) -> _JsonLdCollector:
     collector = _JsonLdCollector()
     collector.feed(html)
     collector.close()
+    return collector
+
+
+def extract_meta_images(html: str) -> list[str]:
+    """Image URLs from og:image / twitter:image meta tags (fallback when JSON-LD has none)."""
+    return _collect(html).meta_images
+
+
+def extract_recipe_node(html: str) -> dict[str, Any] | None:
+    """First schema.org Recipe object found in the page's JSON-LD blocks."""
+    collector = _collect(html)
     for block in collector.blocks:
         try:
             data = json.loads(block.strip())
@@ -148,6 +169,24 @@ def _first_url(value: Any) -> str | None:
     elif isinstance(value, dict):
         return _first_url(value.get("url") or value.get("contentUrl"))
     return None
+
+
+def image_candidates(node: dict[str, Any]) -> list[str]:
+    """All image URLs of a JSON-LD Recipe in page order (str, list, ImageObject)."""
+    urls: list[str] = []
+
+    def add(value: Any) -> None:
+        if isinstance(value, str):
+            if value.strip():
+                urls.append(value.strip())
+        elif isinstance(value, list):
+            for item in value:
+                add(item)
+        elif isinstance(value, dict):
+            add(value.get("url") or value.get("contentUrl"))
+
+    add(node.get("image"))
+    return urls
 
 
 def _servings(value: Any, default: int) -> int:
@@ -259,7 +298,12 @@ def _validate_url(url: str) -> str:
 
 
 async def _fetch(
-    session: aiohttp.ClientSession, url: str, language: str, limit: int, accept: str
+    session: aiohttp.ClientSession,
+    url: str,
+    language: str,
+    limit: int,
+    accept: str,
+    referer: str | None = None,
 ) -> tuple[bytes, str, str, str | None]:
     """GET with manual, validated redirects. Returns (body, final_url, content_type, charset)."""
     headers = {
@@ -267,6 +311,8 @@ async def _fetch(
         "Accept": accept,
         "Accept-Language": f"{language},en;q=0.7",
     }
+    if referer:
+        headers["Referer"] = referer
     current = _validate_url(url)
     for _ in range(MAX_REDIRECTS + 1):
         await _check_host(urlsplit(current).hostname or "")
@@ -316,14 +362,18 @@ async def async_import_recipe(
     categories = await store.async_list_categories()
     draft, image_url = build_draft(node, final_url, categories, default_servings)
 
-    if image_url:
+    candidates = image_candidates(node) + extract_meta_images(html)
+    if not candidates and image_url:
+        candidates = [image_url]
+    for candidate in dict.fromkeys(urljoin(final_url, c) for c in candidates[:6]):
         try:
-            data, _, ctype, _ = await _fetch(
-                session, urljoin(final_url, image_url), language, MAX_IMAGE_BYTES, "image/*"
+            data, _, _, _ = await _fetch(
+                session, candidate, language, MAX_IMAGE_BYTES, IMAGE_ACCEPT, referer=final_url
             )
-            if ctype.startswith("image/"):
-                image = await store.async_add_upload(actor, data)
-                draft["image_ids"] = [image["id"]]
-        except ImportFailed, ImageError:
-            pass  # a missing or unusable image never fails the import
+            image = await store.async_add_upload(actor, data)
+        except (ImportFailed, ImageError) as err:
+            _LOGGER.debug("Recipe image %s not usable: %s", candidate, err.code)
+            continue  # a missing or unusable image never fails the import
+        draft["image_ids"] = [image["id"]]
+        break
     return draft

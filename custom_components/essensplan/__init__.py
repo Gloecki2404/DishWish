@@ -7,7 +7,6 @@ from datetime import timedelta
 from pathlib import Path
 
 from homeassistant.components import frontend
-from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -19,7 +18,7 @@ from homeassistant.helpers.typing import ConfigType
 
 from .const import BUNDLE_NAME, CLEANUP_INTERVAL_H, DATA_DIR_NAME, DOMAIN, STATIC_URL, VERSION
 from .db import DatabaseCorrupt
-from .http import ImageUploadView, ImageView
+from .http import BundleView, ImageUploadView, ImageView
 from .services import async_register_services
 from .store import EssensplanStore
 from .websocket_api import async_register_websocket
@@ -44,7 +43,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     bundle = www / BUNDLE_NAME
     if await hass.async_add_executor_job(bundle.is_file):
         mtime = int((await hass.async_add_executor_job(bundle.stat)).st_mtime)
-        await hass.http.async_register_static_paths([StaticPathConfig(STATIC_URL, str(www))])
+        hass.http.register_view(BundleView(bundle))
         frontend.add_extra_js_url(hass, f"{STATIC_URL}/{BUNDLE_NAME}?v={VERSION}-{mtime}")
     else:
         _LOGGER.warning("Frontend bundle %s not found; cards are unavailable", bundle)
