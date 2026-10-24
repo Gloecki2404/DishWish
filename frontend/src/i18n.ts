@@ -129,6 +129,7 @@ const en = {
   err_already_wished: "You already wished for this dish.",
   err_entity_not_found: "No shopping list chosen. Set one in the card or in the integration options.",
   err_ai_failed: "The AI task could not read the photos. Check the AI task and try again with sharper photos.",
+  err_ai_no_images: "The AI task cannot read images. Choose one with image support (for example Google Gemini) in the DishWish options.",
   err_ai_not_configured: "No AI task is set up. Choose one in the DishWish options or set a default AI task in Home Assistant.",
   err_unknown: "Something went wrong.",
   // card editor
@@ -288,6 +289,7 @@ const de: Record<Key, string> = {
   err_already_wished: "Das wünschst du dir schon.",
   err_entity_not_found: "Keine Einkaufsliste gewählt. Lege eine in der Karte oder in den Integrations-Optionen fest.",
   err_ai_failed: "Die KI-Aufgabe konnte die Fotos nicht lesen. Prüfe die KI-Aufgabe und versuche es mit schärferen Fotos erneut.",
+  err_ai_no_images: "Die KI-Aufgabe kann keine Bilder lesen. Wähle in den DishWish-Optionen eine mit Bildverständnis (zum Beispiel Google Gemini).",
   err_ai_not_configured: "Es ist keine KI-Aufgabe eingerichtet. Wähle eine in den DishWish-Optionen oder lege in Home Assistant eine Standard-KI-Aufgabe fest.",
   err_unknown: "Etwas ist schiefgelaufen.",
   cfg_title: "Titel",

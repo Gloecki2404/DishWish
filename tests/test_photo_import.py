@@ -51,6 +51,7 @@ def ai(hass: HomeAssistant, tmp_path):
     hass.services.async_register(
         "ai_task", "generate_data", handler, supports_response=SupportsResponse.ONLY
     )
+    hass.states.async_set("ai_task.fake", "unknown", {"supported_features": 7})
     state["media"] = media
     return state
 
@@ -66,7 +67,7 @@ async def test_photo_import_returns_a_draft_and_cleans_up(hass, setup_integratio
     client, user = await make_client("alice")
     ids = await _upload(hass, user.id, 2)
     hass.config_entries.async_update_entry(
-        setup_integration, options={CONF_AI_TASK_ENTITY: "ai_task.gemini"}
+        setup_integration, options={CONF_AI_TASK_ENTITY: "ai_task.fake"}
     )
 
     resp = await call(client, "dishwish/recipes/import_photos", image_ids=ids)
@@ -91,7 +92,7 @@ async def test_photo_import_returns_a_draft_and_cleans_up(hass, setup_integratio
     assert draft["image_ids"] == []
 
     (request,) = ai["calls"]
-    assert request["entity_id"] == "ai_task.gemini"
+    assert request["entity_id"] == "ai_task.fake"
     assert len(request["attachments"]) == 2 and request["files_present"] == [True, True]
     assert all(a["media_content_type"] == "image/jpeg" for a in request["attachments"])
     assert request["attachments"][0]["media_content_id"].startswith(
@@ -112,13 +113,47 @@ async def test_photo_import_returns_a_draft_and_cleans_up(hass, setup_integratio
     assert saved["result"]["shareable"] == 0
 
 
-async def test_default_ai_task_is_used_without_an_option(hass, setup_integration, make_client, ai):
+async def test_an_ai_task_with_image_support_is_picked_without_an_option(
+    hass, setup_integration, make_client, ai
+):
     client, user = await make_client("alice")
+    hass.states.async_set(
+        "ai_task.text_only", "unknown", {"supported_features": 1}
+    )  # no attachments
     resp = await call(
         client, "dishwish/recipes/import_photos", image_ids=await _upload(hass, user.id)
     )
     assert resp["success"]
-    assert "entity_id" not in ai["calls"][0]
+    assert ai["calls"][0]["entity_id"] == "ai_task.fake"
+
+
+async def test_options_must_name_a_task_with_image_support(
+    hass, setup_integration, make_client, ai
+):
+    client, user = await make_client("alice")
+    hass.states.async_set("ai_task.text_only", "unknown", {"supported_features": 1})
+    hass.config_entries.async_update_entry(
+        setup_integration, options={CONF_AI_TASK_ENTITY: "ai_task.text_only"}
+    )
+    resp = await call(
+        client, "dishwish/recipes/import_photos", image_ids=await _upload(hass, user.id)
+    )
+    assert resp["error"]["code"] == "ai_no_images"
+    assert ai["calls"] == []
+
+
+async def test_no_ai_task_at_all_or_only_text_ones(hass, setup_integration, make_client, ai):
+    client, user = await make_client("alice")
+    hass.states.async_remove("ai_task.fake")
+    resp = await call(
+        client, "dishwish/recipes/import_photos", image_ids=await _upload(hass, user.id)
+    )
+    assert resp["error"]["code"] == "ai_not_configured"
+    hass.states.async_set("ai_task.text_only", "unknown", {"supported_features": 1})
+    resp = await call(
+        client, "dishwish/recipes/import_photos", image_ids=await _upload(hass, user.id)
+    )
+    assert resp["error"]["code"] == "ai_no_images"
 
 
 async def test_german_prompt_and_source_name(hass, setup_integration, make_client, ai):
@@ -140,7 +175,7 @@ async def test_errors(hass, setup_integration, make_client, ai):
             "code"
         ]
 
-    # nothing configured in Home Assistant
+    # Home Assistant itself reports that no default task is set
     ai["error"] = HomeAssistantError("No entity_id provided and no preferred entity set")
     assert await code(await _upload(hass, user.id)) == "ai_not_configured"
     # any other failure of the model

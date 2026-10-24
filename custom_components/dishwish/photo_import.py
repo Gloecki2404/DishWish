@@ -96,6 +96,36 @@ class AiNotConfigured(DbError):
     code = "ai_not_configured"
 
 
+class AiNoImages(DbError):
+    """The chosen (or every available) AI task cannot take image attachments."""
+
+    code = "ai_no_images"
+
+
+_NEEDED = 3  # AITaskEntityFeature.GENERATE_DATA | SUPPORT_ATTACHMENTS
+
+
+def _supports_images(hass: HomeAssistant, entity_id: str) -> bool:
+    state = hass.states.get(entity_id)
+    return bool(state and int(state.attributes.get("supported_features", 0)) & _NEEDED == _NEEDED)
+
+
+def _pick_entity(hass: HomeAssistant, configured: str | None) -> str:
+    """The configured AI task, else the default one if it takes images, else the first that does."""
+    if configured:
+        if not _supports_images(hass, configured):
+            raise AiNoImages
+        return configured
+    states = [s.entity_id for s in hass.states.async_all("ai_task")]
+    if not states:
+        raise AiNotConfigured
+    capable = sorted(e for e in states if _supports_images(hass, e))
+    if not capable:
+        raise AiNoImages
+    default = getattr(hass.data.get("ai_task_preferences"), "gen_data_entity_id", None)
+    return default if default in capable else capable[0]
+
+
 def _write_files(media_dir: Path, sources: list[Path]) -> list[Path]:
     media_dir.mkdir(parents=True, exist_ok=True)
     written = []
@@ -122,12 +152,8 @@ def _media_target(hass: HomeAssistant) -> tuple[str, Path]:
     return name, Path(dirs[name]) / TMP_MEDIA_DIR
 
 
-async def _run_ai(
-    hass: HomeAssistant, entity_id: str | None, language: str, sources: list[Path]
-) -> dict:
+async def _run_ai(hass: HomeAssistant, entity_id: str, language: str, sources: list[Path]) -> dict:
     """Call ai_task.generate_data with the photos as attachments and return its data."""
-    if not hass.services.has_service("ai_task", "generate_data"):
-        raise AiNotConfigured
     media_name, media_dir = _media_target(hass)
     written = await hass.async_add_executor_job(_write_files, media_dir, sources)
     try:
@@ -144,8 +170,7 @@ async def _run_ai(
                 for path in written
             ],
         }
-        if entity_id:
-            data["entity_id"] = entity_id
+        data["entity_id"] = entity_id
         try:
             async with asyncio.timeout(AI_TIMEOUT):
                 response = await hass.services.async_call(
@@ -193,7 +218,10 @@ async def async_import_photos(
         entries = hass.config_entries.async_loaded_entries(DOMAIN)
         options = entries[0].options if entries else {}
         sources = [image_path(store.images_dir, i, "full") for i in image_ids]
-        data = await _run_ai(hass, options.get(CONF_AI_TASK_ENTITY), hass.config.language, sources)
+        if not hass.services.has_service("ai_task", "generate_data"):
+            raise AiNotConfigured
+        entity_id = _pick_entity(hass, options.get(CONF_AI_TASK_ENTITY))
+        data = await _run_ai(hass, entity_id, hass.config.language, sources)
     finally:
         await store.async_discard_uploads(image_ids)  # the page photos are not kept
 
