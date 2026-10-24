@@ -1,0 +1,44 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Essensplan",
+        "description": "Set up Essensplan (recipes, meal wishes and shopping list)."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Essensplan is already set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Essensplan options",
+        "data": {
+          "default_shopping_list": "Default shopping list",
+          "default_servings": "Default servings"
+        },
+        "data_description": {
+          "default_shopping_list": "To-do list that ingredients are added to.",
+          "default_servings": "Servings used for imported recipes without a yield."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "open_wishes": {
+        "name": "Open wishes"
+      },
+      "recipes": {
+        "name": "Recipes"
+      }
+    }
+  },
+  "issues": {
+    "database_corrupt": {
+      "title": "Essensplan database is damaged",
+      "description": "The integrity check of the Essensplan database failed. The integration was not started to protect your data. Restore a backup of `{path}`."
+    }
+  }
+}

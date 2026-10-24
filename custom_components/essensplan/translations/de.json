@@ -1,0 +1,44 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Essensplan",
+        "description": "Essensplan einrichten (Rezepte, Essenswünsche und Einkaufsliste)."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Essensplan ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Essensplan-Optionen",
+        "data": {
+          "default_shopping_list": "Standard-Einkaufsliste",
+          "default_servings": "Standard-Portionen"
+        },
+        "data_description": {
+          "default_shopping_list": "To-do-Liste, in die Zutaten geschrieben werden.",
+          "default_servings": "Portionen für importierte Rezepte ohne Mengenangabe."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "open_wishes": {
+        "name": "Offene Wünsche"
+      },
+      "recipes": {
+        "name": "Gerichte"
+      }
+    }
+  },
+  "issues": {
+    "database_corrupt": {
+      "title": "Essensplan-Datenbank ist beschädigt",
+      "description": "Die Integritätsprüfung der Essensplan-Datenbank ist fehlgeschlagen. Die Integration wurde zum Schutz der Daten nicht gestartet. Stelle ein Backup von `{path}` wieder her."
+    }
+  }
+}
