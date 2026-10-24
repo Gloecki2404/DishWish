@@ -9,6 +9,7 @@ from typing import Any
 import voluptuous as vol
 from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import (
@@ -22,11 +23,13 @@ from .const import (
     MAX_SERVINGS,
     MAX_STEP_TEXT,
     MAX_STEPS,
+    MAX_WISH_NOTE,
     SIGNAL_CHANGED,
 )
 from .db import DbError
 from .importer import async_import_recipe
 from .ingredients import parse_line
+from .shopping import async_add_recipe
 from .store import Actor, get_store
 
 _Handler = Callable[
@@ -217,6 +220,71 @@ async def ws_categories_delete(hass: HomeAssistant, connection: Any, msg: dict[s
     connection.send_result(msg["id"], {})
 
 
+@_command(
+    {
+        vol.Required("type"): "essensplan/wishes/list",
+        vol.Optional("status", default="open"): vol.In(["open", "done"]),
+        vol.Optional("limit"): vol.All(int, vol.Range(min=1, max=500)),
+    }
+)
+async def ws_wishes_list(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
+    """List wishes of visible recipes."""
+    wishes = await get_store(hass).async_list_wishes(
+        _actor(connection), msg["status"], msg.get("limit")
+    )
+    connection.send_result(msg["id"], wishes)
+
+
+@_command(
+    {
+        vol.Required("type"): "essensplan/wishes/add",
+        vol.Required("recipe_id"): str,
+        vol.Optional("note", default=""): vol.All(str, vol.Strip, vol.Length(max=MAX_WISH_NOTE)),
+    }
+)
+async def ws_wishes_add(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
+    """Add a wish for yourself."""
+    wish = await get_store(hass).async_add_wish(_actor(connection), msg["recipe_id"], msg["note"])
+    connection.send_result(msg["id"], wish)
+
+
+@_command({vol.Required("type"): "essensplan/wishes/remove", vol.Required("wish_id"): str})
+async def ws_wishes_remove(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
+    """Remove an own wish (admins: any)."""
+    await get_store(hass).async_remove_wish(_actor(connection), msg["wish_id"])
+    connection.send_result(msg["id"], {})
+
+
+@_command({vol.Required("type"): "essensplan/wishes/complete", vol.Required("recipe_id"): str})
+async def ws_wishes_complete(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
+    """'Cooked': complete all open wishes of a recipe."""
+    count = await get_store(hass).async_complete_wishes(_actor(connection), msg["recipe_id"])
+    connection.send_result(msg["id"], {"count": count})
+
+
+@_command(
+    {
+        vol.Required("type"): "essensplan/shopping/add",
+        vol.Required("recipe_id"): str,
+        vol.Optional("servings"): vol.All(int, vol.Range(min=1, max=MAX_SERVINGS)),
+        vol.Optional("ingredient_ids"): [int],
+        vol.Optional("entity_id"): cv.entity_id,
+    }
+)
+async def ws_shopping_add(hass: HomeAssistant, connection: Any, msg: dict[str, Any]) -> None:
+    """Add (scaled) ingredients of a recipe to a to-do list."""
+    result = await async_add_recipe(
+        hass,
+        get_store(hass),
+        _actor(connection),
+        msg["recipe_id"],
+        msg.get("servings"),
+        msg.get("ingredient_ids"),
+        msg.get("entity_id"),
+    )
+    connection.send_result(msg["id"], result)
+
+
 @websocket_api.websocket_command({vol.Required("type"): "essensplan/subscribe"})
 @callback
 def ws_subscribe(
@@ -246,6 +314,11 @@ def async_register_websocket(hass: HomeAssistant) -> None:
         ws_categories_create,
         ws_categories_update,
         ws_categories_delete,
+        ws_wishes_list,
+        ws_wishes_add,
+        ws_wishes_remove,
+        ws_wishes_complete,
+        ws_shopping_add,
         ws_subscribe,
     ):
         websocket_api.async_register_command(hass, command)

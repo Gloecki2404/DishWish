@@ -6,6 +6,8 @@ import type {
   Recipe,
   RecipeInput,
   RecipeSummary,
+  ShoppingResult,
+  Wish,
 } from "./types";
 
 type Conn = HomeAssistant["connection"];
@@ -52,3 +54,18 @@ export function errorCode(err: unknown): string {
   if (err && typeof err === "object" && "code" in err) return String((err as { code: unknown }).code);
   return "unknown";
 }
+
+export const listWishes = (c: Conn, status: "open" | "done" = "open", limit?: number) =>
+  call<Wish[]>(c, { type: "essensplan/wishes/list", status, ...(limit ? { limit } : {}) });
+export const addWish = (c: Conn, recipe_id: string, note = "") =>
+  call<Wish>(c, { type: "essensplan/wishes/add", recipe_id, note });
+export const removeWish = (c: Conn, wish_id: string) =>
+  call<Record<string, never>>(c, { type: "essensplan/wishes/remove", wish_id });
+export const completeWishes = (c: Conn, recipe_id: string) =>
+  call<{ count: number }>(c, { type: "essensplan/wishes/complete", recipe_id });
+
+export const addToShopping = (
+  c: Conn,
+  recipe_id: string,
+  opts: { servings?: number; ingredient_ids?: number[]; entity_id?: string } = {},
+) => call<ShoppingResult>(c, { type: "essensplan/shopping/add", recipe_id, ...opts });

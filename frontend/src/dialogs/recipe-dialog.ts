@@ -1,9 +1,10 @@
 import { css, html, LitElement, nothing } from "lit";
-import { deleteRecipe, errorCode, getRecipe } from "../api";
+import { addToShopping, addWish, deleteRecipe, errorCode, getRecipe, removeWish } from "../api";
 import { icon, paths } from "../icons";
 import { t, tError } from "../i18n";
 import { sharedStyles } from "../styles";
 import type { Category, HomeAssistant, Recipe } from "../types";
+import { notify } from "../utils/notify";
 import { formatIngredientAmount } from "../utils/scale";
 import "./base-dialog";
 import type { EsDialog } from "./base-dialog";
@@ -13,6 +14,10 @@ export class EsRecipeDialog extends LitElement {
   static override properties = {
     hass: { attribute: false },
     categories: { attribute: false },
+    shoppingList: { attribute: false },
+    selected: { state: true },
+    wishOpen: { state: true },
+    wishNote: { state: true },
     recipe: { state: true },
     servings: { state: true },
     loading: { state: true },
@@ -22,6 +27,10 @@ export class EsRecipeDialog extends LitElement {
   };
   declare hass: HomeAssistant;
   declare categories: Category[];
+  declare shoppingList: string | undefined;
+  declare selected: Set<number>;
+  declare wishOpen: boolean;
+  declare wishNote: string;
   declare recipe: Recipe | null;
   declare servings: number;
   declare loading: boolean;
@@ -32,6 +41,9 @@ export class EsRecipeDialog extends LitElement {
   constructor() {
     super();
     this.categories = [];
+    this.selected = new Set();
+    this.wishOpen = false;
+    this.wishNote = "";
     this.recipe = null;
     this.servings = 4;
     this.loading = false;
@@ -153,6 +165,26 @@ export class EsRecipeDialog extends LitElement {
       .notes {
         white-space: pre-wrap;
       }
+      .pick {
+        flex: none;
+        width: 22px;
+        min-height: 22px;
+        height: 22px;
+        align-self: center;
+      }
+      .add {
+        margin-top: 12px;
+      }
+      .wishbox {
+        margin-right: auto;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .wishbox input {
+        width: 220px;
+      }
       .confirm {
         margin-right: auto;
         display: flex;
@@ -174,6 +206,8 @@ export class EsRecipeDialog extends LitElement {
     this.recipe = null;
     this.error = "";
     this.confirmDelete = false;
+    this.wishOpen = false;
+    this.wishNote = "";
     this.doneSteps = new Set();
     this.loading = true;
     await this.updateComplete;
@@ -181,6 +215,7 @@ export class EsRecipeDialog extends LitElement {
     try {
       this.recipe = await getRecipe(this.hass.connection, recipeId);
       this.servings = this.recipe.servings;
+      this.selected = new Set(this.recipe.ingredients.map((i) => i.id!));
     } catch (err) {
       this.error = tError(this.uiLang, errorCode(err));
     }
@@ -201,6 +236,50 @@ export class EsRecipeDialog extends LitElement {
       this.error = tError(this.uiLang, errorCode(err));
       this.confirmDelete = false;
     }
+  }
+
+  private async reload(): Promise<void> {
+    if (this.recipe) this.recipe = await getRecipe(this.hass.connection, this.recipe.id);
+  }
+
+  private async toggleWish(): Promise<void> {
+    const r = this.recipe;
+    if (!r) return;
+    const lang = this.uiLang;
+    try {
+      if (r.my_wish_id) await removeWish(this.hass.connection, r.my_wish_id);
+      else {
+        await addWish(this.hass.connection, r.id, this.wishNote.trim());
+        notify(this, t(lang, "wish_added"));
+      }
+      this.wishOpen = false;
+      this.wishNote = "";
+      await this.reload();
+    } catch (err) {
+      notify(this, tError(lang, errorCode(err)));
+    }
+  }
+
+  private async addToList(): Promise<void> {
+    const r = this.recipe;
+    if (!r) return;
+    const lang = this.uiLang;
+    try {
+      const res = await addToShopping(this.hass.connection, r.id, {
+        servings: this.servings,
+        ingredient_ids: [...this.selected],
+        ...(this.shoppingList ? { entity_id: this.shoppingList } : {}),
+      });
+      notify(this, t(lang, "shop_result", { added: res.added.length, skipped: res.skipped.length }));
+    } catch (err) {
+      notify(this, tError(lang, errorCode(err)));
+    }
+  }
+
+  private toggleIngredient(id: number): void {
+    const next = new Set(this.selected);
+    if (!next.delete(id)) next.add(id);
+    this.selected = next;
   }
 
   private toggleStep(i: number): void {
@@ -226,6 +305,13 @@ export class EsRecipeDialog extends LitElement {
         <ul class="ing">
           ${g.items.map(
             (ing) => html`<li>
+              <input
+                type="checkbox"
+                class="pick"
+                aria-label=${ing.name}
+                .checked=${this.selected.has(ing.id!)}
+                @change=${() => this.toggleIngredient(ing.id!)}
+              />
               <span class="amt">${formatIngredientAmount(ing, r.servings, this.servings, this.uiLang)}</span>
               <span>${ing.name}${ing.note ? html` <span class="muted">(${ing.note})</span>` : nothing}</span>
             </li>`,
@@ -270,6 +356,11 @@ export class EsRecipeDialog extends LitElement {
         </span>
       </div>
       ${this.renderIngredients(r)}
+      ${r.ingredients.length
+        ? html`<button class="btn add" ?disabled=${this.selected.size === 0} @click=${() => this.addToList()}>
+            ${t(lang, "shop_n", { n: this.selected.size })}
+          </button>`
+        : nothing}
       ${r.steps.length
         ? html`<h3>${t(lang, "steps")}</h3>
             <ol class="steps">
@@ -291,16 +382,43 @@ export class EsRecipeDialog extends LitElement {
     `;
   }
 
+  private renderWish(r: Recipe) {
+    const lang = this.uiLang;
+    if (r.my_wish_id) {
+      return html`<button slot="footer" class="btn" @click=${() => this.toggleWish()}>
+        ${t(lang, "wish_remove")}
+      </button>`;
+    }
+    if (!this.wishOpen) {
+      return html`<button slot="footer" class="btn" @click=${() => (this.wishOpen = true)}>
+        ♥ ${t(lang, "wish_add")}
+      </button>`;
+    }
+    return html`<div slot="footer" class="wishbox">
+      <input
+        placeholder=${t(lang, "wish_note")}
+        aria-label=${t(lang, "wish_note")}
+        maxlength="500"
+        .value=${this.wishNote}
+        @input=${(e: Event) => (this.wishNote = (e.target as HTMLInputElement).value)}
+        @keydown=${(e: KeyboardEvent) => e.key === "Enter" && this.toggleWish()}
+      />
+      <button class="btn primary" @click=${() => this.toggleWish()}>${t(lang, "wish_send")}</button>
+    </div>`;
+  }
+
   private renderFooter(r: Recipe) {
     const lang = this.uiLang;
-    if (!r.can_edit) return nothing;
-    return this.confirmDelete
-      ? html`<div slot="footer" class="confirm">
-            <span>${t(lang, "delete_confirm")}</span>
-            <button class="btn danger" @click=${() => this.doDelete()}>${t(lang, "delete")}</button>
-            <button class="btn" @click=${() => (this.confirmDelete = false)}>${t(lang, "cancel")}</button>
-          </div>`
-      : html`<button slot="footer" class="btn danger" @click=${() => (this.confirmDelete = true)}>
+    if (this.confirmDelete) {
+      return html`<div slot="footer" class="confirm">
+        <span>${t(lang, "delete_confirm")}</span>
+        <button class="btn danger" @click=${() => this.doDelete()}>${t(lang, "delete")}</button>
+        <button class="btn" @click=${() => (this.confirmDelete = false)}>${t(lang, "cancel")}</button>
+      </div>`;
+    }
+    return html`${this.renderWish(r)}
+    ${r.can_edit
+      ? html`<button slot="footer" class="btn danger" @click=${() => (this.confirmDelete = true)}>
             ${icon(paths.delete)} ${t(lang, "delete")}
           </button>
           <button
@@ -309,9 +427,9 @@ export class EsRecipeDialog extends LitElement {
             @click=${() => this.dispatchEvent(new CustomEvent("edit", { detail: r }))}
           >
             ${icon(paths.edit)} ${t(lang, "edit")}
-          </button>`;
+          </button>`
+      : nothing}`;
   }
-
   protected override render() {
     const lang = this.uiLang;
     return html`<es-dialog

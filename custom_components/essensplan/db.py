@@ -31,6 +31,12 @@ class Invalid(DbError):
     code = "invalid_format"
 
 
+class AlreadyWished(DbError):
+    """The user already has an open wish for this recipe."""
+
+    code = "already_wished"
+
+
 class DatabaseCorrupt(Exception):
     """The integrity check failed or the file is not a database."""
 
@@ -561,3 +567,96 @@ def delete_stale_uploads(conn: sqlite3.Connection, max_age_h: int) -> list[str]:
     with conn:
         conn.executemany("DELETE FROM recipe_images WHERE id = ?", [(i,) for i in ids])
     return ids
+
+
+# --- wishes ------------------------------------------------------------------
+
+_WISH_SELECT = """SELECT w.id, w.recipe_id, r.name AS recipe_name, w.user_id, w.note, w.status,
+    w.created_at, w.done_at,
+    (SELECT i.id FROM recipe_images i WHERE i.recipe_id = r.id
+      ORDER BY i.position LIMIT 1) AS image_id
+  FROM wishes w JOIN recipes r ON r.id = w.recipe_id"""
+
+
+def _wish_row(row: sqlite3.Row) -> Row:
+    wish = dict(row)
+    image_id = wish.pop("image_id")
+    wish["thumb_url"] = image_urls(image_id)["thumb_url"] if image_id else None
+    return wish
+
+
+def get_wish(conn: sqlite3.Connection, wish_id: str) -> Row:
+    """One wish or NotFound."""
+    row = conn.execute(f"{_WISH_SELECT} WHERE w.id = ?", (wish_id,)).fetchone()  # noqa: S608
+    if row is None:
+        raise NotFound
+    return _wish_row(row)
+
+
+def list_wishes(
+    conn: sqlite3.Connection, user_id: str | None, status: str, limit: int | None
+) -> list[Row]:
+    """Wishes of visible recipes. Open: oldest first; done: most recently done first."""
+    where, params = _visible_sql(user_id)
+    order = "w.created_at, w.rowid" if status == "open" else "w.done_at DESC, w.rowid DESC"
+    sql = f"{_WISH_SELECT} WHERE w.status = ? AND {where} ORDER BY {order}"  # noqa: S608
+    args: list[Any] = [status, *params]
+    if limit is not None:
+        sql += " LIMIT ?"
+        args.append(limit)
+    return [_wish_row(r) for r in conn.execute(sql, args)]
+
+
+def add_wish(conn: sqlite3.Connection, recipe_id: str, user_id: str, note: str) -> Row:
+    """Create an open wish for a visible recipe; a second open one raises AlreadyWished."""
+    row = conn.execute(
+        "SELECT visibility, created_by FROM recipes WHERE id = ?", (recipe_id,)
+    ).fetchone()
+    if row is None or (row["visibility"] == "private" and row["created_by"] != user_id):
+        raise NotFound
+    wish_id = new_id()
+    try:
+        with conn:
+            conn.execute(
+                "INSERT INTO wishes (id, recipe_id, user_id, note, created_at) "
+                "VALUES (?, ?, ?, ?, ?)",
+                (wish_id, recipe_id, user_id, note, now_iso()),
+            )
+    except sqlite3.IntegrityError as err:
+        raise AlreadyWished from err
+    return get_wish(conn, wish_id)
+
+
+def remove_wish(conn: sqlite3.Connection, wish_id: str) -> None:
+    """Delete a wish."""
+    get_wish(conn, wish_id)
+    with conn:
+        conn.execute("DELETE FROM wishes WHERE id = ?", (wish_id,))
+
+
+def complete_wishes(conn: sqlite3.Connection, recipe_id: str) -> int:
+    """Mark all open wishes of a recipe as done. Returns how many."""
+    get_recipe_meta(conn, recipe_id)
+    with conn:
+        cur = conn.execute(
+            "UPDATE wishes SET status = 'done', done_at = ? "
+            "WHERE recipe_id = ? AND status = 'open'",
+            (now_iso(), recipe_id),
+        )
+    return cur.rowcount
+
+
+def count_open_wishes(conn: sqlite3.Connection) -> int:
+    """Number of open wishes."""
+    return conn.execute("SELECT COUNT(*) FROM wishes WHERE status = 'open'").fetchone()[0]
+
+
+def open_wish_recipe_ids(conn: sqlite3.Connection) -> list[str]:
+    """Distinct recipe ids with at least one open wish, oldest wish first."""
+    return [
+        r[0]
+        for r in conn.execute(
+            "SELECT recipe_id FROM wishes WHERE status = 'open' "
+            "GROUP BY recipe_id ORDER BY MIN(created_at), MIN(rowid)"
+        )
+    ]

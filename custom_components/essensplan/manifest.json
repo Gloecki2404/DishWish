@@ -3,7 +3,7 @@
   "name": "Essensplan",
   "codeowners": ["@GITHUB_USER"],
   "config_flow": true,
-  "dependencies": ["http", "frontend", "websocket_api"],
+  "dependencies": ["http", "frontend", "websocket_api", "todo"],
   "documentation": "https://github.com/GITHUB_USER/essensplan",
   "integration_type": "service",
   "iot_class": "calculated",

@@ -12,6 +12,9 @@ SCHEMA_VERSION = 1
 
 SIGNAL_CHANGED = "essensplan_changed"
 
+EVENT_WISH_ADDED = "essensplan_wish_added"
+EVENT_WISHES_COMPLETED = "essensplan_wishes_completed"
+
 STATIC_URL = "/essensplan_static"
 BUNDLE_NAME = "essensplan-cards.js"
 
@@ -29,6 +32,7 @@ MAX_INGREDIENTS = 100
 MAX_STEPS = 100
 MAX_STEP_TEXT = 5000
 MAX_IMAGES = 10
+MAX_WISH_NOTE = 500
 MAX_PARSE_LINES = 100
 
 # Images

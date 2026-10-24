@@ -1,15 +1,15 @@
-const j = globalThis, te = j.ShadowRoot && (j.ShadyCSS === void 0 || j.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, ie = /* @__PURE__ */ Symbol(), oe = /* @__PURE__ */ new WeakMap();
-let xe = class {
+const Z = globalThis, ie = Z.ShadowRoot && (Z.ShadyCSS === void 0 || Z.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, se = /* @__PURE__ */ Symbol(), he = /* @__PURE__ */ new WeakMap();
+let Ce = class {
   constructor(e, t, i) {
-    if (this._$cssResult$ = !0, i !== ie) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
+    if (this._$cssResult$ = !0, i !== se) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
     this.cssText = e, this.t = t;
   }
   get styleSheet() {
     let e = this.o;
     const t = this.t;
-    if (te && e === void 0) {
+    if (ie && e === void 0) {
       const i = t !== void 0 && t.length === 1;
-      i && (e = oe.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), i && oe.set(t, e));
+      i && (e = he.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), i && he.set(t, e));
     }
     return e;
   }
@@ -17,28 +17,28 @@ let xe = class {
     return this.cssText;
   }
 };
-const Pe = (s) => new xe(typeof s == "string" ? s : s + "", void 0, ie), P = (s, ...e) => {
+const Te = (s) => new Ce(typeof s == "string" ? s : s + "", void 0, se), k = (s, ...e) => {
   const t = s.length === 1 ? s[0] : e.reduce((i, n, r) => i + ((a) => {
     if (a._$cssResult$ === !0) return a.cssText;
     if (typeof a == "number") return a;
     throw Error("Value passed to 'css' function must be a 'css' function result: " + a + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
   })(n) + s[r + 1], s[0]);
-  return new xe(t, s, ie);
-}, Ne = (s, e) => {
-  if (te) s.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
+  return new Ce(t, s, se);
+}, Ue = (s, e) => {
+  if (ie) s.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
   else for (const t of e) {
-    const i = document.createElement("style"), n = j.litNonce;
+    const i = document.createElement("style"), n = Z.litNonce;
     n !== void 0 && i.setAttribute("nonce", n), i.textContent = t.cssText, s.appendChild(i);
   }
-}, ae = te ? (s) => s : (s) => s instanceof CSSStyleSheet ? ((e) => {
+}, de = ie ? (s) => s : (s) => s instanceof CSSStyleSheet ? ((e) => {
   let t = "";
   for (const i of e.cssRules) t += i.cssText;
-  return Pe(t);
+  return Te(t);
 })(s) : s;
-const { is: Re, defineProperty: De, getOwnPropertyDescriptor: Oe, getOwnPropertyNames: Ue, getOwnPropertySymbols: ze, getPrototypeOf: Ve } = Object, G = globalThis, le = G.trustedTypes, Ie = le ? le.emptyScript : "", Te = G.reactiveElementPolyfillSupport, R = (s, e) => s, Y = { toAttribute(s, e) {
+const { is: qe, defineProperty: Ie, getOwnPropertyDescriptor: Ve, getOwnPropertyNames: We, getOwnPropertySymbols: je, getPrototypeOf: Ze } = Object, K = globalThis, pe = K.trustedTypes, Fe = pe ? pe.emptyScript : "", Be = K.reactiveElementPolyfillSupport, z = (s, e) => s, ee = { toAttribute(s, e) {
   switch (e) {
     case Boolean:
-      s = s ? Ie : null;
+      s = s ? Fe : null;
       break;
     case Object:
     case Array:
@@ -63,23 +63,23 @@ const { is: Re, defineProperty: De, getOwnPropertyDescriptor: Oe, getOwnProperty
       }
   }
   return t;
-} }, we = (s, e) => !Re(s, e), ce = { attribute: !0, type: String, converter: Y, reflect: !1, useDefault: !1, hasChanged: we };
-Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), G.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-let L = class extends HTMLElement {
+} }, Ee = (s, e) => !qe(s, e), ue = { attribute: !0, type: String, converter: ee, reflect: !1, useDefault: !1, hasChanged: Ee };
+Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), K.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
+let H = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ??= []).push(e);
   }
   static get observedAttributes() {
     return this.finalize(), this._$Eh && [...this._$Eh.keys()];
   }
-  static createProperty(e, t = ce) {
+  static createProperty(e, t = ue) {
     if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
       const i = /* @__PURE__ */ Symbol(), n = this.getPropertyDescriptor(e, i, t);
-      n !== void 0 && De(this.prototype, e, n);
+      n !== void 0 && Ie(this.prototype, e, n);
     }
   }
   static getPropertyDescriptor(e, t, i) {
-    const { get: n, set: r } = Oe(this.prototype, e) ?? { get() {
+    const { get: n, set: r } = Ve(this.prototype, e) ?? { get() {
       return this[t];
     }, set(a) {
       this[t] = a;
@@ -90,17 +90,17 @@ let L = class extends HTMLElement {
     }, configurable: !0, enumerable: !0 };
   }
   static getPropertyOptions(e) {
-    return this.elementProperties.get(e) ?? ce;
+    return this.elementProperties.get(e) ?? ue;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(R("elementProperties"))) return;
-    const e = Ve(this);
+    if (this.hasOwnProperty(z("elementProperties"))) return;
+    const e = Ze(this);
     e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(R("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(R("properties"))) {
-      const t = this.properties, i = [...Ue(t), ...ze(t)];
+    if (this.hasOwnProperty(z("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(z("properties"))) {
+      const t = this.properties, i = [...We(t), ...je(t)];
       for (const n of i) this.createProperty(n, t[n]);
     }
     const e = this[Symbol.metadata];
@@ -119,8 +119,8 @@ let L = class extends HTMLElement {
     const t = [];
     if (Array.isArray(e)) {
       const i = new Set(e.flat(1 / 0).reverse());
-      for (const n of i) t.unshift(ae(n));
-    } else e !== void 0 && t.push(ae(e));
+      for (const n of i) t.unshift(de(n));
+    } else e !== void 0 && t.push(de(e));
     return t;
   }
   static _$Eu(e, t) {
@@ -146,7 +146,7 @@ let L = class extends HTMLElement {
   }
   createRenderRoot() {
     const e = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
-    return Ne(e, this.constructor.elementStyles), e;
+    return Ue(e, this.constructor.elementStyles), e;
   }
   connectedCallback() {
     this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(!0), this._$EO?.forEach((e) => e.hostConnected?.());
@@ -162,14 +162,14 @@ let L = class extends HTMLElement {
   _$ET(e, t) {
     const i = this.constructor.elementProperties.get(e), n = this.constructor._$Eu(e, i);
     if (n !== void 0 && i.reflect === !0) {
-      const r = (i.converter?.toAttribute !== void 0 ? i.converter : Y).toAttribute(t, i.type);
+      const r = (i.converter?.toAttribute !== void 0 ? i.converter : ee).toAttribute(t, i.type);
       this._$Em = e, r == null ? this.removeAttribute(n) : this.setAttribute(n, r), this._$Em = null;
     }
   }
   _$AK(e, t) {
     const i = this.constructor, n = i._$Eh.get(e);
     if (n !== void 0 && this._$Em !== n) {
-      const r = i.getPropertyOptions(n), a = typeof r.converter == "function" ? { fromAttribute: r.converter } : r.converter?.fromAttribute !== void 0 ? r.converter : Y;
+      const r = i.getPropertyOptions(n), a = typeof r.converter == "function" ? { fromAttribute: r.converter } : r.converter?.fromAttribute !== void 0 ? r.converter : ee;
       this._$Em = n;
       const u = a.fromAttribute(t, r.type);
       this[n] = u ?? this._$Ej?.get(n) ?? u, this._$Em = null;
@@ -178,7 +178,7 @@ let L = class extends HTMLElement {
   requestUpdate(e, t, i, n = !1, r) {
     if (e !== void 0) {
       const a = this.constructor;
-      if (n === !1 && (r = this[e]), i ??= a.getPropertyOptions(e), !((i.hasChanged ?? we)(r, t) || i.useDefault && i.reflect && r === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, i)))) return;
+      if (n === !1 && (r = this[e]), i ??= a.getPropertyOptions(e), !((i.hasChanged ?? Ee)(r, t) || i.useDefault && i.reflect && r === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, i)))) return;
       this.C(e, t, i);
     }
     this.isUpdatePending === !1 && (this._$ES = this._$EP());
@@ -246,70 +246,70 @@ let L = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-L.elementStyles = [], L.shadowRootOptions = { mode: "open" }, L[R("elementProperties")] = /* @__PURE__ */ new Map(), L[R("finalized")] = /* @__PURE__ */ new Map(), Te?.({ ReactiveElement: L }), (G.reactiveElementVersions ??= []).push("2.1.2");
-const se = globalThis, de = (s) => s, B = se.trustedTypes, he = B ? B.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, Ae = "$lit$", y = `lit$${Math.random().toFixed(9).slice(2)}$`, ke = "?" + y, qe = `<${ke}>`, C = document, D = () => C.createComment(""), O = (s) => s === null || typeof s != "object" && typeof s != "function", ne = Array.isArray, je = (s) => ne(s) || typeof s?.[Symbol.iterator] == "function", K = `[ 	
-\f\r]`, N = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, pe = /-->/g, ue = />/g, w = RegExp(`>|${K}(?:([^\\s"'>=/]+)(${K}*=${K}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), ge = /'/g, me = /"/g, Se = /^(?:script|style|textarea|title)$/i, Ce = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), l = Ce(1), Be = Ce(2), M = /* @__PURE__ */ Symbol.for("lit-noChange"), d = /* @__PURE__ */ Symbol.for("lit-nothing"), fe = /* @__PURE__ */ new WeakMap(), k = C.createTreeWalker(C, 129);
-function Ee(s, e) {
-  if (!ne(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
-  return he !== void 0 ? he.createHTML(e) : e;
+H.elementStyles = [], H.shadowRootOptions = { mode: "open" }, H[z("elementProperties")] = /* @__PURE__ */ new Map(), H[z("finalized")] = /* @__PURE__ */ new Map(), Be?.({ ReactiveElement: H }), (K.reactiveElementVersions ??= []).push("2.1.2");
+const ne = globalThis, ge = (s) => s, F = ne.trustedTypes, me = F ? F.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, Le = "$lit$", x = `lit$${Math.random().toFixed(9).slice(2)}$`, Me = "?" + x, Ge = `<${Me}>`, L = document, T = () => L.createComment(""), U = (s) => s === null || typeof s != "object" && typeof s != "function", re = Array.isArray, Ke = (s) => re(s) || typeof s?.[Symbol.iterator] == "function", Q = `[ 	
+\f\r]`, R = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, fe = /-->/g, _e = />/g, A = RegExp(`>|${Q}(?:([^\\s"'>=/]+)(${Q}*=${Q}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), $e = /'/g, be = /"/g, Ne = /^(?:script|style|textarea|title)$/i, He = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), l = He(1), Je = He(2), P = /* @__PURE__ */ Symbol.for("lit-noChange"), h = /* @__PURE__ */ Symbol.for("lit-nothing"), ve = /* @__PURE__ */ new WeakMap(), C = L.createTreeWalker(L, 129);
+function Oe(s, e) {
+  if (!re(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
+  return me !== void 0 ? me.createHTML(e) : e;
 }
-const Fe = (s, e) => {
+const Qe = (s, e) => {
   const t = s.length - 1, i = [];
-  let n, r = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", a = N;
+  let n, r = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", a = R;
   for (let u = 0; u < t; u++) {
     const c = s[u];
-    let p, h, f = -1, $ = 0;
-    for (; $ < c.length && (a.lastIndex = $, h = a.exec(c), h !== null); ) $ = a.lastIndex, a === N ? h[1] === "!--" ? a = pe : h[1] !== void 0 ? a = ue : h[2] !== void 0 ? (Se.test(h[2]) && (n = RegExp("</" + h[2], "g")), a = w) : h[3] !== void 0 && (a = w) : a === w ? h[0] === ">" ? (a = n ?? N, f = -1) : h[1] === void 0 ? f = -2 : (f = a.lastIndex - h[2].length, p = h[1], a = h[3] === void 0 ? w : h[3] === '"' ? me : ge) : a === me || a === ge ? a = w : a === pe || a === ue ? a = N : (a = w, n = void 0);
-    const v = a === w && s[u + 1].startsWith("/>") ? " " : "";
-    r += a === N ? c + qe : f >= 0 ? (i.push(p), c.slice(0, f) + Ae + c.slice(f) + y + v) : c + y + (f === -2 ? u : v);
+    let p, d, f = -1, y = 0;
+    for (; y < c.length && (a.lastIndex = y, d = a.exec(c), d !== null); ) y = a.lastIndex, a === R ? d[1] === "!--" ? a = fe : d[1] !== void 0 ? a = _e : d[2] !== void 0 ? (Ne.test(d[2]) && (n = RegExp("</" + d[2], "g")), a = A) : d[3] !== void 0 && (a = A) : a === A ? d[0] === ">" ? (a = n ?? R, f = -1) : d[1] === void 0 ? f = -2 : (f = a.lastIndex - d[2].length, p = d[1], a = d[3] === void 0 ? A : d[3] === '"' ? be : $e) : a === be || a === $e ? a = A : a === fe || a === _e ? a = R : (a = A, n = void 0);
+    const w = a === A && s[u + 1].startsWith("/>") ? " " : "";
+    r += a === R ? c + Ge : f >= 0 ? (i.push(p), c.slice(0, f) + Le + c.slice(f) + x + w) : c + x + (f === -2 ? u : w);
   }
-  return [Ee(s, r + (s[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
+  return [Oe(s, r + (s[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
 };
-class U {
+class q {
   constructor({ strings: e, _$litType$: t }, i) {
     let n;
     this.parts = [];
     let r = 0, a = 0;
-    const u = e.length - 1, c = this.parts, [p, h] = Fe(e, t);
-    if (this.el = U.createElement(p, i), k.currentNode = this.el.content, t === 2 || t === 3) {
+    const u = e.length - 1, c = this.parts, [p, d] = Qe(e, t);
+    if (this.el = q.createElement(p, i), C.currentNode = this.el.content, t === 2 || t === 3) {
       const f = this.el.content.firstChild;
       f.replaceWith(...f.childNodes);
     }
-    for (; (n = k.nextNode()) !== null && c.length < u; ) {
+    for (; (n = C.nextNode()) !== null && c.length < u; ) {
       if (n.nodeType === 1) {
-        if (n.hasAttributes()) for (const f of n.getAttributeNames()) if (f.endsWith(Ae)) {
-          const $ = h[a++], v = n.getAttribute(f).split(y), T = /([.?@])?(.*)/.exec($);
-          c.push({ type: 1, index: r, name: T[2], strings: v, ctor: T[1] === "." ? Ge : T[1] === "?" ? We : T[1] === "@" ? Ke : W }), n.removeAttribute(f);
-        } else f.startsWith(y) && (c.push({ type: 6, index: r }), n.removeAttribute(f));
-        if (Se.test(n.tagName)) {
-          const f = n.textContent.split(y), $ = f.length - 1;
-          if ($ > 0) {
-            n.textContent = B ? B.emptyScript : "";
-            for (let v = 0; v < $; v++) n.append(f[v], D()), k.nextNode(), c.push({ type: 2, index: ++r });
-            n.append(f[$], D());
+        if (n.hasAttributes()) for (const f of n.getAttributeNames()) if (f.endsWith(Le)) {
+          const y = d[a++], w = n.getAttribute(f).split(x), W = /([.?@])?(.*)/.exec(y);
+          c.push({ type: 1, index: r, name: W[2], strings: w, ctor: W[1] === "." ? Ye : W[1] === "?" ? et : W[1] === "@" ? tt : J }), n.removeAttribute(f);
+        } else f.startsWith(x) && (c.push({ type: 6, index: r }), n.removeAttribute(f));
+        if (Ne.test(n.tagName)) {
+          const f = n.textContent.split(x), y = f.length - 1;
+          if (y > 0) {
+            n.textContent = F ? F.emptyScript : "";
+            for (let w = 0; w < y; w++) n.append(f[w], T()), C.nextNode(), c.push({ type: 2, index: ++r });
+            n.append(f[y], T());
           }
         }
-      } else if (n.nodeType === 8) if (n.data === ke) c.push({ type: 2, index: r });
+      } else if (n.nodeType === 8) if (n.data === Me) c.push({ type: 2, index: r });
       else {
         let f = -1;
-        for (; (f = n.data.indexOf(y, f + 1)) !== -1; ) c.push({ type: 7, index: r }), f += y.length - 1;
+        for (; (f = n.data.indexOf(x, f + 1)) !== -1; ) c.push({ type: 7, index: r }), f += x.length - 1;
       }
       r++;
     }
   }
   static createElement(e, t) {
-    const i = C.createElement("template");
+    const i = L.createElement("template");
     return i.innerHTML = e, i;
   }
 }
-function H(s, e, t = s, i) {
-  if (e === M) return e;
+function D(s, e, t = s, i) {
+  if (e === P) return e;
   let n = i !== void 0 ? t._$Co?.[i] : t._$Cl;
-  const r = O(e) ? void 0 : e._$litDirective$;
-  return n?.constructor !== r && (n?._$AO?.(!1), r === void 0 ? n = void 0 : (n = new r(s), n._$AT(s, t, i)), i !== void 0 ? (t._$Co ??= [])[i] = n : t._$Cl = n), n !== void 0 && (e = H(s, n._$AS(s, e.values), n, i)), e;
+  const r = U(e) ? void 0 : e._$litDirective$;
+  return n?.constructor !== r && (n?._$AO?.(!1), r === void 0 ? n = void 0 : (n = new r(s), n._$AT(s, t, i)), i !== void 0 ? (t._$Co ??= [])[i] = n : t._$Cl = n), n !== void 0 && (e = D(s, n._$AS(s, e.values), n, i)), e;
 }
-class Ze {
+class Xe {
   constructor(e, t) {
     this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
   }
@@ -320,17 +320,17 @@ class Ze {
     return this._$AM._$AU;
   }
   u(e) {
-    const { el: { content: t }, parts: i } = this._$AD, n = (e?.creationScope ?? C).importNode(t, !0);
-    k.currentNode = n;
-    let r = k.nextNode(), a = 0, u = 0, c = i[0];
+    const { el: { content: t }, parts: i } = this._$AD, n = (e?.creationScope ?? L).importNode(t, !0);
+    C.currentNode = n;
+    let r = C.nextNode(), a = 0, u = 0, c = i[0];
     for (; c !== void 0; ) {
       if (a === c.index) {
         let p;
-        c.type === 2 ? p = new V(r, r.nextSibling, this, e) : c.type === 1 ? p = new c.ctor(r, c.name, c.strings, this, e) : c.type === 6 && (p = new Je(r, this, e)), this._$AV.push(p), c = i[++u];
+        c.type === 2 ? p = new V(r, r.nextSibling, this, e) : c.type === 1 ? p = new c.ctor(r, c.name, c.strings, this, e) : c.type === 6 && (p = new it(r, this, e)), this._$AV.push(p), c = i[++u];
       }
-      a !== c?.index && (r = k.nextNode(), a++);
+      a !== c?.index && (r = C.nextNode(), a++);
     }
-    return k.currentNode = C, n;
+    return C.currentNode = L, n;
   }
   p(e) {
     let t = 0;
@@ -342,7 +342,7 @@ class V {
     return this._$AM?._$AU ?? this._$Cv;
   }
   constructor(e, t, i, n) {
-    this.type = 2, this._$AH = d, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = i, this.options = n, this._$Cv = n?.isConnected ?? !0;
+    this.type = 2, this._$AH = h, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = i, this.options = n, this._$Cv = n?.isConnected ?? !0;
   }
   get parentNode() {
     let e = this._$AA.parentNode;
@@ -356,7 +356,7 @@ class V {
     return this._$AB;
   }
   _$AI(e, t = this) {
-    e = H(this, e, t), O(e) ? e === d || e == null || e === "" ? (this._$AH !== d && this._$AR(), this._$AH = d) : e !== this._$AH && e !== M && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : je(e) ? this.k(e) : this._(e);
+    e = D(this, e, t), U(e) ? e === h || e == null || e === "" ? (this._$AH !== h && this._$AR(), this._$AH = h) : e !== this._$AH && e !== P && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : Ke(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -365,38 +365,38 @@ class V {
     this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
   }
   _(e) {
-    this._$AH !== d && O(this._$AH) ? this._$AA.nextSibling.data = e : this.T(C.createTextNode(e)), this._$AH = e;
+    this._$AH !== h && U(this._$AH) ? this._$AA.nextSibling.data = e : this.T(L.createTextNode(e)), this._$AH = e;
   }
   $(e) {
-    const { values: t, _$litType$: i } = e, n = typeof i == "number" ? this._$AC(e) : (i.el === void 0 && (i.el = U.createElement(Ee(i.h, i.h[0]), this.options)), i);
+    const { values: t, _$litType$: i } = e, n = typeof i == "number" ? this._$AC(e) : (i.el === void 0 && (i.el = q.createElement(Oe(i.h, i.h[0]), this.options)), i);
     if (this._$AH?._$AD === n) this._$AH.p(t);
     else {
-      const r = new Ze(n, this), a = r.u(this.options);
+      const r = new Xe(n, this), a = r.u(this.options);
       r.p(t), this.T(a), this._$AH = r;
     }
   }
   _$AC(e) {
-    let t = fe.get(e.strings);
-    return t === void 0 && fe.set(e.strings, t = new U(e)), t;
+    let t = ve.get(e.strings);
+    return t === void 0 && ve.set(e.strings, t = new q(e)), t;
   }
   k(e) {
-    ne(this._$AH) || (this._$AH = [], this._$AR());
+    re(this._$AH) || (this._$AH = [], this._$AR());
     const t = this._$AH;
     let i, n = 0;
-    for (const r of e) n === t.length ? t.push(i = new V(this.O(D()), this.O(D()), this, this.options)) : i = t[n], i._$AI(r), n++;
+    for (const r of e) n === t.length ? t.push(i = new V(this.O(T()), this.O(T()), this, this.options)) : i = t[n], i._$AI(r), n++;
     n < t.length && (this._$AR(i && i._$AB.nextSibling, n), t.length = n);
   }
   _$AR(e = this._$AA.nextSibling, t) {
     for (this._$AP?.(!1, !0, t); e !== this._$AB; ) {
-      const i = de(e).nextSibling;
-      de(e).remove(), e = i;
+      const i = ge(e).nextSibling;
+      ge(e).remove(), e = i;
     }
   }
   setConnected(e) {
     this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
   }
 }
-class W {
+class J {
   get tagName() {
     return this.element.tagName;
   }
@@ -404,53 +404,53 @@ class W {
     return this._$AM._$AU;
   }
   constructor(e, t, i, n, r) {
-    this.type = 1, this._$AH = d, this._$AN = void 0, this.element = e, this.name = t, this._$AM = n, this.options = r, i.length > 2 || i[0] !== "" || i[1] !== "" ? (this._$AH = Array(i.length - 1).fill(new String()), this.strings = i) : this._$AH = d;
+    this.type = 1, this._$AH = h, this._$AN = void 0, this.element = e, this.name = t, this._$AM = n, this.options = r, i.length > 2 || i[0] !== "" || i[1] !== "" ? (this._$AH = Array(i.length - 1).fill(new String()), this.strings = i) : this._$AH = h;
   }
   _$AI(e, t = this, i, n) {
     const r = this.strings;
     let a = !1;
-    if (r === void 0) e = H(this, e, t, 0), a = !O(e) || e !== this._$AH && e !== M, a && (this._$AH = e);
+    if (r === void 0) e = D(this, e, t, 0), a = !U(e) || e !== this._$AH && e !== P, a && (this._$AH = e);
     else {
       const u = e;
       let c, p;
-      for (e = r[0], c = 0; c < r.length - 1; c++) p = H(this, u[i + c], t, c), p === M && (p = this._$AH[c]), a ||= !O(p) || p !== this._$AH[c], p === d ? e = d : e !== d && (e += (p ?? "") + r[c + 1]), this._$AH[c] = p;
+      for (e = r[0], c = 0; c < r.length - 1; c++) p = D(this, u[i + c], t, c), p === P && (p = this._$AH[c]), a ||= !U(p) || p !== this._$AH[c], p === h ? e = h : e !== h && (e += (p ?? "") + r[c + 1]), this._$AH[c] = p;
     }
     a && !n && this.j(e);
   }
   j(e) {
-    e === d ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
+    e === h ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
   }
 }
-class Ge extends W {
+class Ye extends J {
   constructor() {
     super(...arguments), this.type = 3;
   }
   j(e) {
-    this.element[this.name] = e === d ? void 0 : e;
+    this.element[this.name] = e === h ? void 0 : e;
   }
 }
-class We extends W {
+class et extends J {
   constructor() {
     super(...arguments), this.type = 4;
   }
   j(e) {
-    this.element.toggleAttribute(this.name, !!e && e !== d);
+    this.element.toggleAttribute(this.name, !!e && e !== h);
   }
 }
-class Ke extends W {
+class tt extends J {
   constructor(e, t, i, n, r) {
     super(e, t, i, n, r), this.type = 5;
   }
   _$AI(e, t = this) {
-    if ((e = H(this, e, t, 0) ?? d) === M) return;
-    const i = this._$AH, n = e === d && i !== d || e.capture !== i.capture || e.once !== i.once || e.passive !== i.passive, r = e !== d && (i === d || n);
+    if ((e = D(this, e, t, 0) ?? h) === P) return;
+    const i = this._$AH, n = e === h && i !== h || e.capture !== i.capture || e.once !== i.once || e.passive !== i.passive, r = e !== h && (i === h || n);
     n && this.element.removeEventListener(this.name, this, i), r && this.element.addEventListener(this.name, this, e), this._$AH = e;
   }
   handleEvent(e) {
     typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
   }
 }
-class Je {
+class it {
   constructor(e, t, i) {
     this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = i;
   }
@@ -458,22 +458,22 @@ class Je {
     return this._$AM._$AU;
   }
   _$AI(e) {
-    H(this, e);
+    D(this, e);
   }
 }
-const Qe = se.litHtmlPolyfillSupport;
-Qe?.(U, V), (se.litHtmlVersions ??= []).push("3.3.3");
-const Xe = (s, e, t) => {
+const st = ne.litHtmlPolyfillSupport;
+st?.(q, V), (ne.litHtmlVersions ??= []).push("3.3.3");
+const nt = (s, e, t) => {
   const i = t?.renderBefore ?? e;
   let n = i._$litPart$;
   if (n === void 0) {
     const r = t?.renderBefore ?? null;
-    i._$litPart$ = n = new V(e.insertBefore(D(), r), r, void 0, t ?? {});
+    i._$litPart$ = n = new V(e.insertBefore(T(), r), r, void 0, t ?? {});
   }
   return n._$AI(s), n;
 };
-const re = globalThis;
-class _ extends L {
+const oe = globalThis;
+class v extends H {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -483,7 +483,7 @@ class _ extends L {
   }
   update(e) {
     const t = this.render();
-    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Xe(t, this.renderRoot, this.renderOptions);
+    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = nt(t, this.renderRoot, this.renderOptions);
   }
   connectedCallback() {
     super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -492,15 +492,15 @@ class _ extends L {
     super.disconnectedCallback(), this._$Do?.setConnected(!1);
   }
   render() {
-    return M;
+    return P;
   }
 }
-_._$litElement$ = !0, _.finalized = !0, re.litElementHydrateSupport?.({ LitElement: _ });
-const Ye = re.litElementPolyfillSupport;
-Ye?.({ LitElement: _ });
-(re.litElementVersions ??= []).push("4.2.2");
-const b = (s, e) => s.sendMessagePromise(e), et = (s) => b(s, { type: "essensplan/recipes/list" }), tt = (s, e) => b(s, { type: "essensplan/recipes/get", recipe_id: e }), it = (s, e) => b(s, { type: "essensplan/recipes/create", ...e }), st = (s, e, t) => b(s, { type: "essensplan/recipes/update", recipe_id: e, ...t }), nt = (s, e) => b(s, { type: "essensplan/recipes/delete", recipe_id: e }), rt = (s, e) => b(s, { type: "essensplan/recipes/import_url", url: e }), ot = (s) => b(s, { type: "essensplan/categories/list" }), at = (s, e, t) => b(s, { type: "essensplan/categories/create", name: e }), lt = (s, e) => b(s, { type: "essensplan/ingredients/parse", lines: e });
-async function ct(s, e) {
+v._$litElement$ = !0, v.finalized = !0, oe.litElementHydrateSupport?.({ LitElement: v });
+const rt = oe.litElementPolyfillSupport;
+rt?.({ LitElement: v });
+(oe.litElementVersions ??= []).push("4.2.2");
+const _ = (s, e) => s.sendMessagePromise(e), ot = (s) => _(s, { type: "essensplan/recipes/list" }), ye = (s, e) => _(s, { type: "essensplan/recipes/get", recipe_id: e }), at = (s, e) => _(s, { type: "essensplan/recipes/create", ...e }), lt = (s, e, t) => _(s, { type: "essensplan/recipes/update", recipe_id: e, ...t }), ct = (s, e) => _(s, { type: "essensplan/recipes/delete", recipe_id: e }), ht = (s, e) => _(s, { type: "essensplan/recipes/import_url", url: e }), dt = (s) => _(s, { type: "essensplan/categories/list" }), pt = (s, e, t) => _(s, { type: "essensplan/categories/create", name: e }), ut = (s, e) => _(s, { type: "essensplan/ingredients/parse", lines: e });
+async function gt(s, e) {
   const t = new FormData();
   t.append("file", e, "photo.jpg");
   const i = await s.fetchWithAuth("/api/essensplan/images", { method: "POST", body: t });
@@ -514,12 +514,13 @@ async function ct(s, e) {
   }
   return await i.json();
 }
-function S(s) {
+function b(s) {
   return s && typeof s == "object" && "code" in s ? String(s.code) : "unknown";
 }
-class dt {
+const Pe = (s, e = "open", t) => _(s, { type: "essensplan/wishes/list", status: e, ...t ? { limit: t } : {} }), ae = (s, e, t = "") => _(s, { type: "essensplan/wishes/add", recipe_id: e, note: t }), le = (s, e) => _(s, { type: "essensplan/wishes/remove", wish_id: e }), mt = (s, e) => _(s, { type: "essensplan/wishes/complete", recipe_id: e }), De = (s, e, t = {}) => _(s, { type: "essensplan/shopping/add", recipe_id: e, ...t });
+class ft {
   constructor(e) {
-    this.conn = e, this.recipes = [], this.categories = [], this.loaded = !1, this.error = null, this.listeners = /* @__PURE__ */ new Set(), this.unsub = null, this.timers = {};
+    this.conn = e, this.recipes = [], this.categories = [], this.wishes = [], this.loaded = !1, this.error = null, this.listeners = /* @__PURE__ */ new Set(), this.unsub = null, this.timers = {};
   }
   /** Register a listener; the first one starts loading and the live subscription. */
   subscribe(e) {
@@ -529,7 +530,7 @@ class dt {
   }
   /** Reload everything (e.g. after a local change, before the event arrives). */
   async refresh() {
-    await Promise.all([this.loadRecipes(), this.loadCategories()]);
+    await Promise.all([this.loadRecipes(), this.loadCategories(), this.loadWishes()]);
   }
   async start() {
     this.unsub = this.conn.subscribeMessage((e) => this.onEvent(e), {
@@ -544,7 +545,7 @@ class dt {
     });
   }
   onEvent(e) {
-    (e.kind === "recipes" || e.kind === "wishes") && this.debounce("recipes", () => this.loadRecipes()), e.kind === "categories" && this.debounce("categories", () => this.loadCategories());
+    (e.kind === "recipes" || e.kind === "wishes") && this.debounce("recipes", () => this.loadRecipes()), (e.kind === "recipes" || e.kind === "wishes") && this.debounce("wishes", () => this.loadWishes()), e.kind === "categories" && this.debounce("categories", () => this.loadCategories());
   }
   debounce(e, t) {
     clearTimeout(this.timers[e]), this.timers[e] = setTimeout(() => {
@@ -553,7 +554,15 @@ class dt {
   }
   async loadRecipes() {
     try {
-      this.recipes = await et(this.conn), this.error = null;
+      this.recipes = await ot(this.conn), this.error = null;
+    } catch (e) {
+      this.error = e;
+    }
+    this.emit();
+  }
+  async loadWishes() {
+    try {
+      this.wishes = await Pe(this.conn, "open");
     } catch (e) {
       this.error = e;
     }
@@ -561,7 +570,7 @@ class dt {
   }
   async loadCategories() {
     try {
-      this.categories = await ot(this.conn);
+      this.categories = await dt(this.conn);
     } catch (e) {
       this.error = e;
     }
@@ -571,12 +580,12 @@ class dt {
     this.listeners.forEach((e) => e());
   }
 }
-const $e = /* @__PURE__ */ new WeakMap();
-function Le(s) {
-  let e = $e.get(s.connection);
-  return e || (e = new dt(s.connection), $e.set(s.connection, e)), e;
+const we = /* @__PURE__ */ new WeakMap();
+function ce(s) {
+  let e = we.get(s.connection);
+  return e || (e = new ft(s.connection), we.set(s.connection, e)), e;
 }
-const Me = {
+const Re = {
   // general
   close: "Close",
   cancel: "Cancel",
@@ -603,6 +612,25 @@ const Me = {
   no_results: "No dishes found",
   minutes_short: "{n} min",
   wishes_n: "{n} wishes",
+  // wishes & shopping
+  wish_heart: "Wish this dish",
+  wish_add: "Add wish",
+  wish_remove: "Remove my wish",
+  wish_note: "Note (optional)",
+  wish_send: "Wish",
+  wish_added: "Wish added.",
+  shop_n: "{n} ingredients to shopping list",
+  shop_to_list: "To shopping list",
+  shop_none: "Select at least one ingredient.",
+  shop_result: "{added} added, {skipped} already on the list.",
+  wishes_title: "Meal wishes",
+  wishes_empty: "No open wishes",
+  cooked: "Cooked ✓",
+  cooked_done: "Marked as cooked.",
+  add_wish: "+ Wish",
+  picker_title: "Pick a dish",
+  recently_cooked: "Recently cooked",
+  open_recipe: "Open dish",
   // recipe
   prep: "Prep {n} min",
   cook: "Cook {n} min",
@@ -661,6 +689,8 @@ const Me = {
   err_too_large: "The file is too large.",
   err_unsupported_image: "This image format is not supported.",
   err_upload_failed: "Upload failed.",
+  err_already_wished: "You already wished for this dish.",
+  err_entity_not_found: "No shopping list chosen. Set one in the card or in the integration options.",
   err_unknown: "Something went wrong.",
   // card editor
   cfg_title: "Title",
@@ -674,8 +704,12 @@ const Me = {
   cfg_sort_name: "Name",
   cfg_sort_newest: "Newest",
   cfg_sort_popular: "Most wished",
-  cfg_shopping_list: "Shopping list"
-}, ht = {
+  cfg_shopping_list: "Shopping list",
+  cfg_layout: "Layout",
+  cfg_layout_list: "List",
+  cfg_layout_grid: "Grid",
+  cfg_show_done: "Recently cooked to show"
+}, _t = {
   close: "Schließen",
   cancel: "Abbrechen",
   save: "Speichern",
@@ -700,6 +734,24 @@ const Me = {
   no_results: "Keine Gerichte gefunden",
   minutes_short: "{n} min",
   wishes_n: "{n} Wünsche",
+  wish_heart: "Dieses Gericht wünschen",
+  wish_add: "Wunsch äußern",
+  wish_remove: "Meinen Wunsch entfernen",
+  wish_note: "Notiz (optional)",
+  wish_send: "Wünschen",
+  wish_added: "Wunsch hinzugefügt.",
+  shop_n: "{n} Zutaten auf Einkaufsliste",
+  shop_to_list: "Auf Einkaufsliste",
+  shop_none: "Wähle mindestens eine Zutat aus.",
+  shop_result: "{added} hinzugefügt, {skipped} schon auf der Liste.",
+  wishes_title: "Essenswünsche",
+  wishes_empty: "Keine offenen Wünsche",
+  cooked: "Gekocht ✓",
+  cooked_done: "Als gekocht markiert.",
+  add_wish: "+ Wunsch",
+  picker_title: "Gericht wählen",
+  recently_cooked: "Zuletzt gekocht",
+  open_recipe: "Gericht öffnen",
   prep: "Vorbereiten {n} min",
   cook: "Kochen {n} min",
   only_me: "Nur ich",
@@ -754,6 +806,8 @@ const Me = {
   err_too_large: "Die Datei ist zu groß.",
   err_unsupported_image: "Dieses Bildformat wird nicht unterstützt.",
   err_upload_failed: "Upload fehlgeschlagen.",
+  err_already_wished: "Das wünschst du dir schon.",
+  err_entity_not_found: "Keine Einkaufsliste gewählt. Lege eine in der Karte oder in den Integrations-Optionen fest.",
   err_unknown: "Etwas ist schiefgelaufen.",
   cfg_title: "Titel",
   cfg_columns: "Spalten (auto oder 2–6)",
@@ -766,18 +820,22 @@ const Me = {
   cfg_sort_name: "Name",
   cfg_sort_newest: "Neueste",
   cfg_sort_popular: "Meist gewünscht",
-  cfg_shopping_list: "Einkaufsliste"
+  cfg_shopping_list: "Einkaufsliste",
+  cfg_layout: "Layout",
+  cfg_layout_list: "Liste",
+  cfg_layout_grid: "Raster",
+  cfg_show_done: "Zuletzt gekocht anzeigen"
 };
 function o(s, e, t) {
-  let i = s.startsWith("de") ? ht[e] : Me[e];
+  let i = s.startsWith("de") ? _t[e] : Re[e];
   if (t) for (const [n, r] of Object.entries(t)) i = i.replace(`{${n}}`, String(r));
   return i;
 }
-function x(s, e) {
+function $(s, e) {
   const t = `err_${e}`;
-  return t in Me ? o(s, t) : o(s, "err_unknown");
+  return t in Re ? o(s, t) : o(s, "err_unknown");
 }
-const I = P`
+const M = k`
   :host {
     color: var(--primary-text-color);
     font-family: var(--paper-font-body1_-_font-family, inherit);
@@ -893,34 +951,34 @@ const I = P`
     color: var(--error-color);
   }
 `;
-var pt = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", ut = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", gt = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", mt = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", ft = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", $t = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", _t = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", bt = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", vt = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", yt = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", xt = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", wt = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", At = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", kt = "M19,13H5V11H19V13Z", St = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", Ct = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+var $t = "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z", bt = "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z", vt = "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z", yt = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z", wt = "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z", xt = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z", kt = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", At = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z", St = "M3,3A1,1 0 0,0 2,4V8L2,9.5C2,11.19 3.03,12.63 4.5,13.22V19.5A1.5,1.5 0 0,0 6,21A1.5,1.5 0 0,0 7.5,19.5V13.22C8.97,12.63 10,11.19 10,9.5V8L10,4A1,1 0 0,0 9,3A1,1 0 0,0 8,4V8A0.5,0.5 0 0,1 7.5,8.5A0.5,0.5 0 0,1 7,8V4A1,1 0 0,0 6,3A1,1 0 0,0 5,4V8A0.5,0.5 0 0,1 4.5,8.5A0.5,0.5 0 0,1 4,8V4A1,1 0 0,0 3,3M19.88,3C19.75,3 19.62,3.09 19.5,3.16L16,5.25V9H12V11H13L14,21H20L21,11H22V9H18V6.34L20.5,4.84C21,4.56 21.13,4 20.84,3.5C20.63,3.14 20.26,2.95 19.88,3Z", Ct = "M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z", Et = "M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z", Lt = "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z", Mt = "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z", Nt = "M19,13H5V11H19V13Z", Ht = "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z", Ot = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
 const g = {
-  arrowDown: pt,
-  arrowUp: ut,
-  camera: gt,
-  left: mt,
-  right: ft,
-  clock: $t,
-  close: _t,
-  delete: bt,
-  food: vt,
-  image: yt,
-  link: xt,
-  lock: wt,
-  search: At,
-  minus: kt,
-  edit: St,
-  plus: Ct
-}, m = (s) => l`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${Be`<path d=${s}></path>`}</svg>`, A = [];
-let ee = 0;
+  arrowDown: $t,
+  arrowUp: bt,
+  camera: vt,
+  left: yt,
+  right: wt,
+  clock: xt,
+  close: kt,
+  delete: At,
+  food: St,
+  image: Ct,
+  link: Et,
+  lock: Lt,
+  search: Mt,
+  minus: Nt,
+  edit: Ht,
+  plus: Ot
+}, m = (s) => l`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${Je`<path d=${s}></path>`}</svg>`, S = [];
+let te = 0;
 window.addEventListener("popstate", () => {
-  if (ee > 0) {
-    ee--;
+  if (te > 0) {
+    te--;
     return;
   }
-  A[A.length - 1]?.onPopState();
+  S[S.length - 1]?.onPopState();
 });
-class Et extends _ {
+class Pt extends v {
   constructor() {
     super(), this.pushed = !1, this.heading = "", this.closeLabel = "Close";
   }
@@ -932,8 +990,8 @@ class Et extends _ {
   }
   static {
     this.styles = [
-      I,
-      P`
+      M,
+      k`
       dialog {
         width: min(760px, 100vw);
         max-width: 100vw;
@@ -996,7 +1054,7 @@ class Et extends _ {
     return this.renderRoot.querySelector("dialog");
   }
   show() {
-    this.dlg.showModal(), A.push(this), history.pushState({ essensplan: !0 }, ""), this.pushed = !0;
+    this.dlg.showModal(), S.push(this), history.pushState({ essensplan: !0 }, ""), this.pushed = !0;
   }
   /** Ask listeners whether we may close; closes unless one of them prevents it. */
   requestClose() {
@@ -1012,13 +1070,13 @@ class Et extends _ {
     this.dispatchEvent(e), e.defaultPrevented ? (history.pushState({ essensplan: !0 }, ""), this.pushed = !0) : this.close();
   }
   onClosed() {
-    const e = A.indexOf(this);
-    e >= 0 && A.splice(e, 1), this.pushed && (this.pushed = !1, ee++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
+    const e = S.indexOf(this);
+    e >= 0 && S.splice(e, 1), this.pushed && (this.pushed = !1, te++, history.back()), this.dispatchEvent(new CustomEvent("closed"));
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    const e = A.indexOf(this);
-    e >= 0 && A.splice(e, 1);
+    const e = S.indexOf(this);
+    e >= 0 && S.splice(e, 1);
   }
   render() {
     return l`
@@ -1041,8 +1099,8 @@ class Et extends _ {
     `;
   }
 }
-customElements.get("es-dialog") || customElements.define("es-dialog", Et);
-class Lt extends _ {
+customElements.get("es-dialog") || customElements.define("es-dialog", Pt);
+class Dt extends v {
   static {
     this.properties = {
       hass: { attribute: !1 },
@@ -1056,8 +1114,8 @@ class Lt extends _ {
   }
   static {
     this.styles = [
-      I,
-      P`
+      M,
+      k`
       .row {
         display: flex;
         gap: 8px;
@@ -1080,10 +1138,10 @@ class Lt extends _ {
     if (!(!e || this.loading)) {
       this.loading = !0, this.error = "";
       try {
-        const t = await rt(this.hass.connection, e);
+        const t = await ht(this.hass.connection, e);
         this.dispatchEvent(new CustomEvent("imported", { detail: t })), this.dlg.close();
       } catch (t) {
-        this.error = x(this.uiLang, S(t));
+        this.error = $(this.uiLang, b(t));
       }
       this.loading = !1;
     }
@@ -1111,45 +1169,52 @@ class Lt extends _ {
           ${o(e, "import_load")}
         </button>
       </div>
-      ${this.loading ? l`<p class="muted">${o(e, "import_loading")}</p>` : d}
-      ${this.error ? l`<p class="error">${this.error}</p>` : d}
+      ${this.loading ? l`<p class="muted">${o(e, "import_loading")}</p>` : h}
+      ${this.error ? l`<p class="error">${this.error}</p>` : h}
     </es-dialog>`;
   }
 }
-customElements.get("es-import-dialog") || customElements.define("es-import-dialog", Lt);
-const z = (s) => Math.floor(s + 0.5);
-function _e(s, e, t) {
+customElements.get("es-import-dialog") || customElements.define("es-import-dialog", Dt);
+function E(s, e) {
+  s.dispatchEvent(new CustomEvent("hass-notification", { detail: { message: e }, bubbles: !0, composed: !0 }));
+}
+const I = (s) => Math.floor(s + 0.5);
+function xe(s, e, t) {
   return s * t / e;
 }
-function Mt(s, e) {
-  const i = (z(s * 100) / 100).toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+function Rt(s, e) {
+  const i = (I(s * 100) / 100).toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
   return e.startsWith("de") ? i.replace(".", ",") : i;
 }
-function Ht(s) {
-  if (s >= 10) return String(Math.max(1, z(s)));
-  const e = Math.max(1, z(s * 4)), t = Math.floor(e / 4), i = ["", "¼", "½", "¾"][e % 4];
+function zt(s) {
+  if (s >= 10) return String(Math.max(1, I(s)));
+  const e = Math.max(1, I(s * 4)), t = Math.floor(e / 4), i = ["", "¼", "½", "¾"][e % 4];
   return t ? `${t}${i}` : i;
 }
-function be(s, e, t) {
-  return e === "g" || e === "ml" ? s >= 100 ? String(z(s / 5) * 5) : String(Math.max(1, z(s))) : e === "kg" || e === "l" ? Mt(s, t) : Ht(s);
+function ke(s, e, t) {
+  return e === "g" || e === "ml" ? s >= 100 ? String(I(s / 5) * 5) : String(Math.max(1, I(s))) : e === "kg" || e === "l" ? Rt(s, t) : zt(s);
 }
-function Pt(s, e, t, i = "de") {
+function Tt(s, e, t, i = "de") {
   if (s === null) return "";
   const n = e ?? s;
   let r = 1, a = t;
   (t === "g" || t === "ml") && n >= 1e3 && (r = 1e3, a = t === "g" ? "kg" : "l");
-  let u = be(s / r, a, i);
-  return e !== null && (u += `–${be(e / r, a, i)}`), `${u} ${a}`.trim();
+  let u = ke(s / r, a, i);
+  return e !== null && (u += `–${ke(e / r, a, i)}`), `${u} ${a}`.trim();
 }
-function Nt(s, e, t, i = "de") {
-  const n = s.quantity === null ? null : _e(s.quantity, e, t), r = s.quantity_max === null ? null : _e(s.quantity_max, e, t);
-  return Pt(n, r, s.unit, i);
+function Ut(s, e, t, i = "de") {
+  const n = s.quantity === null ? null : xe(s.quantity, e, t), r = s.quantity_max === null ? null : xe(s.quantity_max, e, t);
+  return Tt(n, r, s.unit, i);
 }
-class Rt extends _ {
+class qt extends v {
   static {
     this.properties = {
       hass: { attribute: !1 },
       categories: { attribute: !1 },
+      shoppingList: { attribute: !1 },
+      selected: { state: !0 },
+      wishOpen: { state: !0 },
+      wishNote: { state: !0 },
       recipe: { state: !0 },
       servings: { state: !0 },
       loading: { state: !0 },
@@ -1159,12 +1224,12 @@ class Rt extends _ {
     };
   }
   constructor() {
-    super(), this.categories = [], this.recipe = null, this.servings = 4, this.loading = !1, this.error = "", this.doneSteps = /* @__PURE__ */ new Set(), this.confirmDelete = !1;
+    super(), this.categories = [], this.selected = /* @__PURE__ */ new Set(), this.wishOpen = !1, this.wishNote = "", this.recipe = null, this.servings = 4, this.loading = !1, this.error = "", this.doneSteps = /* @__PURE__ */ new Set(), this.confirmDelete = !1;
   }
   static {
     this.styles = [
-      I,
-      P`
+      M,
+      k`
       .gallery {
         display: flex;
         gap: 8px;
@@ -1275,6 +1340,26 @@ class Rt extends _ {
       .notes {
         white-space: pre-wrap;
       }
+      .pick {
+        flex: none;
+        width: 22px;
+        min-height: 22px;
+        height: 22px;
+        align-self: center;
+      }
+      .add {
+        margin-top: 12px;
+      }
+      .wishbox {
+        margin-right: auto;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .wishbox input {
+        width: 220px;
+      }
       .confirm {
         margin-right: auto;
         display: flex;
@@ -1291,11 +1376,11 @@ class Rt extends _ {
     return this.hass?.locale?.language ?? "en";
   }
   async open(e) {
-    this.recipe = null, this.error = "", this.confirmDelete = !1, this.doneSteps = /* @__PURE__ */ new Set(), this.loading = !0, await this.updateComplete, this.dlg.show();
+    this.recipe = null, this.error = "", this.confirmDelete = !1, this.wishOpen = !1, this.wishNote = "", this.doneSteps = /* @__PURE__ */ new Set(), this.loading = !0, await this.updateComplete, this.dlg.show();
     try {
-      this.recipe = await tt(this.hass.connection, e), this.servings = this.recipe.servings;
+      this.recipe = await ye(this.hass.connection, e), this.servings = this.recipe.servings, this.selected = new Set(this.recipe.ingredients.map((t) => t.id));
     } catch (t) {
-      this.error = x(this.uiLang, S(t));
+      this.error = $(this.uiLang, b(t));
     }
     this.loading = !1;
   }
@@ -1305,10 +1390,42 @@ class Rt extends _ {
   async doDelete() {
     if (this.recipe)
       try {
-        await nt(this.hass.connection, this.recipe.id), this.dispatchEvent(new CustomEvent("deleted", { detail: this.recipe.id })), this.close();
+        await ct(this.hass.connection, this.recipe.id), this.dispatchEvent(new CustomEvent("deleted", { detail: this.recipe.id })), this.close();
       } catch (e) {
-        this.error = x(this.uiLang, S(e)), this.confirmDelete = !1;
+        this.error = $(this.uiLang, b(e)), this.confirmDelete = !1;
       }
+  }
+  async reload() {
+    this.recipe && (this.recipe = await ye(this.hass.connection, this.recipe.id));
+  }
+  async toggleWish() {
+    const e = this.recipe;
+    if (!e) return;
+    const t = this.uiLang;
+    try {
+      e.my_wish_id ? await le(this.hass.connection, e.my_wish_id) : (await ae(this.hass.connection, e.id, this.wishNote.trim()), E(this, o(t, "wish_added"))), this.wishOpen = !1, this.wishNote = "", await this.reload();
+    } catch (i) {
+      E(this, $(t, b(i)));
+    }
+  }
+  async addToList() {
+    const e = this.recipe;
+    if (!e) return;
+    const t = this.uiLang;
+    try {
+      const i = await De(this.hass.connection, e.id, {
+        servings: this.servings,
+        ingredient_ids: [...this.selected],
+        ...this.shoppingList ? { entity_id: this.shoppingList } : {}
+      });
+      E(this, o(t, "shop_result", { added: i.added.length, skipped: i.skipped.length }));
+    } catch (i) {
+      E(this, $(t, b(i)));
+    }
+  }
+  toggleIngredient(e) {
+    const t = new Set(this.selected);
+    t.delete(e) || t.add(e), this.selected = t;
   }
   toggleStep(e) {
     const t = new Set(this.doneSteps);
@@ -1325,12 +1442,19 @@ class Rt extends _ {
     }
     return t.map(
       (i) => l`
-        ${i.name ? l`<h4>${i.name}</h4>` : d}
+        ${i.name ? l`<h4>${i.name}</h4>` : h}
         <ul class="ing">
           ${i.items.map(
         (n) => l`<li>
-              <span class="amt">${Nt(n, e.servings, this.servings, this.uiLang)}</span>
-              <span>${n.name}${n.note ? l` <span class="muted">(${n.note})</span>` : d}</span>
+              <input
+                type="checkbox"
+                class="pick"
+                aria-label=${n.name}
+                .checked=${this.selected.has(n.id)}
+                @change=${() => this.toggleIngredient(n.id)}
+              />
+              <span class="amt">${Ut(n, e.servings, this.servings, this.uiLang)}</span>
+              <span>${n.name}${n.note ? l` <span class="muted">(${n.note})</span>` : h}</span>
             </li>`
       )}
         </ul>
@@ -1345,11 +1469,11 @@ class Rt extends _ {
       </div>
       <div class="meta">
         ${i.map((n) => l`<span class="tag">${n.name}</span>`)}
-        ${e.prep_minutes !== null ? l`<span class="tag">${m(g.clock)} ${o(t, "prep", { n: e.prep_minutes })}</span>` : d}
-        ${e.cook_minutes !== null ? l`<span class="tag">${m(g.clock)} ${o(t, "cook", { n: e.cook_minutes })}</span>` : d}
-        ${e.visibility === "private" ? l`<span class="tag">${m(g.lock)} ${o(t, "only_me")}</span>` : d}
+        ${e.prep_minutes !== null ? l`<span class="tag">${m(g.clock)} ${o(t, "prep", { n: e.prep_minutes })}</span>` : h}
+        ${e.cook_minutes !== null ? l`<span class="tag">${m(g.clock)} ${o(t, "cook", { n: e.cook_minutes })}</span>` : h}
+        ${e.visibility === "private" ? l`<span class="tag">${m(g.lock)} ${o(t, "only_me")}</span>` : h}
       </div>
-      ${e.description ? l`<p>${e.description}</p>` : d}
+      ${e.description ? l`<p>${e.description}</p>` : h}
       <div class="meta">
         <h3 style="margin:0">${o(t, "ingredients")}</h3>
         <span class="servings">
@@ -1363,29 +1487,51 @@ class Rt extends _ {
         </span>
       </div>
       ${this.renderIngredients(e)}
+      ${e.ingredients.length ? l`<button class="btn add" ?disabled=${this.selected.size === 0} @click=${() => this.addToList()}>
+            ${o(t, "shop_n", { n: this.selected.size })}
+          </button>` : h}
       ${e.steps.length ? l`<h3>${o(t, "steps")}</h3>
             <ol class="steps">
               ${e.steps.map(
       (n, r) => l`<li class=${this.doneSteps.has(r) ? "done" : ""} @click=${() => this.toggleStep(r)}>
-                  <span>${n.section ? l`<strong>${n.section}</strong><br />` : d}${n.text}</span>
+                  <span>${n.section ? l`<strong>${n.section}</strong><br />` : h}${n.text}</span>
                 </li>`
     )}
-            </ol>` : d}
-      ${e.notes ? l`<h3>${o(t, "notes")}</h3><p class="notes">${e.notes}</p>` : d}
+            </ol>` : h}
+      ${e.notes ? l`<h3>${o(t, "notes")}</h3><p class="notes">${e.notes}</p>` : h}
       ${e.source_url ? l`<p>
             <a href=${e.source_url} target="_blank" rel="noopener noreferrer">
               ${o(t, "source")}: ${e.source_name ?? e.source_url}
             </a>
-          </p>` : d}
+          </p>` : h}
     `;
+  }
+  renderWish(e) {
+    const t = this.uiLang;
+    return e.my_wish_id ? l`<button slot="footer" class="btn" @click=${() => this.toggleWish()}>
+        ${o(t, "wish_remove")}
+      </button>` : this.wishOpen ? l`<div slot="footer" class="wishbox">
+      <input
+        placeholder=${o(t, "wish_note")}
+        aria-label=${o(t, "wish_note")}
+        maxlength="500"
+        .value=${this.wishNote}
+        @input=${(i) => this.wishNote = i.target.value}
+        @keydown=${(i) => i.key === "Enter" && this.toggleWish()}
+      />
+      <button class="btn primary" @click=${() => this.toggleWish()}>${o(t, "wish_send")}</button>
+    </div>` : l`<button slot="footer" class="btn" @click=${() => this.wishOpen = !0}>
+        ♥ ${o(t, "wish_add")}
+      </button>`;
   }
   renderFooter(e) {
     const t = this.uiLang;
-    return e.can_edit ? this.confirmDelete ? l`<div slot="footer" class="confirm">
-            <span>${o(t, "delete_confirm")}</span>
-            <button class="btn danger" @click=${() => this.doDelete()}>${o(t, "delete")}</button>
-            <button class="btn" @click=${() => this.confirmDelete = !1}>${o(t, "cancel")}</button>
-          </div>` : l`<button slot="footer" class="btn danger" @click=${() => this.confirmDelete = !0}>
+    return this.confirmDelete ? l`<div slot="footer" class="confirm">
+        <span>${o(t, "delete_confirm")}</span>
+        <button class="btn danger" @click=${() => this.doDelete()}>${o(t, "delete")}</button>
+        <button class="btn" @click=${() => this.confirmDelete = !1}>${o(t, "cancel")}</button>
+      </div>` : l`${this.renderWish(e)}
+    ${e.can_edit ? l`<button slot="footer" class="btn danger" @click=${() => this.confirmDelete = !0}>
             ${m(g.delete)} ${o(t, "delete")}
           </button>
           <button
@@ -1394,7 +1540,7 @@ class Rt extends _ {
             @click=${() => this.dispatchEvent(new CustomEvent("edit", { detail: e }))}
           >
             ${m(g.edit)} ${o(t, "edit")}
-          </button>` : d;
+          </button>` : h}`;
   }
   render() {
     const e = this.uiLang;
@@ -1403,40 +1549,40 @@ class Rt extends _ {
       .closeLabel=${o(e, "close")}
       @closed=${() => this.dispatchEvent(new CustomEvent("closed"))}
     >
-      ${this.loading ? l`<p class="muted">${o(e, "loading")}</p>` : d}
-      ${this.error ? l`<p class="error">${this.error}</p>` : d}
-      ${this.recipe ? this.renderBody(this.recipe) : d}
-      ${this.recipe ? this.renderFooter(this.recipe) : d}
+      ${this.loading ? l`<p class="muted">${o(e, "loading")}</p>` : h}
+      ${this.error ? l`<p class="error">${this.error}</p>` : h}
+      ${this.recipe ? this.renderBody(this.recipe) : h}
+      ${this.recipe ? this.renderFooter(this.recipe) : h}
     </es-dialog>`;
   }
 }
-customElements.get("es-recipe-dialog") || customElements.define("es-recipe-dialog", Rt);
-const Dt = 2048;
-async function Ot(s) {
+customElements.get("es-recipe-dialog") || customElements.define("es-recipe-dialog", qt);
+const It = 2048;
+async function Vt(s) {
   try {
-    const e = await createImageBitmap(s, { imageOrientation: "from-image" }), t = Math.min(1, Dt / Math.max(e.width, e.height)), i = document.createElement("canvas");
+    const e = await createImageBitmap(s, { imageOrientation: "from-image" }), t = Math.min(1, It / Math.max(e.width, e.height)), i = document.createElement("canvas");
     return i.width = Math.round(e.width * t), i.height = Math.round(e.height * t), i.getContext("2d").drawImage(e, 0, 0, i.width, i.height), e.close(), await new Promise((r) => i.toBlob(r, "image/jpeg", 0.85)) ?? s;
   } catch {
     return s;
   }
 }
-const Ut = 10, zt = (s) => `/api/essensplan/images/${s}/thumb`, ve = (s) => s === null ? "" : String(s).replace(".", ",");
-function ye(s) {
+const Wt = 10, jt = (s) => `/api/essensplan/images/${s}/thumb`, Ae = (s) => s === null ? "" : String(s).replace(".", ",");
+function Se(s) {
   const e = s.trim().replace(",", ".");
   if (!e) return null;
   const t = /^(\d+)\/(\d+)$/.exec(e), i = t ? Number(t[1]) / Number(t[2]) : Number(e);
   return Number.isFinite(i) && i >= 0 ? i : null;
 }
-function Vt(s) {
+function Zt(s) {
   const e = /^\s*([\d.,/]+)\s*(?:[-–]\s*([\d.,/]+))?\s*$/.exec(s);
   if (!e) return [null, null];
-  const t = ye(e[1]), i = e[2] ? ye(e[2]) : null;
+  const t = Se(e[1]), i = e[2] ? Se(e[2]) : null;
   return [t, t !== null && i !== null && i > t ? i : null];
 }
-function He(s) {
-  return { amount: s.quantity === null ? "" : ve(s.quantity) + (s.quantity_max !== null ? `-${ve(s.quantity_max)}` : ""), unit: s.unit, name: s.name, note: s.note, group_name: s.group_name };
+function ze(s) {
+  return { amount: s.quantity === null ? "" : Ae(s.quantity) + (s.quantity_max !== null ? `-${Ae(s.quantity_max)}` : ""), unit: s.unit, name: s.name, note: s.note, group_name: s.group_name };
 }
-function F() {
+function B() {
   return {
     name: "",
     description: "",
@@ -1453,7 +1599,7 @@ function F() {
     steps: [{ section: null, text: "" }]
   };
 }
-function It(s) {
+function Ft(s) {
   const e = "images" in s ? s.images.map((t) => t.id) : s.image_ids;
   return {
     name: s.name,
@@ -1467,19 +1613,19 @@ function It(s) {
     source_name: s.source_name,
     category_ids: [...s.category_ids],
     image_ids: [...e],
-    ingredients: s.ingredients.length ? s.ingredients.map(He) : F().ingredients,
-    steps: s.steps.length ? s.steps.map((t) => ({ section: t.section, text: t.text })) : F().steps
+    ingredients: s.ingredients.length ? s.ingredients.map(ze) : B().ingredients,
+    steps: s.steps.length ? s.steps.map((t) => ({ section: t.section, text: t.text })) : B().steps
   };
 }
-function E(s, e, t) {
+function N(s, e, t) {
   const i = e + t;
   if (i < 0 || i >= s.length) return s;
   const n = [...s];
   return [n[e], n[i]] = [n[i], n[e]], n;
 }
-class Tt extends _ {
+class Bt extends v {
   constructor() {
-    super(), this.recipeId = null, this.snapshot = "", this.categories = [], this.draft = F(), this.uploading = 0, this.saving = !1, this.error = "", this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", this.confirmDiscard = !1;
+    super(), this.recipeId = null, this.snapshot = "", this.categories = [], this.draft = B(), this.uploading = 0, this.saving = !1, this.error = "", this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", this.confirmDiscard = !1;
   }
   static {
     this.properties = {
@@ -1497,8 +1643,8 @@ class Tt extends _ {
   }
   static {
     this.styles = [
-      I,
-      P`
+      M,
+      k`
       section {
         margin-bottom: 20px;
       }
@@ -1600,7 +1746,7 @@ class Tt extends _ {
   }
   /** New recipe (no argument), edit an existing one (Recipe), or review an import (RecipeInput). */
   async open(e) {
-    this.recipeId = e && "id" in e ? e.id : null, this.draft = e ? It(e) : F(), this.snapshot = JSON.stringify(this.draft), this.error = "", this.confirmDiscard = !1, this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", await this.updateComplete, this.dlg.show();
+    this.recipeId = e && "id" in e ? e.id : null, this.draft = e ? Ft(e) : B(), this.snapshot = JSON.stringify(this.draft), this.error = "", this.confirmDiscard = !1, this.pasteOpen = !1, this.pasteText = "", this.newCategory = "", await this.updateComplete, this.dlg.show();
   }
   get dirty() {
     return JSON.stringify(this.draft) !== this.snapshot;
@@ -1616,16 +1762,16 @@ class Tt extends _ {
     const t = e.target, i = Array.from(t.files ?? []);
     t.value = "";
     for (const n of i) {
-      if (this.draft.image_ids.length >= Ut) {
+      if (this.draft.image_ids.length >= Wt) {
         this.error = o(this.uiLang, "max_images");
         break;
       }
       this.uploading++;
       try {
-        const r = await ct(this.hass, await Ot(n));
+        const r = await gt(this.hass, await Vt(n));
         this.patch({ image_ids: [...this.draft.image_ids, r.id] });
       } catch (r) {
-        this.error = x(this.uiLang, S(r));
+        this.error = $(this.uiLang, b(r));
       }
       this.uploading--;
     }
@@ -1639,10 +1785,10 @@ class Tt extends _ {
     const e = this.newCategory.trim();
     if (e)
       try {
-        const t = await at(this.hass.connection, e);
-        this.newCategory = "", this.patch({ category_ids: [...this.draft.category_ids, t.id] }), await Le(this.hass).refresh();
+        const t = await pt(this.hass.connection, e);
+        this.newCategory = "", this.patch({ category_ids: [...this.draft.category_ids, t.id] }), await ce(this.hass).refresh();
       } catch (t) {
-        this.error = x(this.uiLang, S(t));
+        this.error = $(this.uiLang, b(t));
       }
   }
   // --- ingredients / steps ------------------------------------------------------
@@ -1655,10 +1801,10 @@ class Tt extends _ {
 `).filter((t) => t.trim());
     if (e.length)
       try {
-        const t = await lt(this.hass.connection, e.slice(0, 100)), i = this.draft.ingredients.filter((n) => n.name.trim() || n.amount.trim());
-        this.patch({ ingredients: [...i, ...t.map(He)] }), this.pasteText = "", this.pasteOpen = !1;
+        const t = await ut(this.hass.connection, e.slice(0, 100)), i = this.draft.ingredients.filter((n) => n.name.trim() || n.amount.trim());
+        this.patch({ ingredients: [...i, ...t.map(ze)] }), this.pasteText = "", this.pasteOpen = !1;
       } catch (t) {
-        this.error = x(this.uiLang, S(t));
+        this.error = $(this.uiLang, b(t));
       }
   }
   setStep(e, t) {
@@ -1683,7 +1829,7 @@ class Tt extends _ {
       category_ids: e.category_ids,
       image_ids: e.image_ids,
       ingredients: e.ingredients.filter((i) => i.name.trim()).map((i) => {
-        const [n, r] = Vt(i.amount);
+        const [n, r] = Zt(i.amount);
         return {
           group_name: i.group_name,
           quantity: n,
@@ -1703,10 +1849,10 @@ class Tt extends _ {
     }
     this.saving = !0, this.error = "";
     try {
-      const e = this.buildInput(), t = this.recipeId ? await st(this.hass.connection, this.recipeId, e) : await it(this.hass.connection, e);
+      const e = this.buildInput(), t = this.recipeId ? await lt(this.hass.connection, this.recipeId, e) : await at(this.hass.connection, e);
       this.snapshot = JSON.stringify(this.draft), this.dispatchEvent(new CustomEvent("saved", { detail: t })), this.dlg.close();
     } catch (e) {
-      this.error = x(this.uiLang, S(e));
+      this.error = $(this.uiLang, b(e));
     }
     this.saving = !1;
   }
@@ -1718,12 +1864,12 @@ class Tt extends _ {
       <div class="photos">
         ${t.map(
       (i, n) => l`<div class="photo">
-            <img src=${zt(i)} alt="" loading="lazy" />
+            <img src=${jt(i)} alt="" loading="lazy" />
             <div class="row-actions">
-              <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ image_ids: E(t, n, -1) })}>
+              <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ image_ids: N(t, n, -1) })}>
                 ${m(g.left)}
               </button>
-              <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ image_ids: E(t, n, 1) })}>
+              <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ image_ids: N(t, n, 1) })}>
                 ${m(g.right)}
               </button>
               <button class="icon-btn" aria-label=${o(e, "remove")} @click=${() => this.patch({ image_ids: t.filter((r) => r !== i) })}>
@@ -1740,7 +1886,7 @@ class Tt extends _ {
         <button class="btn" @click=${() => this.renderRoot.querySelector("#gal").click()}>
           ${m(g.image)} ${o(e, "gallery")}
         </button>
-        ${this.uploading ? l`<span class="muted">${o(e, "uploading")}</span>` : d}
+        ${this.uploading ? l`<span class="muted">${o(e, "uploading")}</span>` : h}
       </div>
       <input id="cam" type="file" accept="image/*" capture="environment" @change=${this.onFiles} />
       <input id="gal" type="file" accept="image/*" multiple @change=${this.onFiles} />
@@ -1761,8 +1907,8 @@ class Tt extends _ {
           <input class="note" placeholder=${o(e, "note")} aria-label=${o(e, "note")} .value=${i.note}
             @input=${(r) => this.setIng(n, { note: r.target.value })} />
           <div class="row-actions">
-            <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ ingredients: E(t, n, -1) })}>${m(g.arrowUp)}</button>
-            <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ ingredients: E(t, n, 1) })}>${m(g.arrowDown)}</button>
+            <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ ingredients: N(t, n, -1) })}>${m(g.arrowUp)}</button>
+            <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ ingredients: N(t, n, 1) })}>${m(g.arrowDown)}</button>
             <button class="icon-btn" aria-label=${o(e, "remove")} @click=${() => this.patch({ ingredients: t.filter((r, a) => a !== n) })}>${m(g.delete)}</button>
           </div>
         </div>`
@@ -1777,7 +1923,7 @@ class Tt extends _ {
             <textarea rows="6" placeholder=${o(e, "paste_hint")} .value=${this.pasteText}
               @input=${(i) => this.pasteText = i.target.value}></textarea>
             <button class="btn add" @click=${() => this.applyPaste()}>${o(e, "apply_lines")}</button>
-          </div>` : d}
+          </div>` : h}
     </section>`;
   }
   renderSteps() {
@@ -1789,8 +1935,8 @@ class Tt extends _ {
           <textarea rows="3" aria-label=${`${o(e, "step")} ${n + 1}`} placeholder=${`${o(e, "step")} ${n + 1}`} .value=${i.text}
             @input=${(r) => this.setStep(n, r.target.value)}></textarea>
           <div class="row-actions">
-            <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ steps: E(t, n, -1) })}>${m(g.arrowUp)}</button>
-            <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ steps: E(t, n, 1) })}>${m(g.arrowDown)}</button>
+            <button class="icon-btn" aria-label=${o(e, "move_up")} @click=${() => this.patch({ steps: N(t, n, -1) })}>${m(g.arrowUp)}</button>
+            <button class="icon-btn" aria-label=${o(e, "move_down")} @click=${() => this.patch({ steps: N(t, n, 1) })}>${m(g.arrowDown)}</button>
             <button class="icon-btn" aria-label=${o(e, "remove")} @click=${() => this.patch({ steps: t.filter((r, a) => a !== n) })}>${m(g.delete)}</button>
           </div>
         </div>`
@@ -1860,9 +2006,9 @@ class Tt extends _ {
           <input type="checkbox" .checked=${t.private} @change=${(i) => this.patch({ private: i.target.checked })} />
           ${o(e, "only_me_switch")}
         </label>
-        ${t.source_url ? l`<p class="muted">${o(e, "source")}: ${t.source_name ?? t.source_url}</p>` : d}
+        ${t.source_url ? l`<p class="muted">${o(e, "source")}: ${t.source_name ?? t.source_url}</p>` : h}
       </section>
-      ${this.error ? l`<p class="error">${this.error}</p>` : d}
+      ${this.error ? l`<p class="error">${this.error}</p>` : h}
       ${this.confirmDiscard ? l`<div slot="footer" class="confirm">
             <span>${o(e, "discard_confirm")}</span>
             <button class="btn danger" @click=${() => {
@@ -1876,12 +2022,12 @@ class Tt extends _ {
     </es-dialog>`;
   }
 }
-customElements.get("es-recipe-editor") || customElements.define("es-recipe-editor", Tt);
-function J(s) {
+customElements.get("es-recipe-editor") || customElements.define("es-recipe-editor", Bt);
+function O(s) {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
-const q = 60, Q = "__quick", X = "__mine";
-class qt extends _ {
+const j = 60, X = "__quick", Y = "__mine";
+class Gt extends v {
   static {
     this.properties = {
       config: { state: !0 },
@@ -1893,7 +2039,7 @@ class qt extends _ {
     };
   }
   constructor() {
-    super(), this.config = { type: "custom:essensplan-library-card" }, this.query = "", this.filter = "", this.limit = q, this.menuOpen = !1, this.tick = 0;
+    super(), this.config = { type: "custom:essensplan-library-card" }, this.query = "", this.filter = "", this.limit = j, this.menuOpen = !1, this.tick = 0;
   }
   static getStubConfig() {
     return { type: "custom:essensplan-library-card" };
@@ -1942,7 +2088,7 @@ class qt extends _ {
   }
   set hass(e) {
     const t = !this._hass, i = this._hass && this._hass.locale.language !== e.locale.language;
-    this._hass = e, t ? (this.store = Le(e), this.isConnected && this.attach(), this.requestUpdate()) : i && this.requestUpdate();
+    this._hass = e, t ? (this.store = ce(e), this.isConnected && this.attach(), this.requestUpdate()) : i && this.requestUpdate();
   }
   get hass() {
     return this._hass;
@@ -1965,13 +2111,13 @@ class qt extends _ {
   updated() {
     const e = this.renderRoot.querySelector("#more");
     this.observer?.disconnect(), e && (this.observer = new IntersectionObserver((t) => {
-      t.some((i) => i.isIntersecting) && (this.limit += q);
+      t.some((i) => i.isIntersecting) && (this.limit += j);
     }), this.observer.observe(e));
   }
   static {
     this.styles = [
-      I,
-      P`
+      M,
+      k`
       :host {
         display: block;
       }
@@ -2056,12 +2202,8 @@ class qt extends _ {
       .tile {
         position: relative;
         display: block;
-        padding: 0;
-        border: none;
         border-radius: 10px;
         overflow: hidden;
-        text-align: left;
-        cursor: pointer;
         background: var(--secondary-background-color);
         content-visibility: auto;
         contain-intrinsic-size: auto 200px;
@@ -2100,15 +2242,39 @@ class qt extends _ {
         gap: 8px;
         align-items: center;
       }
-      .badge {
+      .tile .open {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: none;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+      }
+      .heart {
         position: absolute;
-        top: 6px;
-        right: 6px;
+        top: 0;
+        right: 0;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .heart .pill {
         padding: 2px 8px;
-        border-radius: 10px;
+        border-radius: 12px;
+        background: var(--card-background-color);
+        font-size: 0.85em;
+        opacity: 0.92;
+      }
+      .heart[aria-pressed="true"] .pill {
         background: var(--primary-color);
         color: var(--text-primary-color, #fff);
-        font-size: 0.8em;
       }
       .empty {
         text-align: center;
@@ -2136,17 +2302,17 @@ class qt extends _ {
     return t?.length ? e.filter((i) => t.includes(i.id)) : e;
   }
   filtered() {
-    const e = this.store, t = J(this.query.trim()), i = new Map(e.categories.map((c) => [c.id, J(c.name)])), n = this._hass?.user?.id;
+    const e = this.store, t = O(this.query.trim()), i = new Map(e.categories.map((c) => [c.id, O(c.name)])), n = this._hass?.user?.id;
     let r = e.recipes.filter((c) => {
-      if (this.filter === Q) {
-        const h = (c.prep_minutes ?? 0) + (c.cook_minutes ?? 0);
-        if (c.prep_minutes === null && c.cook_minutes === null || h > 30) return !1;
-      } else if (this.filter === X) {
+      if (this.filter === X) {
+        const d = (c.prep_minutes ?? 0) + (c.cook_minutes ?? 0);
+        if (c.prep_minutes === null && c.cook_minutes === null || d > 30) return !1;
+      } else if (this.filter === Y) {
         if (c.created_by !== n) return !1;
       } else if (this.filter && !c.category_ids.includes(this.filter)) return !1;
       if (!t) return !0;
-      const p = J(c.name) + " " + c.category_ids.map((h) => i.get(h) ?? "").join(" ");
-      return t.split(/\s+/).every((h) => p.includes(h));
+      const p = O(c.name) + " " + c.category_ids.map((d) => i.get(d) ?? "").join(" ");
+      return t.split(/\s+/).every((d) => p.includes(d));
     });
     const a = this.config.sort ?? "name", u = (c, p) => c.name.localeCompare(p.name, this.uiLang);
     return a === "newest" ? r = [...r].sort((c, p) => p.updated_at.localeCompare(c.updated_at)) : a === "popular" ? r = [...r].sort((c, p) => p.open_wish_count - c.open_wish_count || u(c, p)) : r = [...r].sort(u), r;
@@ -2170,6 +2336,14 @@ class qt extends _ {
   openRecipe(e) {
     this.recipeDialog.open(e);
   }
+  async toggleWish(e) {
+    const t = this._hass.connection;
+    try {
+      e.my_wish_id ? await le(t, e.my_wish_id) : await ae(t, e.id), await this.store?.refresh();
+    } catch (i) {
+      E(this, $(this.lang, b(i)));
+    }
+  }
   onEdit(e) {
     this.recipeDialog.close(), this.editor.open(e.detail);
   }
@@ -2179,27 +2353,36 @@ class qt extends _ {
   // --- render -------------------------------------------------------------------
   renderTile(e) {
     const t = this.uiLang, i = (e.prep_minutes ?? 0) + (e.cook_minutes ?? 0), n = this.store.categories.find((r) => r.id === e.category_ids[0]);
-    return l`<button class="tile" @click=${() => this.openRecipe(e.id)}>
-      <div class="img">
-        ${e.thumb_url ? l`<img src=${e.thumb_url} alt="" loading="lazy" decoding="async" />` : l`<ha-icon icon=${n?.icon ?? "mdi:silverware-fork-knife"}></ha-icon>`}
-      </div>
-      ${e.open_wish_count ? l`<span class="badge">♥ ${e.open_wish_count}</span>` : d}
-      <div class="info">
-        <div class="name">${e.name}</div>
-        <div class="sub">
-          ${i ? l`<span>${o(t, "minutes_short", { n: i })}</span>` : d}
-          ${e.visibility === "private" ? l`<span>${o(t, "only_me")}</span>` : d}
+    return l`<div class="tile">
+      <button class="open" @click=${() => this.openRecipe(e.id)}>
+        <div class="img">
+          ${e.thumb_url ? l`<img src=${e.thumb_url} alt="" loading="lazy" decoding="async" />` : l`<ha-icon icon=${n?.icon ?? "mdi:silverware-fork-knife"}></ha-icon>`}
         </div>
-      </div>
-    </button>`;
+        <div class="info">
+          <div class="name">${e.name}</div>
+          <div class="sub">
+            ${i ? l`<span>${o(t, "minutes_short", { n: i })}</span>` : h}
+            ${e.visibility === "private" ? l`<span>${o(t, "only_me")}</span>` : h}
+          </div>
+        </div>
+      </button>
+      <button
+        class="heart"
+        aria-pressed=${e.my_wish_id !== null}
+        aria-label=${e.my_wish_id ? o(t, "wish_remove") : o(t, "wish_heart")}
+        @click=${() => this.toggleWish(e)}
+      >
+        <span class="pill">${e.my_wish_id ? "♥" : "♡"}${e.open_wish_count ? ` ${e.open_wish_count}` : ""}</span>
+      </button>
+    </div>`;
   }
   renderEmpty() {
     const e = this.uiLang;
     return l`<div class="empty">
       <p class="muted">${o(e, "empty_title")}</p>
       <div class="btns">
-        ${this.config.show_add !== !1 ? l`<button class="btn primary" @click=${() => this.newRecipe()}>${m(g.plus)} ${o(e, "empty_first")}</button>` : d}
-        ${this.config.show_import !== !1 ? l`<button class="btn" @click=${() => this.importRecipe()}>${m(g.link)} ${o(e, "empty_import")}</button>` : d}
+        ${this.config.show_add !== !1 ? l`<button class="btn primary" @click=${() => this.newRecipe()}>${m(g.plus)} ${o(e, "empty_first")}</button>` : h}
+        ${this.config.show_import !== !1 ? l`<button class="btn" @click=${() => this.importRecipe()}>${m(g.link)} ${o(e, "empty_import")}</button>` : h}
       </div>
     </div>`;
   }
@@ -2217,8 +2400,8 @@ class qt extends _ {
                   placeholder=${o(e, "search")}
                   aria-label=${o(e, "search")}
                   .value=${this.query}
-                  @input=${(h) => {
-      this.query = h.target.value, this.limit = q;
+                  @input=${(d) => {
+      this.query = d.target.value, this.limit = j;
     }}
                 />
               </div>` : l`<span class="spacer"></span>`}
@@ -2226,43 +2409,477 @@ class qt extends _ {
                 <button class="icon-btn" aria-label=${o(e, "add_menu")} aria-expanded=${this.menuOpen}
                   @click=${() => this.menuOpen = !this.menuOpen}>${m(g.plus)}</button>
                 ${this.menuOpen ? l`<div class="menu">
-                      ${c ? l`<button @click=${() => this.newRecipe()}>${o(e, "new_recipe_menu")}</button>` : d}
-                      ${p ? l`<button @click=${() => this.importRecipe()}>${o(e, "import_menu")}</button>` : d}
-                    </div>` : d}
-              </div>` : d}
+                      ${c ? l`<button @click=${() => this.newRecipe()}>${o(e, "new_recipe_menu")}</button>` : h}
+                      ${p ? l`<button @click=${() => this.importRecipe()}>${o(e, "import_menu")}</button>` : h}
+                    </div>` : h}
+              </div>` : h}
         </header>
         <div class="filters">
           <button class="chip" aria-pressed=${this.filter === ""} @click=${() => this.setFilter("")}>${o(e, "filter_all")}</button>
           ${this.visibleCategories.map(
-      (h) => l`<button class="chip" aria-pressed=${this.filter === h.id} @click=${() => this.setFilter(h.id)}>
-              <ha-icon icon=${h.icon} style="--mdc-icon-size:18px"></ha-icon>${h.name}
+      (d) => l`<button class="chip" aria-pressed=${this.filter === d.id} @click=${() => this.setFilter(d.id)}>
+              <ha-icon icon=${d.icon} style="--mdc-icon-size:18px"></ha-icon>${d.name}
             </button>`
     )}
-          <button class="chip" aria-pressed=${this.filter === Q} @click=${() => this.setFilter(Q)}>${o(e, "filter_quick")}</button>
-          <button class="chip" aria-pressed=${this.filter === X} @click=${() => this.setFilter(X)}>${o(e, "filter_mine")}</button>
+          <button class="chip" aria-pressed=${this.filter === X} @click=${() => this.setFilter(X)}>${o(e, "filter_quick")}</button>
+          <button class="chip" aria-pressed=${this.filter === Y} @click=${() => this.setFilter(Y)}>${o(e, "filter_mine")}</button>
         </div>
-        ${t.error ? l`<p class="error">${x(e, "unknown")}</p>` : d}
-        ${t.loaded ? t.recipes.length === 0 ? this.renderEmpty() : n.length === 0 ? l`<p class="muted empty">${o(e, "no_results")}</p>` : l`<div class="grid" style=${u}>${r.map((h) => this.renderTile(h))}</div>
-                  ${r.length < n.length ? l`<div id="more"></div>` : d}` : l`<p class="muted">${o(e, "loading")}</p>`}
+        ${t.error ? l`<p class="error">${$(e, "unknown")}</p>` : h}
+        ${t.loaded ? t.recipes.length === 0 ? this.renderEmpty() : n.length === 0 ? l`<p class="muted empty">${o(e, "no_results")}</p>` : l`<div class="grid" style=${u}>${r.map((d) => this.renderTile(d))}</div>
+                  ${r.length < n.length ? l`<div id="more"></div>` : h}` : l`<p class="muted">${o(e, "loading")}</p>`}
       </div>
-      <es-recipe-dialog .hass=${this._hass} .categories=${t.categories} @edit=${this.onEdit}></es-recipe-dialog>
+      <es-recipe-dialog
+        .hass=${this._hass}
+        .categories=${t.categories}
+        .shoppingList=${i.shopping_list}
+        @edit=${this.onEdit}
+      ></es-recipe-dialog>
       <es-recipe-editor .hass=${this._hass} .categories=${t.categories} @saved=${this.onSaved}></es-recipe-editor>
-      <es-import-dialog .hass=${this._hass} @imported=${(h) => {
-      this.editor.open(h.detail);
+      <es-import-dialog .hass=${this._hass} @imported=${(d) => {
+      this.editor.open(d.detail);
     }}></es-import-dialog>
     `;
   }
   setFilter(e) {
-    this.filter = e, this.limit = q;
+    this.filter = e, this.limit = j;
   }
 }
-customElements.get("essensplan-library-card") || customElements.define("essensplan-library-card", qt);
-const Z = window;
-Z.customCards = Z.customCards ?? [];
-Z.customCards.some((s) => s.type === "essensplan-library-card") || Z.customCards.push({
-  type: "essensplan-library-card",
-  name: "Essensplan – Bibliothek",
-  description: "Gerichte mit Fotos, Suche und Filtern / Dish library with photos, search and filters",
-  preview: !0,
-  documentationURL: "https://github.com/GITHUB_USER/essensplan"
-});
+customElements.get("essensplan-library-card") || customElements.define("essensplan-library-card", Gt);
+const Kt = 80;
+class Jt extends v {
+  static {
+    this.properties = {
+      hass: { attribute: !1 },
+      recipes: { attribute: !1 },
+      categories: { attribute: !1 },
+      query: { state: !0 }
+    };
+  }
+  constructor() {
+    super(), this.recipes = [], this.categories = [], this.query = "";
+  }
+  static {
+    this.styles = [
+      M,
+      k`
+      .list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .item {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-height: 56px;
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        background: var(--secondary-background-color);
+        text-align: left;
+        cursor: pointer;
+        overflow: hidden;
+      }
+      .item img,
+      .item .ph {
+        flex: none;
+        width: 64px;
+        height: 48px;
+        object-fit: cover;
+        background: var(--divider-color);
+      }
+      .item span {
+        padding-right: 8px;
+        line-height: 1.2;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    `
+    ];
+  }
+  get dlg() {
+    return this.renderRoot.querySelector("es-dialog");
+  }
+  get uiLang() {
+    return this.hass?.locale?.language ?? "en";
+  }
+  async open() {
+    this.query = "", await this.updateComplete, this.dlg.show();
+  }
+  pick(e) {
+    this.dispatchEvent(new CustomEvent("picked", { detail: e })), this.dlg.close();
+  }
+  filtered() {
+    const e = O(this.query.trim());
+    if (!e) return this.recipes;
+    const t = new Map(this.categories.map((i) => [i.id, O(i.name)]));
+    return this.recipes.filter((i) => {
+      const n = `${O(i.name)} ${i.category_ids.map((r) => t.get(r) ?? "").join(" ")}`;
+      return e.split(/\s+/).every((r) => n.includes(r));
+    });
+  }
+  render() {
+    const e = this.uiLang, t = this.filtered();
+    return l`<es-dialog .heading=${o(e, "picker_title")} .closeLabel=${o(e, "close")}>
+      <input
+        type="search"
+        placeholder=${o(e, "search")}
+        aria-label=${o(e, "search")}
+        .value=${this.query}
+        @input=${(i) => this.query = i.target.value}
+      />
+      ${t.length === 0 ? l`<p class="muted">${o(e, "no_results")}</p>` : h}
+      <div class="list">
+        ${t.slice(0, Kt).map(
+      (i) => l`<button class="item" @click=${() => this.pick(i.id)}>
+            ${i.thumb_url ? l`<img src=${i.thumb_url} alt="" loading="lazy" decoding="async" />` : l`<div class="ph"></div>`}
+            <span>${i.name}</span>
+          </button>`
+    )}
+      </div>
+    </es-dialog>`;
+  }
+}
+customElements.get("es-recipe-picker") || customElements.define("es-recipe-picker", Jt);
+class Qt extends v {
+  static {
+    this.properties = {
+      config: { state: !0 },
+      tick: { state: !0 },
+      done: { state: !0 }
+    };
+  }
+  constructor() {
+    super(), this.config = { type: "custom:essensplan-wishes-card" }, this.tick = 0, this.done = [];
+  }
+  static getStubConfig() {
+    return { type: "custom:essensplan-wishes-card" };
+  }
+  static getConfigForm() {
+    const e = document.documentElement.lang || navigator.language || "en", t = [
+      { name: "title", selector: { text: {} } },
+      {
+        name: "layout",
+        selector: {
+          select: {
+            mode: "dropdown",
+            options: [
+              { value: "list", label: o(e, "cfg_layout_list") },
+              { value: "grid", label: o(e, "cfg_layout_grid") }
+            ]
+          }
+        }
+      },
+      { name: "show_done", selector: { number: { min: 0, max: 20, mode: "box" } } },
+      { name: "shopping_list", selector: { entity: { domain: "todo" } } }
+    ], i = {
+      title: "cfg_title",
+      layout: "cfg_layout",
+      show_done: "cfg_show_done",
+      shopping_list: "cfg_shopping_list"
+    };
+    return {
+      schema: t,
+      computeLabel: (n) => i[n.name] ? o(e, i[n.name]) : n.name
+    };
+  }
+  setConfig(e) {
+    this.config = { ...e };
+  }
+  set hass(e) {
+    const t = !this._hass, i = this._hass && this._hass.locale.language !== e.locale.language;
+    this._hass = e, t ? (this.store = ce(e), this.isConnected && this.attach(), this.requestUpdate()) : i && this.requestUpdate();
+  }
+  get hass() {
+    return this._hass;
+  }
+  getCardSize() {
+    return 6;
+  }
+  getGridOptions() {
+    return { columns: 12, min_columns: 6, rows: "auto" };
+  }
+  connectedCallback() {
+    super.connectedCallback(), this.attach();
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback(), this.unsub?.(), this.unsub = void 0, clearTimeout(this.doneTimer);
+  }
+  attach() {
+    this.unsub || !this.store || (this.unsub = this.store.subscribe(() => {
+      this.tick++, this.scheduleDone();
+    }));
+  }
+  /** Recently cooked dishes are not part of the shared store; reload them after wish changes. */
+  scheduleDone() {
+    const e = Number(this.config.show_done ?? 0);
+    !e || !this._hass || (clearTimeout(this.doneTimer), this.doneTimer = setTimeout(async () => {
+      try {
+        this.done = await Pe(this._hass.connection, "done", Math.min(e * 5, 100));
+      } catch {
+      }
+    }, 200));
+  }
+  static {
+    this.styles = [
+      M,
+      k`
+      :host {
+        display: block;
+      }
+      .card {
+        background: var(--ha-card-background, var(--card-background-color));
+        border-radius: var(--ha-card-border-radius, 12px);
+        box-shadow: var(--ha-card-box-shadow, none);
+        border: var(--ha-card-border-width, 1px) solid var(--ha-card-border-color, var(--divider-color));
+        padding: 12px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      h1 {
+        flex: 1;
+        margin: 0 4px;
+        font-size: 1.3em;
+        font-weight: 500;
+      }
+      .groups {
+        display: grid;
+        gap: 12px;
+      }
+      .groups.grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+      .group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px;
+        border-radius: 10px;
+        background: var(--secondary-background-color);
+      }
+      .top {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .top button.open {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+        min-height: 56px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+      }
+      .thumb {
+        flex: none;
+        width: 72px;
+        height: 54px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: var(--divider-color);
+      }
+      .name {
+        font-weight: 500;
+        line-height: 1.25;
+      }
+      .avatars {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-color);
+        color: var(--text-primary-color, #fff);
+        font-size: 0.85em;
+      }
+      .notes {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.9em;
+        color: var(--secondary-text-color);
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .empty {
+        text-align: center;
+        padding: 24px 8px;
+      }
+      h2 {
+        margin: 16px 4px 6px;
+        font-size: 1em;
+        font-weight: 500;
+        color: var(--secondary-text-color);
+      }
+      .done {
+        margin: 0;
+        padding: 0 4px;
+        list-style: none;
+        color: var(--secondary-text-color);
+      }
+      .done li {
+        padding: 4px 0;
+      }
+    `
+    ];
+  }
+  get uiLang() {
+    return this._hass?.locale.language ?? "en";
+  }
+  get recipeDialog() {
+    return this.renderRoot.querySelector("es-recipe-dialog");
+  }
+  get editor() {
+    return this.renderRoot.querySelector("es-recipe-editor");
+  }
+  get picker() {
+    return this.renderRoot.querySelector("es-recipe-picker");
+  }
+  groups() {
+    const e = /* @__PURE__ */ new Map();
+    for (const t of this.store?.wishes ?? []) {
+      const i = e.get(t.recipe_id) ?? { recipeId: t.recipe_id, name: t.recipe_name, thumb: t.thumb_url, wishes: [] };
+      i.wishes.push(t), e.set(t.recipe_id, i);
+    }
+    return [...e.values()].sort((t, i) => i.wishes.length - t.wishes.length);
+  }
+  avatar(e) {
+    const t = this._hass?.states ?? {};
+    for (const [n, r] of Object.entries(t))
+      if (n.startsWith("person.") && r.attributes.user_id === e.user_id) {
+        const a = r.attributes.entity_picture;
+        if (typeof a == "string" && a) return l`<img class="avatar" src=${a} alt=${e.user_name} title=${e.user_name} />`;
+      }
+    const i = e.user_name.split(/\s+/).map((n) => n[0] ?? "").join("").slice(0, 2).toUpperCase();
+    return l`<span class="avatar" title=${e.user_name} aria-label=${e.user_name}>${i}</span>`;
+  }
+  async run(e) {
+    try {
+      const t = await e();
+      t && E(this, t), await this.store?.refresh();
+    } catch (t) {
+      E(this, $(this.uiLang, b(t)));
+    }
+  }
+  cooked(e) {
+    return this.run(async () => (await mt(this._hass.connection, e.recipeId), o(this.uiLang, "cooked_done")));
+  }
+  toList(e) {
+    return this.run(async () => {
+      const t = await De(this._hass.connection, e.recipeId, {
+        ...this.config.shopping_list ? { entity_id: this.config.shopping_list } : {}
+      });
+      return o(this.uiLang, "shop_result", { added: t.added.length, skipped: t.skipped.length });
+    });
+  }
+  removeMine(e) {
+    return this.run(async () => {
+      await le(this._hass.connection, e.id);
+    });
+  }
+  onPicked(e) {
+    return this.run(async () => (await ae(this._hass.connection, e.detail), o(this.uiLang, "wish_added")));
+  }
+  renderGroup(e) {
+    const t = this.uiLang, i = this._hass?.user?.id, n = e.wishes.find((a) => a.user_id === i), r = e.wishes.filter((a) => a.note);
+    return l`<div class="group">
+      <div class="top">
+        <button class="open" aria-label=${`${o(t, "open_recipe")}: ${e.name}`} @click=${() => {
+      this.recipeDialog.open(e.recipeId);
+    }}>
+          ${e.thumb ? l`<img class="thumb" src=${e.thumb} alt="" loading="lazy" decoding="async" />` : l`<div class="thumb"></div>`}
+          <span class="name">${e.name}</span>
+        </button>
+        <div class="avatars">${e.wishes.map((a) => this.avatar(a))}</div>
+      </div>
+      ${r.length ? l`<ul class="notes">${r.map((a) => l`<li><strong>${a.user_name}:</strong> ${a.note}</li>`)}</ul>` : h}
+      <div class="actions">
+        <button class="btn primary" @click=${() => this.cooked(e)}>${o(t, "cooked")}</button>
+        <button class="btn" @click=${() => this.toList(e)}>${o(t, "shop_to_list")}</button>
+        ${n ? l`<button class="btn" @click=${() => this.removeMine(n)}>${o(t, "wish_remove")}</button>` : h}
+      </div>
+    </div>`;
+  }
+  render() {
+    if (!this._hass || !this.store) return l`<div class="card muted">…</div>`;
+    const e = this.uiLang, t = this.store, i = this.config, n = t.loaded ? this.groups() : [], r = this.groupDone();
+    return l`
+      <div class="card">
+        <header>
+          <h1>${i.title ?? o(e, "wishes_title")}</h1>
+          <button class="btn" @click=${() => {
+      this.picker.open();
+    }}>${o(e, "add_wish")}</button>
+        </header>
+        ${t.loaded ? n.length === 0 ? l`<p class="muted empty">${o(e, "wishes_empty")}</p>` : l`<div class="groups ${i.layout === "grid" ? "grid" : ""}">${n.map((a) => this.renderGroup(a))}</div>` : l`<p class="muted">${o(e, "loading")}</p>`}
+        ${r.length ? l`<h2>${o(e, "recently_cooked")}</h2>
+              <ul class="done">${r.map((a) => l`<li>${a}</li>`)}</ul>` : h}
+      </div>
+      <es-recipe-dialog
+        .hass=${this._hass}
+        .categories=${t.categories}
+        .shoppingList=${i.shopping_list}
+        @edit=${(a) => {
+      this.recipeDialog.close(), this.editor.open(a.detail);
+    }}
+      ></es-recipe-dialog>
+      <es-recipe-editor
+        .hass=${this._hass}
+        .categories=${t.categories}
+        @saved=${(a) => {
+      t.refresh(), this.recipeDialog.open(a.detail.id);
+    }}
+      ></es-recipe-editor>
+      <es-recipe-picker
+        .hass=${this._hass}
+        .recipes=${t.recipes}
+        .categories=${t.categories}
+        @picked=${this.onPicked}
+      ></es-recipe-picker>
+    `;
+  }
+  /** Distinct recently cooked dish names, limited to `show_done`. */
+  groupDone() {
+    const e = Number(this.config.show_done ?? 0);
+    return e ? [...new Set(this.done.map((t) => t.recipe_name))].slice(0, e) : [];
+  }
+}
+customElements.get("essensplan-wishes-card") || customElements.define("essensplan-wishes-card", Qt);
+const G = window;
+G.customCards = G.customCards ?? [];
+const Xt = [
+  {
+    type: "essensplan-library-card",
+    name: "Essensplan – Bibliothek",
+    description: "Gerichte mit Fotos, Suche und Filtern / Dish library with photos, search and filters"
+  },
+  {
+    type: "essensplan-wishes-card",
+    name: "Essensplan – Essenswünsche",
+    description: "Offene Essenswünsche der Familie / Open meal wishes of the household"
+  }
+];
+for (const s of Xt)
+  G.customCards.some((e) => e.type === s.type) || G.customCards.push({ ...s, preview: !0, documentationURL: "https://github.com/GITHUB_USER/essensplan" });

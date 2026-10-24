@@ -547,15 +547,23 @@ Jede Phase endet mit grünen Tests, Lint und Build, einer manuellen Prüfung in 
 - Gemessen in der Dev-HA mit 1.000 Gerichten: `recipes/list` 54 ms im Browser, erster Karten-Render 34 ms, Suche 13 ms. Kacheln werden schrittweise (60 pro Schritt) gerendert.
 - Manuell in der Dev-HA geprüft: Karte lädt, Dialog, Editor (inkl. Mehrzeilen-Zutaten, Verwerfen-Abfrage), Anlegen, Löschen, Suche mit Umlauten, Filter.
 ### Phase 3 – Wünsche & Einkaufsliste
-- [ ] 3.1 WS `wishes/*`, Events, Sensoren
-- [ ] 3.2 `shopping.py`, WS `shopping/add`, Services `add_to_shopping_list` + `add_open_wishes_to_shopping_list` (`services.yaml`, Übersetzungen)
-- [ ] 3.3 `wishes-card` + `recipe-picker`. Herz in der `library-card`, Wunsch mit Notiz im `recipe-dialog`, Einkaufslisten-Button aktivieren.
-- [ ] 3.4 Tests: Wünsche (Unique-Regel, `complete`, Sichtbarkeit), Einkauf (mit HA-`local_todo` oder `shopping_list` im Test, Duplikat-Schutz, Skalierung, Zusammenführen), Services, Sensoren
+- [x] 3.1 WS `wishes/*`, Events, Sensoren
+- [x] 3.2 `shopping.py`, WS `shopping/add`, Services `add_to_shopping_list` + `add_open_wishes_to_shopping_list` (`services.yaml`, Übersetzungen)
+- [x] 3.3 `wishes-card` + `recipe-picker`. Herz in der `library-card`, Wunsch mit Notiz im `recipe-dialog`, Einkaufslisten-Button aktivieren.
+- [x] 3.4 Tests: Wünsche (Unique-Regel, `complete`, Sichtbarkeit), Einkauf (mit HA-`local_todo` oder `shopping_list` im Test, Duplikat-Schutz, Skalierung, Zusammenführen), Services, Sensoren
 
 **Fertig wenn:**
 - Zwei User wünschen dasselbe Gericht → die Karte zeigt beide Avatare, „Gekocht“ erledigt beide.
 - Der Button schreibt skalierte Zutaten in die gewählte todo-Liste (geprüft mit HA-Einkaufsliste und Local To-do), ein zweiter Klick erzeugt keine Duplikate.
 
+**Abweichungen/Notizen Phase 3 (2026-10-24):**
+- Prüfpunkt 7 geklärt: `todo.get_items` (mit `status: needs_action`, `return_response`) liefert `{entity_id: {"items": [{summary, uid, status, ...}]}}`; `todo.add_item` nimmt `item` und `description`, aber nur wenn die Entität `SET_DESCRIPTION_ON_ITEM` (64) unterstützt. Die HA-Einkaufsliste (`shopping_list`) unterstützt keine Beschreibung → dort wird sie weggelassen; mit Local To-do o. Ä. wird „für: Rezeptname“ gesetzt.
+- `manifest.json`: `todo` zu `dependencies` ergänzt (Services und Import von `homeassistant.components.todo`).
+- `essensplan.add_open_wishes_to_shopping_list`: Jedes Gericht mit offenen Wünschen zählt einmal (mit seinen eigenen Portionen), auch wenn mehrere Personen es sich wünschen; gleiche Zutat + Einheit wird addiert.
+- Entity-IDs der Sensoren richten sich nach der HA-Sprache (z. B. `sensor.essensplan_offene_wunsche`, `sensor.essensplan_gerichte` bei Deutsch).
+- Wünsche werden nach `created_at` und Einfüge-Reihenfolge sortiert (Sekundenauflösung, `rowid` als Tiebreaker).
+- Im `recipe-dialog`: Zutaten-Checkboxen, Einkaufslisten-Button (nutzt `shopping_list` der Karte, sonst Integrations-Option), Wunsch mit Notiz. Herz in der `library-card`, `wishes-card` und `recipe-picker` sind da. „Zuletzt gekocht“ (`show_done`) lädt `wishes/list?status=done` nach.
+- Nicht geprüft: zwei verschiedene echte Benutzer in der Dev-HA (nur per Test), Local To-do, Avatar mit `person`-Bild.
 ### Phase 4 – Feinschliff & Veröffentlichung
 - [ ] 4.1 `recipe-card` inkl. Kochmodus
 - [ ] 4.2 Visuelle Editoren aller Karten vervollständigen, Vorschau im Karten-Picker

@@ -35,6 +35,30 @@
       }
     }
   },
+  "services": {
+    "add_to_shopping_list": {
+      "name": "Add recipe to shopping list",
+      "description": "Adds the (scaled) ingredients of a recipe to a to-do list. Items already on the list are skipped.",
+      "fields": {
+        "recipe_id": {"name": "Recipe ID", "description": "ID of the recipe."},
+        "servings": {"name": "Servings", "description": "Scale the ingredients to this number of servings. Defaults to the recipe's servings."},
+        "entity_id": {"name": "To-do list", "description": "Target list. Defaults to the list set in the integration options."}
+      }
+    },
+    "add_open_wishes_to_shopping_list": {
+      "name": "Add open wishes to shopping list",
+      "description": "Merges the ingredients of all recipes with open wishes and adds them to a to-do list.",
+      "fields": {
+        "entity_id": {"name": "To-do list", "description": "Target list. Defaults to the list set in the integration options."}
+      }
+    }
+  },
+  "exceptions": {
+    "entity_not_found": {"message": "No valid to-do list selected. Choose one in the call or in the integration options."},
+    "not_found": {"message": "Recipe not found."},
+    "invalid_format": {"message": "Invalid input."},
+    "unauthorized": {"message": "Not allowed."}
+  },
   "issues": {
     "database_corrupt": {
       "title": "Essensplan database is damaged",

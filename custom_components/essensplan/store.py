@@ -16,7 +16,14 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
 from . import db, images
-from .const import DOMAIN, ORPHAN_FILE_MAX_AGE_H, ORPHAN_ROW_MAX_AGE_H, SIGNAL_CHANGED
+from .const import (
+    DOMAIN,
+    EVENT_WISH_ADDED,
+    EVENT_WISHES_COMPLETED,
+    ORPHAN_FILE_MAX_AGE_H,
+    ORPHAN_ROW_MAX_AGE_H,
+    SIGNAL_CHANGED,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -201,6 +208,86 @@ class EssensplanStore:
         await self._write(db.delete_category, category_id)
         self._notify("categories", [category_id])
         self._notify("recipes")
+
+    # --- wishes --------------------------------------------------------------
+
+    async def _with_names(self, wishes: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        for wish in wishes:
+            wish["user_name"] = await self.async_user_name(wish["user_id"])
+        return wishes
+
+    async def async_list_wishes(
+        self, actor: Actor, status: str = "open", limit: int | None = None
+    ) -> list[dict[str, Any]]:
+        """Wishes of visible recipes."""
+        wishes = await self._read(db.list_wishes, actor.user_id, status, limit)
+        return await self._with_names(wishes)
+
+    async def async_add_wish(self, actor: Actor, recipe_id: str, note: str = "") -> dict[str, Any]:
+        """Add an open wish for the acting user."""
+        if actor.user_id is None:
+            raise Unauthorized
+        wish = (
+            await self._with_names([await self._write(db.add_wish, recipe_id, actor.user_id, note)])
+        )[0]
+        self._notify("wishes", [recipe_id])
+        self.hass.bus.async_fire(
+            EVENT_WISH_ADDED,
+            {
+                "recipe_id": recipe_id,
+                "recipe_name": wish["recipe_name"],
+                "user_id": actor.user_id,
+                "user_name": wish["user_name"],
+                "note": note,
+            },
+        )
+        return wish
+
+    async def async_remove_wish(self, actor: Actor, wish_id: str) -> None:
+        """Remove an own wish (admins may remove any)."""
+        wish = await self._read(db.get_wish, wish_id)
+        if not (actor.user_id is None or actor.is_admin or wish["user_id"] == actor.user_id):
+            raise Unauthorized
+        await self._write(db.remove_wish, wish_id)
+        self._notify("wishes", [wish["recipe_id"]])
+
+    async def async_complete_wishes(self, actor: Actor, recipe_id: str) -> int:
+        """'Cooked': mark all open wishes of a visible recipe as done."""
+        meta = await self._read(db.get_recipe_meta, recipe_id)
+        if (
+            actor.user_id is not None
+            and meta["visibility"] == "private"
+            and meta["created_by"] != actor.user_id
+        ):
+            raise db.NotFound
+        count = await self._write(db.complete_wishes, recipe_id)
+        self._notify("wishes", [recipe_id])
+        if count:
+            self.hass.bus.async_fire(
+                EVENT_WISHES_COMPLETED,
+                {"recipe_id": recipe_id, "recipe_name": meta["name"], "count": count},
+            )
+        return count
+
+    async def async_open_wish_summary(
+        self, max_items: int = 20
+    ) -> tuple[int, list[dict[str, Any]]]:
+        """(open wish count, per-recipe summary for the sensor attribute)."""
+        wishes = await self.async_list_wishes(SYSTEM, "open")
+        grouped: dict[str, dict[str, Any]] = {}
+        for wish in wishes:
+            entry = grouped.setdefault(
+                wish["recipe_id"], {"recipe": wish["recipe_name"], "users": [], "notes": []}
+            )
+            entry["users"].append(wish["user_name"])
+            if wish["note"]:
+                entry["notes"].append(wish["note"])
+        return len(wishes), list(grouped.values())[:max_items]
+
+    async def async_open_wish_recipes(self) -> list[dict[str, Any]]:
+        """Full recipes (own servings) that have open wishes; each recipe once."""
+        ids = await self._read(db.open_wish_recipe_ids)
+        return [await self._read(db.get_recipe, rid, None) for rid in ids]
 
     # --- images --------------------------------------------------------------
 

@@ -9,6 +9,7 @@ from pathlib import Path
 from homeassistant.components import frontend
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryError
 from homeassistant.helpers import config_validation as cv
@@ -19,10 +20,13 @@ from homeassistant.helpers.typing import ConfigType
 from .const import BUNDLE_NAME, CLEANUP_INTERVAL_H, DATA_DIR_NAME, DOMAIN, STATIC_URL, VERSION
 from .db import DatabaseCorrupt
 from .http import ImageUploadView, ImageView
+from .services import async_register_services
 from .store import EssensplanStore
 from .websocket_api import async_register_websocket
 
 _LOGGER = logging.getLogger(__name__)
+
+PLATFORMS = [Platform.SENSOR]
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
@@ -32,6 +36,7 @@ type EssensplanConfigEntry = ConfigEntry[EssensplanStore]
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Register WebSocket commands and HTTP views once per HA runtime."""
     async_register_websocket(hass)
+    async_register_services(hass)
     hass.http.register_view(ImageUploadView())
     hass.http.register_view(ImageView())
 
@@ -76,10 +81,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: EssensplanConfigEntry) -
     entry.async_on_unload(
         async_track_time_interval(hass, _cleanup, timedelta(hours=CLEANUP_INTERVAL_H))
     )
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: EssensplanConfigEntry) -> bool:
-    """Close the store (interval job is removed by async_on_unload)."""
+    """Unload sensors, then close the store (interval job is removed by async_on_unload)."""
+    if not await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        return False
     await entry.runtime_data.async_close()
     return True

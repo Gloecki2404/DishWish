@@ -35,6 +35,30 @@
       }
     }
   },
+  "services": {
+    "add_to_shopping_list": {
+      "name": "Rezept auf Einkaufsliste setzen",
+      "description": "Schreibt die (umgerechneten) Zutaten eines Rezepts in eine To-do-Liste. Einträge, die schon auf der Liste stehen, werden übersprungen.",
+      "fields": {
+        "recipe_id": {"name": "Rezept-ID", "description": "ID des Rezepts."},
+        "servings": {"name": "Portionen", "description": "Zutaten auf diese Portionenzahl umrechnen. Standard: Portionen des Rezepts."},
+        "entity_id": {"name": "To-do-Liste", "description": "Zielliste. Standard: die Liste aus den Integrations-Optionen."}
+      }
+    },
+    "add_open_wishes_to_shopping_list": {
+      "name": "Offene Wünsche auf Einkaufsliste setzen",
+      "description": "Fasst die Zutaten aller Gerichte mit offenen Wünschen zusammen und schreibt sie in eine To-do-Liste.",
+      "fields": {
+        "entity_id": {"name": "To-do-Liste", "description": "Zielliste. Standard: die Liste aus den Integrations-Optionen."}
+      }
+    }
+  },
+  "exceptions": {
+    "entity_not_found": {"message": "Keine gültige To-do-Liste gewählt. Wähle eine im Aufruf oder in den Integrations-Optionen."},
+    "not_found": {"message": "Rezept nicht gefunden."},
+    "invalid_format": {"message": "Ungültige Eingabe."},
+    "unauthorized": {"message": "Nicht erlaubt."}
+  },
   "issues": {
     "database_corrupt": {
       "title": "Essensplan-Datenbank ist beschädigt",

@@ -1,0 +1,27 @@
+add_to_shopping_list:
+  fields:
+    recipe_id:
+      required: true
+      example: "0123456789abcdef0123456789abcdef"
+      selector:
+        text:
+    servings:
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 100
+          mode: box
+    entity_id:
+      required: false
+      selector:
+        entity:
+          domain: todo
+
+add_open_wishes_to_shopping_list:
+  fields:
+    entity_id:
+      required: false
+      selector:
+        entity:
+          domain: todo

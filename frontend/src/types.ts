@@ -54,6 +54,24 @@ export interface Recipe extends RecipeSummary {
   can_edit: boolean;
 }
 
+export interface Wish {
+  id: string;
+  recipe_id: string;
+  recipe_name: string;
+  thumb_url: string | null;
+  user_id: string;
+  user_name: string;
+  note: string;
+  status: "open" | "done";
+  created_at: string;
+  done_at: string | null;
+}
+
+export interface ShoppingResult {
+  added: string[];
+  skipped: string[];
+}
+
 /** Payload for create/update and the result of an import. */
 export interface RecipeInput {
   name: string;
@@ -82,6 +100,7 @@ export interface HomeAssistant {
   };
   fetchWithAuth(path: string, init?: RequestInit): Promise<Response>;
   locale: { language: string };
+  states: Record<string, { state: string; attributes: Record<string, unknown> }>;
   user?: { id: string; name: string; is_admin: boolean };
 }
 

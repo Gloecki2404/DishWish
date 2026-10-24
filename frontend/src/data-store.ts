@@ -1,5 +1,5 @@
-import { listCategories, listRecipes } from "./api";
-import type { Category, ChangeEvent, HomeAssistant, RecipeSummary } from "./types";
+import { listCategories, listRecipes, listWishes } from "./api";
+import type { Category, ChangeEvent, HomeAssistant, RecipeSummary, Wish } from "./types";
 
 type Listener = () => void;
 
@@ -7,6 +7,8 @@ type Listener = () => void;
 export class DataStore {
   recipes: RecipeSummary[] = [];
   categories: Category[] = [];
+  /** Open wishes, oldest first. */
+  wishes: Wish[] = [];
   loaded = false;
   error: unknown = null;
 
@@ -29,7 +31,7 @@ export class DataStore {
 
   /** Reload everything (e.g. after a local change, before the event arrives). */
   async refresh(): Promise<void> {
-    await Promise.all([this.loadRecipes(), this.loadCategories()]);
+    await Promise.all([this.loadRecipes(), this.loadCategories(), this.loadWishes()]);
   }
 
   private async start(): Promise<void> {
@@ -53,6 +55,7 @@ export class DataStore {
 
   private onEvent(ev: ChangeEvent): void {
     if (ev.kind === "recipes" || ev.kind === "wishes") this.debounce("recipes", () => this.loadRecipes());
+    if (ev.kind === "recipes" || ev.kind === "wishes") this.debounce("wishes", () => this.loadWishes());
     if (ev.kind === "categories") this.debounce("categories", () => this.loadCategories());
   }
 
@@ -65,6 +68,15 @@ export class DataStore {
     try {
       this.recipes = await listRecipes(this.conn);
       this.error = null;
+    } catch (err) {
+      this.error = err;
+    }
+    this.emit();
+  }
+
+  private async loadWishes(): Promise<void> {
+    try {
+      this.wishes = await listWishes(this.conn, "open");
     } catch (err) {
       this.error = err;
     }

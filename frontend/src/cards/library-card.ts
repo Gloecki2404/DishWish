@@ -1,4 +1,5 @@
 import { css, html, LitElement, nothing } from "lit";
+import { addWish, errorCode, removeWish } from "../api";
 import { getStore, type DataStore } from "../data-store";
 import "../dialogs/import-dialog";
 import "../dialogs/recipe-dialog";
@@ -10,6 +11,7 @@ import { t, tError } from "../i18n";
 import { icon, paths } from "../icons";
 import { sharedStyles } from "../styles";
 import type { CardConfig, HomeAssistant, Recipe, RecipeInput, RecipeSummary } from "../types";
+import { notify } from "../utils/notify";
 import { normalize } from "../utils/search";
 
 const PAGE = 60;
@@ -249,12 +251,8 @@ export class EssensplanLibraryCard extends LitElement {
       .tile {
         position: relative;
         display: block;
-        padding: 0;
-        border: none;
         border-radius: 10px;
         overflow: hidden;
-        text-align: left;
-        cursor: pointer;
         background: var(--secondary-background-color);
         content-visibility: auto;
         contain-intrinsic-size: auto 200px;
@@ -293,15 +291,39 @@ export class EssensplanLibraryCard extends LitElement {
         gap: 8px;
         align-items: center;
       }
-      .badge {
+      .tile .open {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: none;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+      }
+      .heart {
         position: absolute;
-        top: 6px;
-        right: 6px;
+        top: 0;
+        right: 0;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .heart .pill {
         padding: 2px 8px;
-        border-radius: 10px;
+        border-radius: 12px;
+        background: var(--card-background-color);
+        font-size: 0.85em;
+        opacity: 0.92;
+      }
+      .heart[aria-pressed="true"] .pill {
         background: var(--primary-color);
         color: var(--text-primary-color, #fff);
-        font-size: 0.8em;
       }
       .empty {
         text-align: center;
@@ -384,6 +406,17 @@ export class EssensplanLibraryCard extends LitElement {
     void this.recipeDialog.open(id);
   }
 
+  private async toggleWish(r: RecipeSummary): Promise<void> {
+    const conn = this._hass!.connection;
+    try {
+      if (r.my_wish_id) await removeWish(conn, r.my_wish_id);
+      else await addWish(conn, r.id);
+      await this.store?.refresh();
+    } catch (err) {
+      notify(this, tError(this.lang, errorCode(err)));
+    }
+  }
+
   private onEdit(e: CustomEvent<Recipe>): void {
     this.recipeDialog.close();
     void this.editor.open(e.detail);
@@ -400,23 +433,31 @@ export class EssensplanLibraryCard extends LitElement {
     const lang = this.uiLang;
     const minutes = (r.prep_minutes ?? 0) + (r.cook_minutes ?? 0);
     const firstCat = this.store!.categories.find((c) => c.id === r.category_ids[0]);
-    return html`<button class="tile" @click=${() => this.openRecipe(r.id)}>
-      <div class="img">
-        ${r.thumb_url
-          ? html`<img src=${r.thumb_url} alt="" loading="lazy" decoding="async" />`
-          : html`<ha-icon icon=${firstCat?.icon ?? "mdi:silverware-fork-knife"}></ha-icon>`}
-      </div>
-      ${r.open_wish_count ? html`<span class="badge">♥ ${r.open_wish_count}</span>` : nothing}
-      <div class="info">
-        <div class="name">${r.name}</div>
-        <div class="sub">
-          ${minutes ? html`<span>${t(lang, "minutes_short", { n: minutes })}</span>` : nothing}
-          ${r.visibility === "private" ? html`<span>${t(lang, "only_me")}</span>` : nothing}
+    return html`<div class="tile">
+      <button class="open" @click=${() => this.openRecipe(r.id)}>
+        <div class="img">
+          ${r.thumb_url
+            ? html`<img src=${r.thumb_url} alt="" loading="lazy" decoding="async" />`
+            : html`<ha-icon icon=${firstCat?.icon ?? "mdi:silverware-fork-knife"}></ha-icon>`}
         </div>
-      </div>
-    </button>`;
+        <div class="info">
+          <div class="name">${r.name}</div>
+          <div class="sub">
+            ${minutes ? html`<span>${t(lang, "minutes_short", { n: minutes })}</span>` : nothing}
+            ${r.visibility === "private" ? html`<span>${t(lang, "only_me")}</span>` : nothing}
+          </div>
+        </div>
+      </button>
+      <button
+        class="heart"
+        aria-pressed=${r.my_wish_id !== null}
+        aria-label=${r.my_wish_id ? t(lang, "wish_remove") : t(lang, "wish_heart")}
+        @click=${() => this.toggleWish(r)}
+      >
+        <span class="pill">${r.my_wish_id ? "♥" : "♡"}${r.open_wish_count ? ` ${r.open_wish_count}` : ""}</span>
+      </button>
+    </div>`;
   }
-
   private renderEmpty() {
     const lang = this.uiLang;
     return html`<div class="empty">
@@ -496,7 +537,12 @@ export class EssensplanLibraryCard extends LitElement {
               : html`<div class="grid" style=${gridStyle}>${shown.map((r) => this.renderTile(r))}</div>
                   ${shown.length < list.length ? html`<div id="more"></div>` : nothing}`}
       </div>
-      <es-recipe-dialog .hass=${this._hass} .categories=${store.categories} @edit=${this.onEdit}></es-recipe-dialog>
+      <es-recipe-dialog
+        .hass=${this._hass}
+        .categories=${store.categories}
+        .shoppingList=${cfg.shopping_list}
+        @edit=${this.onEdit}
+      ></es-recipe-dialog>
       <es-recipe-editor .hass=${this._hass} .categories=${store.categories} @saved=${this.onSaved}></es-recipe-editor>
       <es-import-dialog .hass=${this._hass} @imported=${(e: CustomEvent<RecipeInput>) => void this.editor.open(e.detail)}></es-import-dialog>
     `;

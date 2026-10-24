@@ -25,6 +25,25 @@ const en = {
   no_results: "No dishes found",
   minutes_short: "{n} min",
   wishes_n: "{n} wishes",
+  // wishes & shopping
+  wish_heart: "Wish this dish",
+  wish_add: "Add wish",
+  wish_remove: "Remove my wish",
+  wish_note: "Note (optional)",
+  wish_send: "Wish",
+  wish_added: "Wish added.",
+  shop_n: "{n} ingredients to shopping list",
+  shop_to_list: "To shopping list",
+  shop_none: "Select at least one ingredient.",
+  shop_result: "{added} added, {skipped} already on the list.",
+  wishes_title: "Meal wishes",
+  wishes_empty: "No open wishes",
+  cooked: "Cooked ✓",
+  cooked_done: "Marked as cooked.",
+  add_wish: "+ Wish",
+  picker_title: "Pick a dish",
+  recently_cooked: "Recently cooked",
+  open_recipe: "Open dish",
   // recipe
   prep: "Prep {n} min",
   cook: "Cook {n} min",
@@ -83,6 +102,8 @@ const en = {
   err_too_large: "The file is too large.",
   err_unsupported_image: "This image format is not supported.",
   err_upload_failed: "Upload failed.",
+  err_already_wished: "You already wished for this dish.",
+  err_entity_not_found: "No shopping list chosen. Set one in the card or in the integration options.",
   err_unknown: "Something went wrong.",
   // card editor
   cfg_title: "Title",
@@ -97,6 +118,10 @@ const en = {
   cfg_sort_newest: "Newest",
   cfg_sort_popular: "Most wished",
   cfg_shopping_list: "Shopping list",
+  cfg_layout: "Layout",
+  cfg_layout_list: "List",
+  cfg_layout_grid: "Grid",
+  cfg_show_done: "Recently cooked to show",
 } as const;
 
 export type Key = keyof typeof en;
@@ -126,6 +151,24 @@ const de: Record<Key, string> = {
   no_results: "Keine Gerichte gefunden",
   minutes_short: "{n} min",
   wishes_n: "{n} Wünsche",
+  wish_heart: "Dieses Gericht wünschen",
+  wish_add: "Wunsch äußern",
+  wish_remove: "Meinen Wunsch entfernen",
+  wish_note: "Notiz (optional)",
+  wish_send: "Wünschen",
+  wish_added: "Wunsch hinzugefügt.",
+  shop_n: "{n} Zutaten auf Einkaufsliste",
+  shop_to_list: "Auf Einkaufsliste",
+  shop_none: "Wähle mindestens eine Zutat aus.",
+  shop_result: "{added} hinzugefügt, {skipped} schon auf der Liste.",
+  wishes_title: "Essenswünsche",
+  wishes_empty: "Keine offenen Wünsche",
+  cooked: "Gekocht ✓",
+  cooked_done: "Als gekocht markiert.",
+  add_wish: "+ Wunsch",
+  picker_title: "Gericht wählen",
+  recently_cooked: "Zuletzt gekocht",
+  open_recipe: "Gericht öffnen",
   prep: "Vorbereiten {n} min",
   cook: "Kochen {n} min",
   only_me: "Nur ich",
@@ -180,6 +223,8 @@ const de: Record<Key, string> = {
   err_too_large: "Die Datei ist zu groß.",
   err_unsupported_image: "Dieses Bildformat wird nicht unterstützt.",
   err_upload_failed: "Upload fehlgeschlagen.",
+  err_already_wished: "Das wünschst du dir schon.",
+  err_entity_not_found: "Keine Einkaufsliste gewählt. Lege eine in der Karte oder in den Integrations-Optionen fest.",
   err_unknown: "Etwas ist schiefgelaufen.",
   cfg_title: "Titel",
   cfg_columns: "Spalten (auto oder 2–6)",
@@ -193,11 +238,15 @@ const de: Record<Key, string> = {
   cfg_sort_newest: "Neueste",
   cfg_sort_popular: "Meist gewünscht",
   cfg_shopping_list: "Einkaufsliste",
+  cfg_layout: "Layout",
+  cfg_layout_list: "Liste",
+  cfg_layout_grid: "Raster",
+  cfg_show_done: "Zuletzt gekocht anzeigen",
 };
 
 /** Translate a key (German for `de*`, English otherwise) and fill `{vars}`. */
 export function t(lang: string, key: Key, vars?: Record<string, string | number>): string {
-  let text = lang.startsWith("de") ? de[key] : en[key];
+  let text: string = lang.startsWith("de") ? de[key] : en[key];
   if (vars) for (const [k, v] of Object.entries(vars)) text = text.replace(`{${k}}`, String(v));
   return text;
 }
