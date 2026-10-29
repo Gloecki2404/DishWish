@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { addWish, errorCode, removeWish } from "../api";
 import { getStore, type DataStore } from "../data-store";
+import { renderLoadState } from "../utils/load-state";
 import "../components/card-editor";
 import type { DwCardEditor } from "../components/card-editor";
 import "../dialogs/import-dialog";
@@ -524,9 +525,9 @@ export class DishWishLibraryCard extends LitElement {
           <button class="chip" aria-pressed=${this.filter === QUICK} @click=${() => this.setFilter(QUICK)}>${t(lang, "filter_quick")}</button>
           <button class="chip" aria-pressed=${this.filter === MINE} @click=${() => this.setFilter(MINE)}>${t(lang, "filter_mine")}</button>
         </div>
-        ${store.error ? html`<p class="error">${tError(lang, "unknown")}</p>` : nothing}
+        ${store.error && store.loaded ? html`<p class="error">${tError(lang, "unknown")}</p>` : nothing}
         ${!store.loaded
-          ? html`<p class="muted">${t(lang, "loading")}</p>`
+          ? renderLoadState(store, lang)
           : store.recipes.length === 0
             ? this.renderEmpty()
             : list.length === 0

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 DOMAIN = "dishwish"
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 
 DATA_DIR_NAME = "dishwish"
 DB_FILE_NAME = "dishwish.db"

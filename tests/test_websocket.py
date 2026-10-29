@@ -228,12 +228,22 @@ async def test_subscribe_receives_changes(hass, setup_integration, make_client):
     assert event["event"]["kind"] == "categories"
 
 
-async def test_bundle_is_served_without_caching(hass, hass_client_no_auth, setup_integration):
+async def test_bundle_caching(hass, hass_client_no_auth, setup_integration):
     client = await hass_client_no_auth()
-    resp = await client.get("/dishwish_static/dishwish-cards.js?v=anything")
+    resp = await client.get("/dishwish_static/dishwish-cards.js?v=0.4.1-123")
     assert resp.status == 200
-    assert resp.headers["Cache-Control"] == "no-cache"
+    assert "immutable" in resp.headers["Cache-Control"]
     assert "dishwish-library-card" in await resp.text()
+    resp = await client.get("/dishwish_static/dishwish-cards.js")
+    assert resp.headers["Cache-Control"] == "no-cache"
+
+
+async def test_not_ready_before_the_entry_is_loaded(hass, setup_integration, make_client):
+    alice, _ = await make_client("alice")
+    await hass.config_entries.async_unload(setup_integration.entry_id)
+    await hass.async_block_till_done()
+    resp = await call(alice, "dishwish/recipes/list")
+    assert resp["error"]["code"] == "not_ready"
 
 
 async def test_everybody_may_add_notes_but_only_owners_edit(hass, setup_integration, make_client):

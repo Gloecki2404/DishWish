@@ -6,6 +6,16 @@ versions; every database upgrade makes a backup copy first.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-29
+
+### Fixed
+- Cards no longer stay broken when they load while Home Assistant is still starting: the backend answers
+  `not_ready`, and the cards retry with backoff (1, 2, 4, 8, 16 s), then show an error with a "Try again" button.
+  After Home Assistant reconnects (restart, app resume) the cards resubscribe and reload.
+
+### Changed
+- The card bundle is cached for good under its versioned URL (`?v=...`), so it loads faster on mobile networks.
+
 ## [0.4.0] - 2026-10-24
 
 ### Added

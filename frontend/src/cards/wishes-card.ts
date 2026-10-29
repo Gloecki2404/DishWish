@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { addWish, completeWishes, errorCode, listWishes, removeWish } from "../api";
 import { getStore, type DataStore } from "../data-store";
+import { renderLoadState } from "../utils/load-state";
 import "../dialogs/recipe-dialog";
 import "../dialogs/recipe-editor";
 import "../dialogs/recipe-picker";
@@ -477,7 +478,7 @@ export class DishWishWishesCard extends LitElement {
           <button class="btn" @click=${() => void this.picker.open()}>${t(lang, "add_wish")}</button>
         </header>
         ${!store.loaded
-          ? html`<p class="muted">${t(lang, "loading")}</p>`
+          ? renderLoadState(store, lang)
           : groups.length === 0
             ? html`<p class="muted empty">${t(lang, "wishes_empty")}</p>`
             : html`<div class="groups ${cfg.layout === "grid" ? "grid" : ""}">${groups.map((g) => this.renderGroup(g))}</div>`}

@@ -94,6 +94,7 @@ export interface RecipeInput {
 /** Minimal subset of the Home Assistant frontend object that we use. */
 export interface HomeAssistant {
   connection: {
+    addEventListener?(event: "ready", callback: () => void): void;
     sendMessagePromise<T>(msg: Record<string, unknown>): Promise<T>;
     subscribeMessage<T>(
       callback: (event: T) => void,

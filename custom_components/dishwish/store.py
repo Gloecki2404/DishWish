@@ -29,11 +29,17 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
+class NotReady(db.DbError, HomeAssistantError):
+    """The integration is not loaded yet (e.g. right after a restart); clients retry."""
+
+    code = "not_ready"
+
+
 def get_store(hass: HomeAssistant) -> DishWishStore:
-    """Return the store of the loaded config entry or raise a clear error."""
+    """Return the store of the loaded config entry or raise NotReady."""
     entries = hass.config_entries.async_loaded_entries(DOMAIN)
     if not entries:
-        raise HomeAssistantError("DishWish is not loaded")
+        raise NotReady("DishWish is not loaded")
     return entries[0].runtime_data
 
 

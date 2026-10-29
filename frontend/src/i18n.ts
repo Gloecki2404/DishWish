@@ -132,6 +132,8 @@ const en = {
   err_ai_no_images: "The AI task cannot read images. Choose one with image support (for example Google Gemini) in the DishWish options.",
   err_ai_not_configured: "No AI task is set up. Choose one in the DishWish options or set a default AI task in Home Assistant.",
   err_unknown: "Something went wrong.",
+  err_not_ready: "DishWish is not ready yet. Home Assistant may still be starting.",
+  retry: "Try again",
   // card editor
   cfg_title: "Title",
   cfg_columns: "Columns (auto or 2–6)",
@@ -292,6 +294,8 @@ const de: Record<Key, string> = {
   err_ai_no_images: "Die KI-Aufgabe kann keine Bilder lesen. Wähle in den DishWish-Optionen eine mit Bildverständnis (zum Beispiel Google Gemini).",
   err_ai_not_configured: "Es ist keine KI-Aufgabe eingerichtet. Wähle eine in den DishWish-Optionen oder lege in Home Assistant eine Standard-KI-Aufgabe fest.",
   err_unknown: "Etwas ist schiefgelaufen.",
+  err_not_ready: "DishWish ist noch nicht bereit. Home Assistant startet eventuell noch.",
+  retry: "Erneut versuchen",
   cfg_title: "Titel",
   cfg_columns: "Spalten (auto oder 2–6)",
   cfg_categories: "Kategorien",

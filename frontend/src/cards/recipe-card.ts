@@ -4,6 +4,7 @@ import "../components/card-editor";
 import type { DwCardEditor } from "../components/card-editor";
 import "../components/recipe-view";
 import { getStore, type DataStore } from "../data-store";
+import { renderLoadState } from "../utils/load-state";
 import "../dialogs/cook-mode";
 import "../dialogs/recipe-picker";
 import type { DwRecipePicker } from "../dialogs/recipe-picker";
@@ -200,7 +201,7 @@ export class DishWishRecipeCard extends LitElement {
     const cfg = this.config;
     let body;
     if (this.error) body = html`<p class="error">${this.error}</p>`;
-    else if (!this.store.loaded) body = html`<p class="muted">${t(lang, "loading")}</p>`;
+    else if (!this.store.loaded) body = renderLoadState(this.store, lang);
     else if (!this.recipe) {
       const fixed = (cfg.mode ?? "fixed") === "fixed";
       body = fixed

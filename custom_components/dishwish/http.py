@@ -12,7 +12,7 @@ from homeassistant.core import HomeAssistant
 from .const import BUNDLE_NAME, MAX_UPLOAD_BYTES, STATIC_URL
 from .db import DbError
 from .images import SIZES, image_path
-from .store import Actor, get_store
+from .store import Actor, NotReady, get_store
 
 _IMAGE_ID = re.compile(r"^[0-9a-f]{32}$")
 _CACHE = "public, max-age=31536000, immutable"
@@ -44,7 +44,7 @@ class ImageUploadView(HomeAssistantView):
                 Actor(user.id, user.is_admin), bytes(data)
             )
         except DbError as err:
-            status = 413 if err.code == "too_large" else 400
+            status = {"too_large": 413, "not_ready": 503}.get(err.code, 400)
             return self.json_message("Image rejected", status, err.code)
         return self.json(result, status_code=201)
 
@@ -61,15 +61,19 @@ class ImageView(HomeAssistantView):
         if not _IMAGE_ID.match(image_id) or size not in SIZES:
             raise web.HTTPNotFound
         hass: HomeAssistant = request.app["hass"]
-        path = image_path(get_store(hass).images_dir, image_id, size)
+        try:
+            images_dir = get_store(hass).images_dir
+        except NotReady as err:
+            raise web.HTTPServiceUnavailable from err
+        path = image_path(images_dir, image_id, size)
         if not await hass.async_add_executor_job(path.is_file):
             raise web.HTTPNotFound
         return web.FileResponse(path, headers={"Cache-Control": _CACHE})
 
 
 class BundleView(HomeAssistantView):
-    """The card bundle. `no-cache` makes browsers revalidate, so an update is never shadowed
-    by a cached copy (or by a cached page that still points at an older `?v=` URL)."""
+    """The card bundle. The versioned URL (`?v=<version>-<mtime>`, changes with every update)
+    is cached for good; a bare URL revalidates, so an update is never shadowed by a stale copy."""
 
     url = f"{STATIC_URL}/{BUNDLE_NAME}"
     name = "dishwish:bundle"
@@ -80,4 +84,5 @@ class BundleView(HomeAssistantView):
 
     async def get(self, request: web.Request) -> web.StreamResponse:
         """Serve the bundle."""
-        return web.FileResponse(self._path, headers={"Cache-Control": "no-cache"})
+        cache = _CACHE if "v" in request.query else "no-cache"
+        return web.FileResponse(self._path, headers={"Cache-Control": cache})
